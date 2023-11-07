@@ -8,7 +8,7 @@ public class HomingRocket extends Projectile
     private float speedX=0;
     private float speedY=0;
     public HomingRocket(int positionX, int positionY) {
-        super(positionX, positionY, 2,2, new Texture("badlogic.jpg"));
+        super(positionX, positionY, 2,2, new Texture("rocket.png"));
 //        homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
     }
 
