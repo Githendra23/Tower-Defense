@@ -4,10 +4,11 @@ public abstract class Enemy {
     protected float speed;
     protected int hp;
     protected int damage;
-
     protected int sizeX;
     protected int sizeY;
     protected int level = 1;
+    protected int positionX;
+    protected int positionY;
     protected boolean isMelee = true;
 
     public Enemy(int hp, int damage, float speed) {
@@ -60,5 +61,13 @@ public abstract class Enemy {
 
     public void loseHp(int hp) {
         this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+    }
+
+    public int getPositionX() {
+        return this.positionX;
+    }
+
+    public int getPositionY() {
+        return this.positionY;
     }
 }
