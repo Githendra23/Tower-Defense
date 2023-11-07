@@ -1,7 +1,10 @@
 package com.towerdefense.game;
 
-public abstract class Enemy {
-    protected float speed;
+import com.badlogic.gdx.graphics.Texture;
+
+public abstract class AEnemy implements IEnemy {
+    protected Texture img;
+    protected int speed;
     protected int hp;
     protected int damage;
     protected int sizeX;
@@ -11,10 +14,11 @@ public abstract class Enemy {
     protected int positionY;
     protected boolean isMelee = true;
 
-    public Enemy(int hp, int damage, float speed) {
+    public AEnemy(int hp, int damage, int speed, Texture img) {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
+        this.img = img;
     }
 
     public int getDamage() {
@@ -33,7 +37,7 @@ public abstract class Enemy {
         return this.sizeY;
     }
 
-    public float getSpeed() {
+    public int getSpeed() {
         return this.speed;
     }
 
@@ -69,5 +73,9 @@ public abstract class Enemy {
 
     public int getPositionY() {
         return this.positionY;
+    }
+
+    public Texture getImg() {
+        return img;
     }
 }

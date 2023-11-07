@@ -1,24 +1,19 @@
 package com.towerdefense.game;
 
-public abstract class Tower {
-    protected int hp;
-    protected int rangeRadius;
+public abstract class ATower implements ITower {
+    protected int range;
     protected int damage;
     protected boolean isAreaDamage = false;
     protected int level = 1;
+    protected int targetNumber;
 
-    public Tower(int hp, int damage, int rangeRadius) {
-        this.hp = hp;
+    public ATower(int damage, int range) {
         this.damage = damage;
-        this.rangeRadius = rangeRadius;
+        this.range = range;
     }
 
     public int getLevel() {
         return this.level;
-    }
-
-    public int getHp() {
-        return this.hp;
     }
 
     public int getDamage() {
@@ -34,11 +29,24 @@ public abstract class Tower {
         this.damage += damage;
     }
 
-    public int getRangeRadius() {
-        return this.rangeRadius;
+    public int getRange() {
+        return this.range;
     }
 
-    public void loseHp(int hp) {
-        this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+    public void upgradeDamage() {
+
+    }
+    public void upgradeRange() {
+
+    }
+    public int getTargetNumber() {
+        return this.targetNumber;
+    }
+    public void setDamage(int damage) {
+
+    }
+
+    public void setRange(int damage) {
+
     }
 }

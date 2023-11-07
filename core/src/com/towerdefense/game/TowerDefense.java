@@ -15,11 +15,13 @@ public class TowerDefense extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Texture img;
 	private BitmapFont font;
+	private Zombie zombie;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		zombie = new Zombie();
 
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
 		int xHotspot = 15, yHotspot = 15;
@@ -36,6 +38,8 @@ public class TowerDefense extends ApplicationAdapter {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
 		batch.draw(img, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
+
+		batch.draw(zombie.drawZombie(), 100, 100);
 
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 
