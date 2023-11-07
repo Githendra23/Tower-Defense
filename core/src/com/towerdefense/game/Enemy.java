@@ -57,4 +57,8 @@ public abstract class Enemy {
         this.level++;
         this.damage += damage;
     }
+
+    public void loseHp(int hp) {
+        this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+    }
 }

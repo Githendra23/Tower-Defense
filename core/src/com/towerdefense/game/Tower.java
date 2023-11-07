@@ -37,4 +37,8 @@ public abstract class Tower {
     public int getRangeRadius() {
         return this.rangeRadius;
     }
+
+    public void loseHp(int hp) {
+        this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+    }
 }
