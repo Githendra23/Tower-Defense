@@ -10,15 +10,15 @@ public abstract class AEnemy implements IEnemy {
     protected int sizeX;
     protected int sizeY;
     protected int level = 1;
-    protected int positionX;
-    protected int positionY;
-    protected boolean isMelee = true;
+   protected Coordinate coords;
 
     public AEnemy(int hp, int damage, int speed, Texture img) {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
         this.img = img;
+
+        this.coords = new Coordinate();
     }
 
     public int getDamage() {
@@ -50,10 +50,6 @@ public abstract class AEnemy implements IEnemy {
         this.sizeY = sizeY;
     }
 
-    public boolean isMelee() {
-        return this.isMelee;
-    }
-
     public boolean attack(Object object) {
         return true;
     }
@@ -65,14 +61,6 @@ public abstract class AEnemy implements IEnemy {
 
     public void loseHp(int hp) {
         this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
-    }
-
-    public int getPositionX() {
-        return this.positionX;
-    }
-
-    public int getPositionY() {
-        return this.positionY;
     }
 
     public Texture getImg() {

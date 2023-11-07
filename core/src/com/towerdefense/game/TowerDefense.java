@@ -30,18 +30,18 @@ public class TowerDefense extends ApplicationAdapter {
 		Gdx.graphics.setCursor(cursor);
 
 		font = new BitmapFont();
-		font.setColor(1, 1, 1, 1); // Set the font color (white in this example)
+		font.setColor(1, 1, 1, 1); // Set the font color
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
+		// display FPS
+		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 		batch.draw(img, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 
 		batch.draw(zombie.drawZombie(), 100, 100);
-
-		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 
 		batch.end();
 	}
