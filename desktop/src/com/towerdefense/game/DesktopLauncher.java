@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		config.setTitle("Tower Defense");
 		config.setResizable(false);
 		config.setWindowedMode(1920, 1080);
+		config.setForegroundFPS(60);
 		new Lwjgl3Application(new TowerDefense(), config);
 	}
 }

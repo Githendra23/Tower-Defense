@@ -10,11 +10,10 @@ public abstract class Enemy {
     protected int level = 1;
     protected boolean isMelee = true;
 
-    public Enemy(int hp, int damage, float speed, boolean isMelee) {
+    public Enemy(int hp, int damage, float speed) {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
-        this.isMelee = isMelee;
     }
 
     public int getDamage() {
@@ -54,7 +53,8 @@ public abstract class Enemy {
         return true;
     }
 
-    public void levelUp() {
+    public void levelUp(int damage) {
         this.level++;
+        this.damage += damage;
     }
 }
