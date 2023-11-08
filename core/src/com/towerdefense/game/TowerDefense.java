@@ -119,7 +119,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		batch.draw(zombie.getImg(), 100, 100);
 		batch.draw(giant.getImg(), X, Y);
-		batch.draw(castle.getImg(), Gdx.graphics.getWidth() - 200, ((float) Gdx.graphics.getHeight() / 2) - 150);
+		batch.draw(castle.getImg(), Gdx.graphics.getWidth() - 400, ((float) Gdx.graphics.getHeight() / 2) - 150,355,220);
 
 		if (!isPaused) {
 			// all movements should be inside this condition

@@ -9,7 +9,7 @@ public class Castle extends Coordinate {
 
     public Castle(int hp) {
         this.coords = new Coordinate();
-        this.img = new Texture("towerdefense.png");
+        this.img = new Texture("castle1.png");
 
         this.hp = hp;
     }
