@@ -22,6 +22,9 @@ public class TowerDefense extends ApplicationAdapter {
 	private final Array<Projectile> projectileArray = new Array<Projectile>();
 	private final Array<Float> projectileTargetX= new Array<Float>();
 	private final Array<Float> projectileTargetY= new Array<Float>();
+	private final Array<Tower> towers=new Array<Tower>();
+	private final Array<Float> towerCoordX= new Array<Float>();
+	private final Array<Float> towerCoordY= new Array<Float>();
 
 
 
@@ -89,6 +92,19 @@ public class TowerDefense extends ApplicationAdapter {
 		projectileArray.add(homingRocket);
 		projectileTargetX.add(targetX);
 		projectileTargetY.add(targetY);
+	}
+	public void addTower()
+	{
+		towers.add(new Tower());
+		towerCoordX.add(Gdx.input.getX() - (((float) img.getHeight()) / 2));
+		towerCoordY.add(-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
+	}
+	public void renderTowers()
+	{
+		for (int i = 0; i<towers.size;i++)
+		{
+			
+		}
 	}
 	void projectiles()
 	{
