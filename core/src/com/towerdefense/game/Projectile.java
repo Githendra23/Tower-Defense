@@ -1,8 +1,8 @@
 package com.towerdefense.game;
 
 import com.badlogic.gdx.graphics.Texture;
-
-import javax.swing.text.Position;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 
 public abstract class Projectile {
     protected int positionX;
@@ -12,6 +12,7 @@ public abstract class Projectile {
     protected int targetX;
     protected int TargetY;
     protected Texture img;
+    protected float rotation;
 
     public int getPositionX() {
         return positionX;
@@ -28,5 +29,15 @@ public abstract class Projectile {
         this.sizeY=sizeY;
         this.img=img;
 
+    }
+    public TextureRegion draw()
+    {
+        return null;
+    }
+    public float aim(float targetX,float targetY)
+    {
+        float angle = MathUtils.radiansToDegrees * MathUtils.atan2(targetY - positionY, targetX - positionX);
+        rotation=angle;
+        return angle;
     }
 }
