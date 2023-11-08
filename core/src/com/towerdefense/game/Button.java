@@ -13,6 +13,7 @@ public abstract class Button {
     protected final SpriteBatch batch;
     protected Texture img;
     protected TextureRegion imgRegion;
+    protected Coordinate coords;
 
 
     public Button(Texture img) {
@@ -37,6 +38,10 @@ public abstract class Button {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             this.clickEvent();
         }
+    }
+
+    public boolean isMouseInside(float mouseX, float mouseY) {
+        return coords.getAxisX() + img.getWidth() >= mouseX && coords.getAxisY() + img.getHeight() >= mouseY;
     }
 
     public int getAxisX() {

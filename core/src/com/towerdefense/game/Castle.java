@@ -12,7 +12,6 @@ public class Castle extends Coordinate {
         this.img = new Texture("towerdefense.png");
 
         this.hp = hp;
-        this.img = img;
     }
 
     public void loseHp(int hp) {

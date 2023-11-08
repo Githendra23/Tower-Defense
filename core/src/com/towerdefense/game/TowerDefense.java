@@ -63,6 +63,8 @@ public class TowerDefense extends ApplicationAdapter {
 	float X = 200, Y = 200;
 	@Override
 	public void render () {
+		int mouseX = Gdx.input.getX();
+		int mouseY = Gdx.input.getY();
 		frameCount++;
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -73,6 +75,8 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.begin();
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
+
+		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
 		batch.draw(zombie.getImg(), 100, 100);
 		batch.draw(giant.getImg(), X, Y);
