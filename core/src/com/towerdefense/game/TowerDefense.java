@@ -20,7 +20,11 @@ public class TowerDefense extends ApplicationAdapter {
 //	private HomingRocket missile;
 	private Bullet bullet;
 	private final Array<Projectile> projectileArray = new Array<Projectile>();
-	
+	private final Array<Float> projectileTargetX= new Array<Float>();
+	private final Array<Float> projectileTargetY= new Array<Float>();
+
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -45,7 +49,7 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.draw(img, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 //		missile.homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 		bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)),20);
-		System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
+//		System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
 		{
 			spawnRocket(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
@@ -74,6 +78,8 @@ public class TowerDefense extends ApplicationAdapter {
 		HomingRocket homingRocket=new HomingRocket(spawnX,spawnY);
 		homingRocket.aim(targetX,targetY);
 		projectileArray.add(homingRocket);
+		projectileTargetX.add(targetX);
+		projectileTargetY.add(targetY);
 	}
 	void spawnBullet(int spawnX,int spawnY,float targetX, float targetY)
 	{
@@ -81,15 +87,18 @@ public class TowerDefense extends ApplicationAdapter {
 		Bullet homingRocket=new Bullet(spawnX,spawnY);
 		bullet.aim(targetX,targetY);
 		projectileArray.add(homingRocket);
+		projectileTargetX.add(targetX);
+		projectileTargetY.add(targetY);
 	}
 	void projectiles()
 	{
-		for (Projectile projectiles:projectileArray)
+		for (int i = 0; i<projectileArray.size; i++)
 		{
-
+			Projectile projectiles = projectileArray.get(i);
+			System.out.println(projectiles+ " "+ i);
 			if (projectiles instanceof HomingRocket) {
 				HomingRocket missile=(HomingRocket) projectiles;
-				missile.homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
+				missile.homing(projectileTargetX.get(i),projectileTargetY.get(i));
 				batch.draw(missile.drawRocket(), missile.positionX, missile.positionY, 9, 9, 307, 137, 1, 1, missile.rotation);
 			}
 			if(projectiles instanceof Bullet)
