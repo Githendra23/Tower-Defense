@@ -22,7 +22,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private final Array<Projectile> projectileArray = new Array<Projectile>();
 	private final Array<Float> projectileTargetX= new Array<Float>();
 	private final Array<Float> projectileTargetY= new Array<Float>();
-	private final Array<Tower> towers=new Array<Tower>();
+	private final Array<ATower> towers=new Array<ATower>();
 	private final Array<Float> towerCoordX= new Array<Float>();
 	private final Array<Float> towerCoordY= new Array<Float>();
 
@@ -69,7 +69,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		batch.end();
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -95,15 +95,21 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 	public void addTower()
 	{
-		towers.add(new Tower());
+		towers.add(new Cannon);
 		towerCoordX.add(Gdx.input.getX() - (((float) img.getHeight()) / 2));
 		towerCoordY.add(-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 	}
-	public void renderTowers()
+	public void towers()
 	{
 		for (int i = 0; i<towers.size;i++)
 		{
-			
+			ATower tower=towers.get(i);
+			if (tower instanceof Cannon)
+			{
+				Cannon cannon = (Cannon) tower;
+				batch(cannon.img,towerCoordX.get(i),towerCoordY.get(i));
+			}
+
 		}
 	}
 	void projectiles()

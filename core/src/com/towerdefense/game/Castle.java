@@ -1,10 +1,14 @@
 package com.towerdefense.game;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class Castle {
     private int hp;
+    private Texture img;
 
-    public Castle(int hp) {
+    public Castle(int hp, Texture img) {
         this.hp = hp;
+        this.img = img;
     }
 
     public void loseHp(int hp) {
