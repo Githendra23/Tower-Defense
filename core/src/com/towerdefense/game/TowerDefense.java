@@ -30,6 +30,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private BitmapFont font;
 //	private HomingRocket missile;
 	private Bullet bullet;
+	private Texture img;
 	private final Array<Projectile> projectileArray = new Array<Projectile>();
 	private final Array<Float> projectileTargetX= new Array<Float>();
 	private final Array<Float> projectileTargetY= new Array<Float>();
@@ -56,7 +57,7 @@ public class TowerDefense extends ApplicationAdapter {
 	public void create () {
 
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("towerdefensetr.png");
 //		missile= new HomingRocket(5,5);
 		bullet= new Bullet(5,5);
 		castle = new Castle(2000);
@@ -79,10 +80,14 @@ public class TowerDefense extends ApplicationAdapter {
 	public void render () {
 		ScreenUtils.clear(0.3f, 0.5f, 0, 1);
 		batch.begin();
-		batch.draw(img, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
+		batch.draw(img, (Gdx.input.getX()-120f), (float)-Gdx.input.getY() + (Gdx.graphics.getHeight()));
 //		missile.homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 		bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)),20);
 //		System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
+		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+		{
+			addTower();
+		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
 		{
 			spawnRocket(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
@@ -92,6 +97,7 @@ public class TowerDefense extends ApplicationAdapter {
 			spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 		}
 		projectiles();
+		towers();
 
 //		batch.draw(missile.drawRocket(),missile.positionX,missile.positionY,9,9,307,137,1,1,missile.rotation);
 //		batch.draw(bullet.drawRocket(),bullet.getPositionX(),bullet.getPositionY());
@@ -104,8 +110,8 @@ public class TowerDefense extends ApplicationAdapter {
 			isPaused = !isPaused;
 		}
 
-		ScreenUtils.clear(0, 1, 0, 1);
-		batch.begin();
+
+
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 
@@ -154,9 +160,9 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 	public void addTower()
 	{
-		towers.add(new Cannon);
-		towerCoordX.add(Gdx.input.getX() - (((float) img.getHeight()) / 2));
-		towerCoordY.add(-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
+		towers.add(new Cannon());
+		towerCoordX.add((float) Gdx.input.getX()-120);
+		towerCoordY.add((float)-Gdx.input.getY() + (Gdx.graphics.getHeight()));
 	}
 	public void towers()
 	{
@@ -166,7 +172,7 @@ public class TowerDefense extends ApplicationAdapter {
 			if (tower instanceof Cannon)
 			{
 				Cannon cannon = (Cannon) tower;
-				batch(cannon.img,towerCoordX.get(i),towerCoordY.get(i));
+				batch.draw(cannon.img,towerCoordX.get(i),towerCoordY.get(i));
 			}
 
 		}
