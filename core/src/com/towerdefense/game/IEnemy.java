@@ -7,13 +7,11 @@ public interface IEnemy {
     public int getSpeed();
     public int getDamage();
 
-    public int getSizeX();
+    public int getAxisX();
 
-    public int getSizeY();
+    public int getAxisY();
 
     public int getLevel();
-
-    public void setSize(int sizeX, int sizeY);
 
     public boolean attack(Object object);
 

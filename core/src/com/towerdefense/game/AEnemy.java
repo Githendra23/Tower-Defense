@@ -7,8 +7,6 @@ public abstract class AEnemy implements IEnemy {
     protected int speed;
     protected int hp;
     protected int damage;
-    protected int sizeX;
-    protected int sizeY;
     protected int level = 1;
     protected boolean isDead = false;
     protected boolean isCloseToCastle = false;
@@ -31,14 +29,6 @@ public abstract class AEnemy implements IEnemy {
         return this.hp;
     }
 
-    public int getSizeX() {
-        return this.sizeX;
-    }
-
-    public int getSizeY() {
-        return this.sizeY;
-    }
-
     public int getSpeed() {
         return this.speed;
     }
@@ -47,13 +37,40 @@ public abstract class AEnemy implements IEnemy {
         return this.level;
     }
 
-    public void setSize(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+    public int getAxisX() {
+        return coords.getAxisX();
+    }
+
+    public int getAxisY() {
+        return coords.getAxisY();
+    }
+
+    public void setAxisX(int axisX) throws NoSuchGameException {
+        try {
+            coords.setAxisX(axisX, this.img);
+        } catch (NoSuchGameException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void setAxisY(int axisY) throws NoSuchGameException {
+        try {
+            coords.setAxisY(axisY, this.img);
+        } catch (NoSuchGameException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public boolean attack(Object object) {
         return isCloseToCastle;
+    }
+
+    public boolean isCloseToCastle() {
+        return this.isCloseToCastle;
+    }
+
+    public void setCloseToCastle(boolean closeToCastle) {
+        this.isCloseToCastle = closeToCastle;
     }
 
     public void levelUp(int damage) {

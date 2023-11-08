@@ -12,7 +12,7 @@ import java.awt.*;
 public abstract class Button {
     protected final SpriteBatch batch;
     protected Texture img;
-    protected boolean isAlreadyPressed = false;
+    protected TextureRegion imgRegion;
 
 
     public Button(Texture img) {
@@ -20,14 +20,12 @@ public abstract class Button {
         this.img = img;
     }
 
-    // protected TextureRegion imgRegion;
-    //
-    // public Button(Texture img, int sizeX, int sizeY) {
-    //     batch = new SpriteBatch();
-    //     imgRegion = new TextureRegion(img);
-    //     imgRegion.setRegionWidth(sizeX);
-    //     imgRegion.setRegionHeight(sizeY);
-    // }
+    public Button(Texture img, int sizeX, int sizeY) {
+        batch = new SpriteBatch();
+        imgRegion = new TextureRegion(img);
+        imgRegion.setRegionWidth(sizeX);
+        imgRegion.setRegionHeight(sizeY);
+    }
 
     public Texture getTexture() {
         return img;
@@ -36,11 +34,9 @@ public abstract class Button {
     public void render(int x, int y) {
         batch.draw(this.img, x, y);
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !isAlreadyPressed) {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             this.clickEvent();
         }
-
-        isAlreadyPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
     }
 
     public int getAxisX() {

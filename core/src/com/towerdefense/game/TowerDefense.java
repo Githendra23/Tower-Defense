@@ -30,7 +30,6 @@ public class TowerDefense extends ApplicationAdapter {
 	private Zombie zombie;
 	private Giant giant;
 	private Castle castle;
-	boolean spaceAlreadyPressed = false;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
@@ -66,11 +65,9 @@ public class TowerDefense extends ApplicationAdapter {
 	public void render () {
 		frameCount++;
 
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spaceAlreadyPressed) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			isPaused = !isPaused;
 		}
-
-		spaceAlreadyPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
 
 		ScreenUtils.clear(0, 1, 0, 1);
 		batch.begin();
