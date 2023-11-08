@@ -6,6 +6,7 @@ public abstract class ATower implements ITower {
     protected boolean isAreaDamage = false;
     protected int level = 1;
     protected int targetNumber;
+    protected Coordinate coords;
 
     public ATower(int damage, int range) {
         this.damage = damage;

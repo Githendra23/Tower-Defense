@@ -10,7 +10,9 @@ public abstract class AEnemy implements IEnemy {
     protected int sizeX;
     protected int sizeY;
     protected int level = 1;
-   protected Coordinate coords;
+    protected boolean isDead = false;
+    protected boolean isCloseToCastle = false;
+    protected Coordinate coords;
 
     public AEnemy(int hp, int damage, int speed, Texture img) {
         this.hp = hp;
@@ -51,7 +53,7 @@ public abstract class AEnemy implements IEnemy {
     }
 
     public boolean attack(Object object) {
-        return true;
+        return isCloseToCastle;
     }
 
     public void levelUp(int damage) {
@@ -60,7 +62,15 @@ public abstract class AEnemy implements IEnemy {
     }
 
     public void loseHp(int hp) {
-        this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+        if (!this.isDead) {
+            this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+
+            isDead = this.hp == 0;
+        }
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 
     public Texture getImg() {
