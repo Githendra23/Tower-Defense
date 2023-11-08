@@ -23,4 +23,8 @@ public abstract class Menu {
     public int getAxisY() {
         return img.getHeight();
     }
+
+    public Texture getImg() {
+        return this.img;
+    }
 }

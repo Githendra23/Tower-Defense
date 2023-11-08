@@ -5,28 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 
 public class CloseButton extends Button {
-    private boolean isPressed = false;
-    public CloseButton() {
+    public CloseButton(int x, int y) {
         super(new Texture("close_button.png"));
+
+        this.setCoords(x, y);
     }
 
     @Override
-    public void clickEvent() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            isPressed = !isPressed;
-        }
-    }
-
-    public boolean isPressed() {
-        return this.isPressed;
-    }
-
-    @Override
-    public void render(int x, int y) {
-        batch.draw(this.img, x, y);
-
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            this.clickEvent();
-        }
+    public boolean clickEvent(boolean isJustPressed, int mouseX, int mouseY) {
+        return isJustPressed && super.isMouseInside(mouseX, mouseY);
     }
 }

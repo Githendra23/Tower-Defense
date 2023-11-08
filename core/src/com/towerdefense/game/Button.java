@@ -18,11 +18,14 @@ public abstract class Button {
 
     public Button(Texture img) {
         this.batch = new SpriteBatch();
+        this.coords = new Coordinate();
         this.img = img;
     }
 
     public Button(Texture img, int sizeX, int sizeY) {
         batch = new SpriteBatch();
+        this.coords = new Coordinate();
+
         imgRegion = new TextureRegion(img);
         imgRegion.setRegionWidth(sizeX);
         imgRegion.setRegionHeight(sizeY);
@@ -32,25 +35,29 @@ public abstract class Button {
         return img;
     }
 
-    public void render(int x, int y) {
-        batch.draw(this.img, x, y);
+    public boolean isMouseInside(int mouseX, int mouseY) {
+        boolean isMouseX = mouseX >= coords.getAxisX() && mouseX <= coords.getAxisX() + img.getWidth();
+        boolean isMouseY = mouseY >= coords.getAxisY() && mouseY <= coords.getAxisY() + img.getHeight();
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            this.clickEvent();
-        }
-    }
-
-    public boolean isMouseInside(float mouseX, float mouseY) {
-        return coords.getAxisX() + img.getWidth() >= mouseX && coords.getAxisY() + img.getHeight() >= mouseY;
+        return isMouseX && isMouseY;
     }
 
     public int getAxisX() {
-        return img.getWidth();
+        return coords.getAxisX();
     }
 
     public int getAxisY() {
-        return img.getHeight();
+        return coords.getAxisY();
     }
 
-    public abstract void clickEvent();
+    public void setCoords(int x, int y) {
+        try {
+            this.coords.setAxisX(x, img);
+            this.coords.setAxisY(y, img);
+        } catch (NoSuchGameException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public abstract boolean clickEvent(boolean isJustPressed, int mouseX, int mouseY);
 }

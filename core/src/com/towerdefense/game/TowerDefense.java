@@ -33,6 +33,8 @@ public class TowerDefense extends ApplicationAdapter {
 
 	private boolean isPaused = false;
 	private Texture menuPause;
+	private Menu pausemenu;
+	private Button closeButton;
 
 	private void pauseMenu() {
 		float centerX = Gdx.graphics.getWidth() / 2f - (menuPause.getWidth() + 300) / 2f;
@@ -49,6 +51,8 @@ public class TowerDefense extends ApplicationAdapter {
 		zombie = new Zombie();
 		giant = new Giant();
 		menuPause = new Texture("menu.png");
+		pausemenu = new pauseMenu();
+		closeButton = new CloseButton(500, 500);
 
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
 		int xHotspot = 15, yHotspot = 15;
@@ -64,7 +68,7 @@ public class TowerDefense extends ApplicationAdapter {
 	@Override
 	public void render () {
 		int mouseX = Gdx.input.getX();
-		int mouseY = Gdx.input.getY();
+		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		frameCount++;
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -91,7 +95,9 @@ public class TowerDefense extends ApplicationAdapter {
 
 		}
 		else {
-			pauseMenu();
+			// pauseMenu();
+			batch.draw(pausemenu.getImg(), 730, 330);
+			batch.draw(closeButton.getTexture(), 500, 500);
 		}
 
 		batch.end();
