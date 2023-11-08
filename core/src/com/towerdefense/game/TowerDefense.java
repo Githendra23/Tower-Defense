@@ -24,6 +24,7 @@ import javax.swing.*;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
+	private int frameCount;
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private Zombie zombie;
@@ -63,6 +64,8 @@ public class TowerDefense extends ApplicationAdapter {
 	float X = 200, Y = 200;
 	@Override
 	public void render () {
+		frameCount++;
+
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !spaceAlreadyPressed) {
 			isPaused = !isPaused;
 		}
@@ -80,7 +83,11 @@ public class TowerDefense extends ApplicationAdapter {
 
 		if (!isPaused) {
 			// all movements should be inside this condition
-			X += 1;
+			if (frameCount >= 24 ) {
+				X += giant.getSpeed() + 3;
+				frameCount = 0;
+			}
+
 		}
 		else {
 			pauseMenu();
