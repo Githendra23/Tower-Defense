@@ -69,6 +69,7 @@ public abstract class ATower implements ITower {
         return this.targetNumber;
     }
 
+
     public TextureRegion getImg() {
         return this.img;
     }

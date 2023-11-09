@@ -31,10 +31,10 @@ public class TowerDefense extends ApplicationAdapter {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
+	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	@Override
 	public void create () {
-
 		batch = new SpriteBatch();
 		castle = new Castle(2000);
 		zombie = new Zombie();
@@ -44,6 +44,12 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
+		tileWidth = map.getProperties().get("tilewidth", Integer.class);
+		tileHeight = map.getProperties().get("tileheight", Integer.class);
+
+		// For Layer
+		layerWidth = map.getProperties().get("width", Integer.class);
+		layerHeight = map.getProperties().get("height", Integer.class);
 
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -52,10 +58,11 @@ public class TowerDefense extends ApplicationAdapter {
 		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); // Center the camera
 		camera.update();
 
+		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
 		int xHotspot = 15, yHotspot = 15;
 		Cursor cursor = Gdx.graphics.newCursor(pixmapMouse, xHotspot, yHotspot);
-		pixmapMouse.dispose(); // We don't need the pixmap anymore
+		pixmapMouse.dispose();
 		Gdx.graphics.setCursor(cursor);
 
 		font = new BitmapFont();
