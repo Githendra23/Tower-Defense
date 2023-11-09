@@ -1,24 +1,36 @@
 package com.towerdefense.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Castle extends Coordinate {
     private int hp;
     private TextureRegion img;
     private Coordinate coords;
+    private Rectangle hitbox;
+    private ShapeRenderer shapeRenderer;
 
-    public Castle(int hp) {
+    public Castle(int hp, int x, int y) {
         this.coords = new Coordinate();
+        this.hitbox = new Rectangle();
+        this.shapeRenderer = new ShapeRenderer();
         this.img = new TextureRegion(new Texture("towerdefense.png"));
+        this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
 
+        this.setCoords(x, y);
         this.hp = hp;
     }
 
     public void setCoords(int x, int y) {
         try {
             coords.setAxisX(x, this.img);
-            coords.setAxisY(y, img);
+            coords.setAxisY(y, this.img);
+
+            this.hitbox.x = x;
+            this.hitbox.y = y;
         }
         catch (NoSuchGameException e) {
             System.out.println(e.getMessage());
@@ -43,5 +55,16 @@ public class Castle extends Coordinate {
 
     public TextureRegion getImg() {
         return this.img;
+    }
+
+    public Rectangle hitbox() {
+        return this.hitbox;
+    }
+
+    public void displayHitbox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
+        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        shapeRenderer.end();
     }
 }

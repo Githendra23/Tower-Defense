@@ -10,10 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Intersector;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.UI.Button;
-import com.towerdefense.game.UI.Menu;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 
@@ -25,27 +23,23 @@ public class TowerDefense extends ApplicationAdapter {
 	private BigInteger frameCount = BigInteger.ZERO;
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private Rectangle hitbox;
-	private Rectangle hitbox2;
 	private Zombie zombie;
 	private Giant giant;
 	private Castle castle;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
-	private Menu pausemenu;
-	private Button closeButton;
+	private PauseMenu pausemenu;
+	private CloseButton closeButton;
 	private TowerButton towerButton;
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
-	private ShapeRenderer shapeRenderer;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		shapeRenderer = new ShapeRenderer();
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
@@ -65,16 +59,12 @@ public class TowerDefense extends ApplicationAdapter {
 		camera.update();
 
 		// items, mobs etc...
-		castle = new Castle(2000);
-		castle.setCoords(1400, 350);
-		zombie = new Zombie();
-		giant = new Giant();
-		pausemenu = new pauseMenu();
+		castle = new Castle(2000, 1400, 350);
+		zombie = new Zombie(100, 100);
+		giant = new Giant(X, Y);
+		pausemenu = new PauseMenu();
 		closeButton = new CloseButton(500, 500);
 		towerButton = new TowerButton(1000, 200);
-		System.out.println(castle.getAxisX() + " " + castle.getAxisY());
-		hitbox = new Rectangle(castle.getAxisX(), castle.getAxisY(), castle.getImg().getRegionWidth(), castle.getImg().getRegionHeight());
-		hitbox2 = new Rectangle(X, Y, giant.getImg().getRegionWidth(), giant.getImg().getRegionHeight());
 
 		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
@@ -105,19 +95,11 @@ public class TowerDefense extends ApplicationAdapter {
 			isPaused = !isPaused;
 		}
 
-		hitbox2.x = X;
-		hitbox2.y = Y;
-		System.out.println(hitbox2.overlaps(hitbox));
+		giant.setCoords(X, Y);
+		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
 
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
-		shapeRenderer.rect(hitbox2.x, hitbox2.y, hitbox2.width, hitbox2.height);
-		shapeRenderer.end();
-
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
-		shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-		shapeRenderer.end();
+		castle.displayHitbox();
+		giant.displayHitbox();
 
 		batch.begin();
 		// display FPS
@@ -127,7 +109,7 @@ public class TowerDefense extends ApplicationAdapter {
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
 		// display mobs
-		batch.draw(zombie.getImg(), 100, 100);
+		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		batch.draw(giant.getImg(), X, Y);
 		batch.draw(castle.getImg(), 1400, 350);
 
