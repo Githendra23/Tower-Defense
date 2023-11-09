@@ -1,4 +1,6 @@
-package com.towerdefense.game;
+package com.towerdefense.game.tower;
+
+import com.towerdefense.game.tower.ATower;
 
 public class Cannon extends ATower {
     public Cannon() {

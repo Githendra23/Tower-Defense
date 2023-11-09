@@ -3,24 +3,17 @@ package com.towerdefense.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import sun.jvm.hotspot.gc.shared.Space;
+import com.towerdefense.game.enemy.Giant;
+import com.towerdefense.game.enemy.Zombie;
 
-import javax.swing.*;
+import java.util.Collections;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
@@ -35,6 +28,9 @@ public class TowerDefense extends ApplicationAdapter {
 	private Texture menuPause;
 	private Menu pausemenu;
 	private Button closeButton;
+	private TiledMap map;
+	private OrthogonalTiledMapRenderer mapRenderer;
+	private OrthographicCamera camera;
 
 	@Override
 	public void create () {
@@ -46,10 +42,20 @@ public class TowerDefense extends ApplicationAdapter {
 		pausemenu = new pauseMenu();
 		closeButton = new CloseButton(500, 500);
 
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
+		// map
+		map = new TmxMapLoader().load("map.tmx");
+
+		mapRenderer = new OrthogonalTiledMapRenderer(map);
+
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); // Center the camera
+		camera.update();
+
+		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
 		int xHotspot = 15, yHotspot = 15;
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
-		pixmap.dispose(); // We don't need the pixmap anymore
+		Cursor cursor = Gdx.graphics.newCursor(pixmapMouse, xHotspot, yHotspot);
+		pixmapMouse.dispose(); // We don't need the pixmap anymore
 		Gdx.graphics.setCursor(cursor);
 
 		font = new BitmapFont();
@@ -63,11 +69,17 @@ public class TowerDefense extends ApplicationAdapter {
 		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		frameCount++;
 
+		// Render the map
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		mapRenderer.setView(camera);
+		mapRenderer.render();
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			isPaused = !isPaused;
 		}
 
-		ScreenUtils.clear(0, 1, 0, 1);
 		batch.begin();
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
@@ -104,5 +116,7 @@ public class TowerDefense extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
+		map.dispose();
+		mapRenderer.dispose();
 	}
 }

@@ -1,4 +1,4 @@
-package com.towerdefense.game;
+package com.towerdefense.game.tower;
 
 public interface ITower {
     public int getLevel();

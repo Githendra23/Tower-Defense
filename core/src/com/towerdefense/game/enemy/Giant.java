@@ -1,6 +1,7 @@
-package com.towerdefense.game;
+package com.towerdefense.game.enemy;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.towerdefense.game.enemy.AEnemy;
 
 public class Giant extends AEnemy {
     public Giant() {
