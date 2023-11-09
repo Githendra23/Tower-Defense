@@ -4,14 +4,20 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.towerdefense.game.UI.*;
+import com.towerdefense.game.UI.Button;
+import com.towerdefense.game.UI.Menu;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 
+import com.badlogic.gdx.math.Rectangle;
 import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
@@ -19,6 +25,8 @@ public class TowerDefense extends ApplicationAdapter {
 	private BigInteger frameCount = BigInteger.ZERO;
 	private SpriteBatch batch;
 	private BitmapFont font;
+	private Rectangle hitbox;
+	private Rectangle hitbox2;
 	private Zombie zombie;
 	private Giant giant;
 	private Castle castle;
@@ -31,14 +39,17 @@ public class TowerDefense extends ApplicationAdapter {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
+	private ShapeRenderer shapeRenderer;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		shapeRenderer = new ShapeRenderer();
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
+
 		tileWidth = map.getProperties().get("tilewidth", Integer.class);
 		tileHeight = map.getProperties().get("tileheight", Integer.class);
 
@@ -55,11 +66,15 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// items, mobs etc...
 		castle = new Castle(2000);
+		castle.setCoords(1400, 350);
 		zombie = new Zombie();
 		giant = new Giant();
 		pausemenu = new pauseMenu();
 		closeButton = new CloseButton(500, 500);
 		towerButton = new TowerButton(1000, 200);
+		System.out.println(castle.getAxisX() + " " + castle.getAxisY());
+		hitbox = new Rectangle(castle.getAxisX(), castle.getAxisY(), castle.getImg().getRegionWidth(), castle.getImg().getRegionHeight());
+		hitbox2 = new Rectangle(X, Y, giant.getImg().getRegionWidth(), giant.getImg().getRegionHeight());
 
 		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
@@ -72,7 +87,7 @@ public class TowerDefense extends ApplicationAdapter {
 		font.setColor(1, 1, 1, 1); // Set the font color
 	}
 
-	float X = 200, Y = 200;
+	int X = 200, Y = 200;
 	@Override
 	public void render () {
 		int mouseX = Gdx.input.getX();
@@ -90,6 +105,20 @@ public class TowerDefense extends ApplicationAdapter {
 			isPaused = !isPaused;
 		}
 
+		hitbox2.x = X;
+		hitbox2.y = Y;
+		System.out.println(hitbox2.overlaps(hitbox));
+
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
+		shapeRenderer.rect(hitbox2.x, hitbox2.y, hitbox2.width, hitbox2.height);
+		shapeRenderer.end();
+
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
+		shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		shapeRenderer.end();
+
 		batch.begin();
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
@@ -100,15 +129,14 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(zombie.getImg(), 100, 100);
 		batch.draw(giant.getImg(), X, Y);
-		batch.draw(castle.getImg(), Gdx.graphics.getWidth(), ((float) Gdx.graphics.getHeight() / 2) - 150);
+		batch.draw(castle.getImg(), 1400, 350);
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
-		System.out.println( towerButton.getAxisX()+" " + towerButton.getAxisY());
 
 		if (!isPaused) {
 			// all movements should be inside this condition
 			if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) {
-				X += giant.getSpeed() + 3;
+				X += giant.getSpeed() + 15;
 				// frameCount = BigInteger.ZERO;
 			}
 
