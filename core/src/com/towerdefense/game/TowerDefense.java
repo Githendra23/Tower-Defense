@@ -291,4 +291,27 @@ public class TowerDefense extends ApplicationAdapter {
 			}
 		}
 	}
+
+	void deleteProjectile(Projectile projectile)
+	{
+		for(int i=0;i<projectileArray.size;i++)
+		{
+			if (projectile==projectileArray.get(i))projectileArray.removeIndex(i);
+		}
+	}
+	void deleteProjectile(int index)
+	{
+		projectileArray.removeIndex(index);
+	}
+	void deleteTower(ATower tower)
+	{
+		for(int i=0;i<projectileArray.size;i++)
+		{
+			if (tower==towers.get(i))projectileArray.removeIndex(i);
+		}
+	}
+	void deleteTower(int index)
+	{
+		towers.removeIndex(index);
+	}
 }
