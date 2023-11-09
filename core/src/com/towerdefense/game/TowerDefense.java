@@ -37,6 +37,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private final Array<ATower> towers=new Array<ATower>();
 	private final Array<Float> towerCoordX= new Array<Float>();
 	private final Array<Float> towerCoordY= new Array<Float>();
+	private final Array<Integer> towerCooldown = new Array<Integer>();
 
 
 	private Zombie zombie;
@@ -86,7 +87,7 @@ public class TowerDefense extends ApplicationAdapter {
 //		System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
 		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
 		{
-			addTower();
+			addCannon();
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
 		{
@@ -142,37 +143,78 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 	void spawnRocket(int spawnX,int spawnY,float targetX, float targetY)
 	{
-		System.out.println("Spawn rocket");
+//		System.out.println("Spawn rocket");
 		HomingRocket homingRocket=new HomingRocket(spawnX,spawnY);
 		homingRocket.aim(targetX,targetY);
 		projectileArray.add(homingRocket);
 		projectileTargetX.add(targetX);
 		projectileTargetY.add(targetY);
 	}
+	void spawnRocket(float spawnX,float spawnY,float targetX, float targetY)
+	{
+//		System.out.println("Spawn rocket");
+		HomingRocket homingRocket=new HomingRocket((int)spawnX,(int)spawnY);
+		homingRocket.aim(targetX,targetY);
+		projectileArray.add(homingRocket);
+		projectileTargetX.add(targetX);
+		projectileTargetY.add(targetY);
+	}
+	void spawnRocket(float spawnX,float spawnY,float targetX, float targetY, ATower origin)
+	{
+//		System.out.println("Spawn rocket");
+		HomingRocket homingRocket=new HomingRocket((int)spawnX,(int)spawnY);
+		homingRocket.aim(targetX,targetY);
+		homingRocket.setTower(origin);
+		projectileArray.add(homingRocket);
+		projectileTargetX.add(targetX);
+		projectileTargetY.add(targetY);
+	}
 	void spawnBullet(int spawnX,int spawnY,float targetX, float targetY)
 	{
-		System.out.println("Spawn bullet");
+//		System.out.println("Spawn bullet");
 		Bullet homingRocket=new Bullet(spawnX,spawnY);
 		bullet.aim(targetX,targetY);
 		projectileArray.add(homingRocket);
 		projectileTargetX.add(targetX);
 		projectileTargetY.add(targetY);
 	}
-	public void addTower()
+
+	public void addCannon()
 	{
 		towers.add(new Cannon());
 		towerCoordX.add((float) Gdx.input.getX()-120);
 		towerCoordY.add((float)-Gdx.input.getY() + (Gdx.graphics.getHeight()));
+		towerCooldown.add(20);
 	}
 	public void towers()
 	{
+
+
 		for (int i = 0; i<towers.size;i++)
 		{
+
 			ATower tower=towers.get(i);
+			towerCooldown.set(i,towerCooldown.get(i)-1);
 			if (tower instanceof Cannon)
 			{
+
 				Cannon cannon = (Cannon) tower;
 				batch.draw(cannon.img,towerCoordX.get(i),towerCoordY.get(i));
+
+				if (towerCooldown.get(i)<=0) {
+					spawnRocket(towerCoordX.get(i), towerCoordY.get(i), Gdx.input.getX() - 120, -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
+					towerCooldown.set(i,120);
+				}
+
+				for(int u=0; u<projectileArray.size;u++)
+				{
+					if (projectileArray.get(u).getTower()==towers.get(i))
+					{
+						projectileTargetX.set(u, (float) Gdx.input.getX());
+						projectileTargetY.set(u, -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
+					}
+				}
+
 			}
 
 		}
@@ -182,7 +224,7 @@ public class TowerDefense extends ApplicationAdapter {
 		for (int i = 0; i<projectileArray.size; i++)
 		{
 			Projectile projectiles = projectileArray.get(i);
-			System.out.println(projectiles+ " "+ i);
+//			System.out.println(projectiles+ " "+ i);
 			if (projectiles instanceof HomingRocket) {
 				HomingRocket missile=(HomingRocket) projectiles;
 				missile.homing(projectileTargetX.get(i),projectileTargetY.get(i));

@@ -13,6 +13,7 @@ public abstract class Projectile {
     protected int TargetY;
     protected Texture img;
     protected float rotation;
+    protected ATower tower;
 
     public int getPositionX() {
         return positionX;
@@ -21,7 +22,16 @@ public abstract class Projectile {
     public int getPositionY() {
         return positionY;
     }
-    public Projectile(int positionX, int positionY,int sizeX, int sizeY, Texture img)
+
+    public ATower getTower() {
+        return tower;
+    }
+
+    public void setTower(ATower tower) {
+        this.tower = tower;
+    }
+
+    public Projectile(int positionX, int positionY, int sizeX, int sizeY, Texture img)
     {
         this.positionX=positionX;
         this.positionY=positionY;
