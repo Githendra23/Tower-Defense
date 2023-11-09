@@ -5,6 +5,6 @@ import com.towerdefense.game.enemy.AEnemy;
 
 public class Zombie extends AEnemy {
     public Zombie() {
-        super(100, 10, 1, new Texture("zombie.png"));
+        super(100, 10, 1, "zombie.png");
     }
 }

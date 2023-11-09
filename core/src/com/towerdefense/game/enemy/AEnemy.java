@@ -1,5 +1,6 @@
 package com.towerdefense.game.enemy;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.towerdefense.game.Coordinate;
@@ -15,21 +16,21 @@ public abstract class AEnemy implements IEnemy {
     protected boolean isCloseToCastle = false;
     protected Coordinate coords;
 
-    public AEnemy(int hp, int damage, int speed, Texture img) {
+    public AEnemy(int hp, int damage, int speed, String img) {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
-        this.img = new TextureRegion(img);
+        this.img = new TextureRegion(new Texture("enemy/" + img));
 
         this.coords = new Coordinate();
     }
 
-    public AEnemy(int hp, int damage, int speed, Texture img, int height, int width) {
+    public AEnemy(int hp, int damage, int speed, String img, int height, int width) {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
 
-        this.img = new TextureRegion(img);
+        this.img = new TextureRegion(new Texture("enemy/" + img));
         this.img.setRegionWidth(width);
         this.img.setRegionHeight(height);
 

@@ -6,14 +6,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.towerdefense.game.UI.Button;
+import com.towerdefense.game.UI.CloseButton;
+import com.towerdefense.game.UI.Menu;
+import com.towerdefense.game.UI.pauseMenu;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
-
-import java.util.Collections;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
@@ -43,7 +43,7 @@ public class TowerDefense extends ApplicationAdapter {
 		closeButton = new CloseButton(500, 500);
 
 		// map
-		map = new TmxMapLoader().load("map.tmx");
+		map = new TmxMapLoader().load("map/map.tmx");
 
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 

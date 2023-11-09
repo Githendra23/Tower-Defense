@@ -5,6 +5,6 @@ import com.towerdefense.game.enemy.AEnemy;
 
 public class Giant extends AEnemy {
     public Giant() {
-        super(1000, 200, 1, new Texture("giant.png"));
+        super(1000, 200, 1, "giant.png");
     }
 }

@@ -1,8 +1,10 @@
-package com.towerdefense.game;
+package com.towerdefense.game.UI;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.towerdefense.game.Coordinate;
+import com.towerdefense.game.NoSuchGameException;
 
 public abstract class Menu {
     protected TextureRegion img;

@@ -1,9 +1,11 @@
-package com.towerdefense.game;
+package com.towerdefense.game.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.towerdefense.game.Coordinate;
+import com.towerdefense.game.NoSuchGameException;
 
 import javax.swing.*;
 import java.awt.*;
