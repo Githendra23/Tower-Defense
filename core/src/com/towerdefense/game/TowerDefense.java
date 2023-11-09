@@ -15,9 +15,11 @@ import com.towerdefense.game.UI.pauseMenu;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 
+import java.math.BigInteger;
+
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
-	private int frameCount;
+	private BigInteger frameCount = BigInteger.ZERO;
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private Zombie zombie;
@@ -74,7 +76,7 @@ public class TowerDefense extends ApplicationAdapter {
 	public void render () {
 		int mouseX = Gdx.input.getX();
 		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-		frameCount++;
+		frameCount = frameCount.add(BigInteger.ONE);
 
 		// Render the map
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -91,19 +93,20 @@ public class TowerDefense extends ApplicationAdapter {
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 
+		// display Coordinates of the mouse cursor
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
+		// display mobs
 		batch.draw(zombie.getImg(), 100, 100);
 		batch.draw(giant.getImg(), X, Y);
 		batch.draw(castle.getImg(), Gdx.graphics.getWidth() - 200, ((float) Gdx.graphics.getHeight() / 2) - 150);
 
 		if (!isPaused) {
 			// all movements should be inside this condition
-			if (frameCount >= 24 ) {
+			if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) {
 				X += giant.getSpeed() + 3;
-				frameCount = 0;
+				// frameCount = BigInteger.ZERO;
 			}
-
 		}
 		else {
 			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
