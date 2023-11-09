@@ -1,6 +1,7 @@
 package com.towerdefense.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public interface IEnemy {
     public int getHp();
@@ -19,5 +20,5 @@ public interface IEnemy {
 
     public void loseHp(int hp);
 
-    public Texture getImg();
+    public TextureRegion getImg();
 }

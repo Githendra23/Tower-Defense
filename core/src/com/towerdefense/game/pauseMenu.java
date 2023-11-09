@@ -7,6 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 public class pauseMenu extends Menu {
 
     public pauseMenu() {
-        super(new Texture("menu.png"));
+        super("menu.png");
     }
 }

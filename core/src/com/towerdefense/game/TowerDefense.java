@@ -36,13 +36,6 @@ public class TowerDefense extends ApplicationAdapter {
 	private Menu pausemenu;
 	private Button closeButton;
 
-	private void pauseMenu() {
-		float centerX = Gdx.graphics.getWidth() / 2f - (menuPause.getWidth() + 300) / 2f;
-		float centerY = Gdx.graphics.getHeight() / 2f - (menuPause.getHeight() + 200) / 2f;
-
-		batch.draw(new TextureRegion(menuPause), centerX, centerY, 730, 370);
-	}
-
 	@Override
 	public void create () {
 
@@ -50,7 +43,6 @@ public class TowerDefense extends ApplicationAdapter {
 		castle = new Castle(2000);
 		zombie = new Zombie();
 		giant = new Giant();
-		menuPause = new Texture("menu.png");
 		pausemenu = new pauseMenu();
 		closeButton = new CloseButton(500, 500);
 
@@ -95,9 +87,15 @@ public class TowerDefense extends ApplicationAdapter {
 
 		}
 		else {
-			// pauseMenu();
-			batch.draw(pausemenu.getImg(), 730, 330);
+			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
+			float centerY = Gdx.graphics.getHeight() / 2f - (pausemenu.getAxisY()) / 2f;
+
+			batch.draw(pausemenu.getImg(),centerX, centerY, 730, 370);
 			batch.draw(closeButton.getTexture(), 500, 500);
+
+			if (closeButton.isClicked(mouseX, mouseY)) {
+				System.out.println("done");
+			}
 		}
 
 		batch.end();

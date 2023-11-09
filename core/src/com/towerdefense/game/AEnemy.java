@@ -1,9 +1,10 @@
 package com.towerdefense.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class AEnemy implements IEnemy {
-    protected Texture img;
+    protected TextureRegion img;
     protected int speed;
     protected int hp;
     protected int damage;
@@ -16,7 +17,19 @@ public abstract class AEnemy implements IEnemy {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
-        this.img = img;
+        this.img = new TextureRegion(img);
+
+        this.coords = new Coordinate();
+    }
+
+    public AEnemy(int hp, int damage, int speed, Texture img, int height, int width) {
+        this.hp = hp;
+        this.damage = damage;
+        this.speed = speed;
+
+        this.img = new TextureRegion(img);
+        this.img.setRegionWidth(width);
+        this.img.setRegionHeight(height);
 
         this.coords = new Coordinate();
     }
@@ -45,17 +58,11 @@ public abstract class AEnemy implements IEnemy {
         return coords.getAxisY();
     }
 
-    public void setAxisX(int axisX) throws NoSuchGameException {
+    public void setCoords(int x, int y) {
         try {
-            coords.setAxisX(axisX, this.img);
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+            coords.setAxisX(x, this.img);
+            coords.setAxisY(y, this.img);
 
-    public void setAxisY(int axisY) throws NoSuchGameException {
-        try {
-            coords.setAxisY(axisY, this.img);
         } catch (NoSuchGameException e) {
             System.out.println(e.getMessage());
         }
@@ -90,7 +97,7 @@ public abstract class AEnemy implements IEnemy {
         return isDead;
     }
 
-    public Texture getImg() {
+    public TextureRegion getImg() {
         return img;
     }
 }

@@ -2,29 +2,36 @@ package com.towerdefense.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Menu {
-    protected Texture img;
-    protected SpriteBatch batch;
+    protected TextureRegion img;
+    protected Coordinate coords;
 
-    public Menu(Texture img) {
-        this.img = img;
-        this.batch = new SpriteBatch();
+    public Menu(String img) {
+        this.img = new TextureRegion(new Texture(img));
+        coords = new Coordinate();
     }
 
-    public void render(int x, int y) {
-        batch.draw(this.img, x, y);
+    public void setCoords(int x, int y) {
+        try {
+            coords.setAxisX(x, this.img);
+            coords.setAxisY(y, this.img);
+
+        } catch (NoSuchGameException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public int getAxisX() {
-        return img.getWidth();
+        return coords.getAxisX();
     }
 
     public int getAxisY() {
-        return img.getHeight();
+        return coords.getAxisY();
     }
 
-    public Texture getImg() {
+    public TextureRegion getImg() {
         return this.img;
     }
 }
