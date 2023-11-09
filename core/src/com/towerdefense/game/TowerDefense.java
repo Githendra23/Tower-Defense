@@ -7,15 +7,12 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.towerdefense.game.UI.*;
-import com.towerdefense.game.UI.Button;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 
-import com.badlogic.gdx.math.Rectangle;
 import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
@@ -109,9 +106,10 @@ public class TowerDefense extends ApplicationAdapter {
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
 		// display mobs
+		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		batch.draw(giant.getImg(), X, Y);
-		batch.draw(castle.getImg(), 1400, 350);
+
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
