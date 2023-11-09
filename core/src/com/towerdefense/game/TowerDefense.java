@@ -7,15 +7,12 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.towerdefense.game.UI.*;
-import com.towerdefense.game.UI.Button;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 
-import com.badlogic.gdx.math.Rectangle;
 import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
