@@ -12,7 +12,9 @@ import java.awt.*;
 
 public abstract class Button {
     protected TextureRegion img;
+    protected TextureRegion selectedImg;
     protected Coordinate coords;
+    protected boolean isSetPressed = false;
 
 
     public Button(String img) {
@@ -51,5 +53,17 @@ public abstract class Button {
 
     public boolean isClicked(int mouseX, int mouseY) {
         return Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && this.isMouseInside(mouseX, mouseY);
+    }
+
+    public TextureRegion getSelectedImg() {
+        return this.selectedImg;
+    }
+
+    public void setPressed(boolean is) {
+        this.isSetPressed = is;
+    }
+
+    public boolean getIsSetPressed() {
+        return this.isSetPressed;
     }
 }
