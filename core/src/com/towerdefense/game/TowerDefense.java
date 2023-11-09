@@ -122,7 +122,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		batch.draw(zombie.getImg(), 100, 100);
 		batch.draw(giant.getImg(), X, Y);
-		batch.draw(castle.getImg(), Gdx.graphics.getWidth() - 400, ((float) Gdx.graphics.getHeight() / 2) - 150,355,220);
+		batch.draw(castle.getImg(), Gdx.graphics.getWidth() - 400, ((float) Gdx.graphics.getHeight() / 2) - 150,71*5,44*5);
 
 		if (!isPaused) {
 			// all movements should be inside this condition
@@ -232,7 +232,7 @@ public class TowerDefense extends ApplicationAdapter {
 //				if (towerCooldown.get(i)<10) spawnBullet2(towerCoordX.get(i), towerCoordY.get(i), Gdx.input.getX() - 120, -Gdx.input.getY() + (Gdx.graphics.getHeight()));
 
 				if (towerCooldown.get(i)<=0) {
-					spawnRocket(towerCoordX.get(i), towerCoordY.get(i), Gdx.input.getX() - 120, -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
+					spawnRocket(towerCoordX.get(i), towerCoordY.get(i)+125, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
 					towerCooldown.set(i,120);
 				}
 
@@ -240,8 +240,8 @@ public class TowerDefense extends ApplicationAdapter {
 				{
 					if (projectileArray.get(u).getTower()==towers.get(i))
 					{
-						projectileTargetX.set(u, (float)giant.getAxisX());
-						projectileTargetY.set(u, (float)giant.getAxisX());
+						projectileTargetX.set(u, (float)giant.getAxisX()+500);
+						projectileTargetY.set(u, (float)giant.getAxisY()+700);
 					}
 				}
 
@@ -279,7 +279,9 @@ public class TowerDefense extends ApplicationAdapter {
 			if (projectiles instanceof HomingRocket) {
 				HomingRocket missile=(HomingRocket) projectiles;
 				missile.homing(projectileTargetX.get(i),projectileTargetY.get(i));
-				batch.draw(missile.drawRocket(), missile.positionX, missile.positionY, 9, 9, 307, 137, 1, 1, missile.rotation);
+				batch.draw(missile.drawShadow(), missile.positionX, missile.positionY-50, 9, 9, 21*5, 7*5, 1, 1, missile.rotation);
+				batch.draw(missile.drawRocket(), missile.positionX, missile.positionY, 9, 9, 21*5, 7*5, 1, 1, missile.rotation);
+
 			}
 			if(projectiles instanceof Bullet)
 			{

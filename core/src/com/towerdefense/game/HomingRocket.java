@@ -8,6 +8,7 @@ public class HomingRocket extends Projectile
     TextureRegion region;
     private float speedX=0;
     private float speedY=0;
+    protected Texture shadow= new Texture("rocket_shadow.png");
     public HomingRocket(int positionX, int positionY) {
         super(positionX, positionY, 2,2, new Texture("rocket.png"));
         region=new TextureRegion(img);
@@ -17,6 +18,10 @@ public class HomingRocket extends Projectile
     public TextureRegion drawRocket()
     {
         return region;
+    }
+    public TextureRegion drawShadow()
+    {
+        return new TextureRegion(shadow);
     }
 
     @Override
