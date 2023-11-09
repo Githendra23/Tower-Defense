@@ -106,9 +106,10 @@ public class TowerDefense extends ApplicationAdapter {
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
 		// display mobs
+		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		batch.draw(giant.getImg(), X, Y);
-		batch.draw(castle.getImg(), 1400, 350);
+
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
