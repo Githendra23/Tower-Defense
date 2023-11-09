@@ -36,6 +36,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private final Array<Float> towerCoordX= new Array<Float>();
 	private final Array<Float> towerCoordY= new Array<Float>();
 	private final Array<Integer> towerCooldown = new Array<Integer>();
+	private final Array<AEnemy> enemies=new Array<AEnemy>();
 
 
 	private Zombie zombie;
@@ -305,7 +306,7 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 	void deleteTower(ATower tower)
 	{
-		for(int i=0;i<projectileArray.size;i++)
+		for(int i=0;i<towers.size;i++)
 		{
 			if (tower==towers.get(i))projectileArray.removeIndex(i);
 		}
@@ -313,5 +314,33 @@ public class TowerDefense extends ApplicationAdapter {
 	void deleteTower(int index)
 	{
 		towers.removeIndex(index);
+	}
+
+	void spawnGiant()
+	{
+		Giant giant= new Giant();
+
+		enemies.add(giant);
+	}
+	void spawnZombie()
+	{
+		Zombie zombie= new Zombie();
+
+		enemies.add(zombie);
+	}
+	void enemies()
+	{
+
+	}
+	void deleteEnemy(AEnemy enemy)
+	{
+		for(int i=0;i<enemies.size;i++)
+		{
+			if (enemy==enemies.get(i))projectileArray.removeIndex(i);
+		}
+	}
+	void deleteEnemy(int index)
+	{
+		enemies.removeIndex(index);
 	}
 }
