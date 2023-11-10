@@ -29,6 +29,7 @@ public abstract class AEnemy implements IEnemy {
         this.shapeRenderer = new ShapeRenderer();
 
         this.coords = new Coordinate();
+        this.setCoords(x, y);
     }
 
     /*public AEnemy(int hp, int damage, int speed, String img, int height, int width) {
@@ -68,16 +69,11 @@ public abstract class AEnemy implements IEnemy {
     }
 
     public void setCoords(int x, int y) {
-        try {
-            coords.setAxisX(x, this.img);
-            coords.setAxisY(y, this.img);
+        coords.setAxisX(x);
+        coords.setAxisY(y);
 
-            this.hitbox.x = x;
-            this.hitbox.y = y;
-
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
+        this.hitbox.x = x;
+        this.hitbox.y = y;
     }
 
     public boolean attack(Object object) {
@@ -122,5 +118,13 @@ public abstract class AEnemy implements IEnemy {
         shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
+    }
+
+    public void takeDamage(int damage) {
+        this.hp = Math.max(this.hp - damage, 0);
+    }
+
+    public void move(int x, int y) {
+        setCoords(this.coords.getAxisX() + (this.speed * x), this.coords.getAxisY() + (this.speed * y));
     }
 }

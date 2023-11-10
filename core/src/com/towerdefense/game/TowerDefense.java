@@ -23,7 +23,7 @@ import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
-	private BigInteger frameCount = BigInteger.ZERO;
+	private double frameCount = 0;
 	private SpriteBatch batch;
 	private BitmapFont font;
 //	private HomingRocket missile;
@@ -42,6 +42,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private Zombie zombie;
 	private Giant giant;
 	private Castle castle;
+	private ATower archerTower;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
@@ -53,6 +54,9 @@ public class TowerDefense extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
+	private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
+
+	int X = 200, Y = 200;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -88,6 +92,7 @@ public class TowerDefense extends ApplicationAdapter {
 		pausemenu = new PauseMenu();
 		closeButton = new CloseButton(500, 500);
 		towerButton = new TowerButton(1000, 200);
+		archerTower = new ArcherTower(1200, 200);
 
 		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
@@ -100,7 +105,6 @@ public class TowerDefense extends ApplicationAdapter {
 		font.setColor(1, 1, 1, 1); // Set the font color (white in this example)
 	}
 
-	int X = 200, Y = 200;
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -147,8 +151,8 @@ public class TowerDefense extends ApplicationAdapter {
 			isPaused = !isPaused;
 		}
 
-		giant.setCoords(X, Y);
-		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+		System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
 
 
 //		castle.displayHitbox();
@@ -164,15 +168,15 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY(),castle.getImg().getRegionWidth()*4,castle.getImg().getRegionHeight()*4);
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
-		batch.draw(giant.getImg(), X, Y);
-
+		batch.draw(giant.getImg(), giant.getAxisX(), giant.getAxisY());
+		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
 		if (!isPaused) {
 			// all movements should be inside this condition
-			if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) {
-				X += giant.getSpeed() + 15;
+			if (frameCount % 24 == 0) {
+				giant.move(RIGHT, STAY);
 				// frameCount = BigInteger.ZERO;
 			}
 

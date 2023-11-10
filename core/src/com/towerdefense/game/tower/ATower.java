@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.towerdefense.game.Coordinate;
 import com.towerdefense.game.NoSuchGameException;
+import com.towerdefense.game.enemy.AEnemy;
 
 public abstract class ATower implements ITower {
     protected int range;
@@ -16,15 +19,21 @@ public abstract class ATower implements ITower {
     protected int targetNumber;
     protected TextureRegion img;
     protected Coordinate coords;
-    private Rectangle hitbox;
-    private ShapeRenderer shapeRenderer;
+    protected Rectangle hitbox;
+    protected ShapeRenderer shapeRenderer;
+    protected Circle rangeHitbox;
 
     public ATower(int damage, int range, int x, int y, String img) {
         this.damage = damage;
         this.range = range;
         this.img = new TextureRegion(new Texture(img));
+        this.coords = new Coordinate();
+
         this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
+        this.rangeHitbox = new Circle(x + this.img.getRegionWidth() / 2f, y + this.img.getRegionHeight() / 2f, this.range);
         this.shapeRenderer = new ShapeRenderer();
+
+        this.setCoords(x, y);
     }
 
     public int getLevel() {
@@ -45,16 +54,11 @@ public abstract class ATower implements ITower {
     }
 
     public void setCoords(int x, int y) {
-        try {
-            this.coords.setAxisX(x, img);
-            this.coords.setAxisY(y, img);
+        this.coords.setAxisX(x);
+        this.coords.setAxisY(y);
 
-            this.hitbox.x = x;
-            this.hitbox.y = y;
-
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
+        this.hitbox.x = x;
+        this.hitbox.y = y;
     }
 
     public int getAxisX() {
@@ -87,11 +91,31 @@ public abstract class ATower implements ITower {
     public Rectangle hitbox() {
         return this.hitbox;
     }
+    public Circle hitRange() {
+        return rangeHitbox;
+    }
 
     public void displayHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
+    }
+
+    public void displayRangeHitbox() {
+        // Draw the border of the circle in red
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.circle(rangeHitbox.x, rangeHitbox.y, rangeHitbox.radius);
+
+        shapeRenderer.end();
+    }
+
+    public void attack(AEnemy enemy) {
+        enemy.takeDamage(this.damage);
+    }
+
+    public boolean isInRange(AEnemy enemy) {
+        return Intersector.overlaps(this.hitRange(), enemy.hitbox());
     }
 }
