@@ -29,6 +29,7 @@ public abstract class AEnemy implements IEnemy {
         this.shapeRenderer = new ShapeRenderer();
 
         this.coords = new Coordinate();
+        this.setCoords(x, y);
     }
 
     /*public AEnemy(int hp, int damage, int speed, String img, int height, int width) {
@@ -126,5 +127,9 @@ public abstract class AEnemy implements IEnemy {
 
     public void takeDamage(int damage) {
         this.hp = Math.max(this.hp - damage, 0);
+    }
+
+    public void move(int x, int y) {
+        setCoords(this.coords.getAxisX() + (this.speed * x), this.coords.getAxisY() + (this.speed * y));
     }
 }

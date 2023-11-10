@@ -11,21 +11,23 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.towerdefense.game.UI.*;
+import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
+import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.ArcherTower;
 
 import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
-	private BigInteger frameCount = BigInteger.ZERO;
+	private double frameCount = 0;
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private Zombie zombie;
-	private Giant giant;
+	private AEnemy zombie;
+	private AEnemy giant;
 	private Castle castle;
-	private ArcherTower archerTower;
+	private ATower archerTower;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
@@ -37,6 +39,9 @@ public class TowerDefense extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
+	private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
+
+	int X = 200, Y = 200;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -78,12 +83,11 @@ public class TowerDefense extends ApplicationAdapter {
 		font.setColor(1, 1, 1, 1); // Set the font color
 	}
 
-	int X = 200, Y = 200;
 	@Override
 	public void render () {
 		int mouseX = Gdx.input.getX();
 		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-		frameCount = frameCount.add(BigInteger.ONE);
+		frameCount++;
 
 		// Render the map
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -96,7 +100,6 @@ public class TowerDefense extends ApplicationAdapter {
 			isPaused = !isPaused;
 		}
 
-		giant.setCoords(X, Y);
 		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
 		System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
 
@@ -115,7 +118,7 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
-		batch.draw(giant.getImg(), X, Y);
+		batch.draw(giant.getImg(), giant.getAxisX(), giant.getAxisY());
 		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
 
 
@@ -123,8 +126,8 @@ public class TowerDefense extends ApplicationAdapter {
 
 		if (!isPaused) {
 			// all movements should be inside this condition
-			if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) {
-				X += giant.getSpeed() + 15;
+			if (frameCount % 24 == 0) {
+				giant.move(RIGHT, STAY);
 				// frameCount = BigInteger.ZERO;
 			}
 

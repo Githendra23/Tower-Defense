@@ -110,7 +110,7 @@ public abstract class ATower implements ITower {
     public void displayRangeHitbox() {
         // Draw the border of the circle in red
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(Color.BLUE);
         shapeRenderer.circle(rangeHitbox.x, rangeHitbox.y, rangeHitbox.radius);
 
         shapeRenderer.end();
