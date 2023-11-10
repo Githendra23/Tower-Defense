@@ -123,4 +123,8 @@ public abstract class AEnemy implements IEnemy {
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
     }
+
+    public void takeDamage(int damage) {
+        this.hp = Math.max(this.hp - damage, 0);
+    }
 }

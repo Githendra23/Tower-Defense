@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.towerdefense.game.Coordinate;
 import com.towerdefense.game.NoSuchGameException;
+import com.towerdefense.game.enemy.AEnemy;
 
 public abstract class ATower implements ITower {
     protected int range;
@@ -112,5 +114,13 @@ public abstract class ATower implements ITower {
         shapeRenderer.circle(rangeHitbox.x, rangeHitbox.y, rangeHitbox.radius);
 
         shapeRenderer.end();
+    }
+
+    public void attack(AEnemy enemy) {
+        enemy.takeDamage(this.damage);
+    }
+
+    public boolean isInRange(AEnemy enemy) {
+        return Intersector.overlaps(this.hitRange(), enemy.hitbox());
     }
 }
