@@ -23,7 +23,7 @@ import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
-	private double frameCount = 0;
+	private BigInteger frameCount = BigInteger.ZERO;
 	private SpriteBatch batch;
 	private BitmapFont font;
 //	private HomingRocket missile;
@@ -42,7 +42,6 @@ public class TowerDefense extends ApplicationAdapter {
 	private Zombie zombie;
 	private Giant giant;
 	private Castle castle;
-	private ATower archerTower;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
@@ -54,9 +53,6 @@ public class TowerDefense extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
-	private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
-
-	int X = 200, Y = 200;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -92,7 +88,6 @@ public class TowerDefense extends ApplicationAdapter {
 		pausemenu = new PauseMenu();
 		closeButton = new CloseButton(500, 500);
 		towerButton = new TowerButton(1000, 200);
-		archerTower = new ArcherTower(1200, 200);
 
 		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
@@ -105,6 +100,7 @@ public class TowerDefense extends ApplicationAdapter {
 		font.setColor(1, 1, 1, 1); // Set the font color (white in this example)
 	}
 
+	int X = 200, Y = 200;
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -125,17 +121,19 @@ public class TowerDefense extends ApplicationAdapter {
 		{
 			addArcher(Gdx.input.getX(), -Gdx.input.getY());
 		}
-//		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-//		{
-//			spawnRocket(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
-//		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.Q))
+		{
+			spawnGiant(500, 500);
+		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A))
 		{
 			spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
 		}
 
-		projectiles();
+
 		towers();
+		enemies();
+		projectiles();
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 		int mouseX = Gdx.input.getX();
 		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -151,8 +149,8 @@ public class TowerDefense extends ApplicationAdapter {
 			isPaused = !isPaused;
 		}
 
-		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
-		System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
+		giant.setCoords(X, Y);
+		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
 
 
 //		castle.displayHitbox();
@@ -168,15 +166,15 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY(),castle.getImg().getRegionWidth()*4,castle.getImg().getRegionHeight()*4);
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
-		batch.draw(giant.getImg(), giant.getAxisX(), giant.getAxisY());
-		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
+		batch.draw(giant.getImg(), X, Y);
+
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
 		if (!isPaused) {
 			// all movements should be inside this condition
-			if (frameCount % 24 == 0) {
-				giant.move(RIGHT, STAY);
+			if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) {
+				X += giant.getSpeed() + 15;
 				// frameCount = BigInteger.ZERO;
 			}
 
@@ -371,7 +369,20 @@ public class TowerDefense extends ApplicationAdapter {
 			}
 		}
 	}
-
+	void enemies()
+	{
+		for (int i=0;i<enemies.size;i++)
+		{
+			AEnemy enemy=enemies.get(i);
+			if (enemy instanceof Giant)
+			{
+				Giant giant = (Giant) enemy;
+				if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) giant.move(5,0);
+				batch.draw(giant.getImg(),giant.getAxisX(),giant.getAxisY());
+				System.out.println(giant.getAxisX()+","+giant.getAxisY());
+			}
+		}
+	}
 	void deleteProjectile(Projectile projectile)
 	{
 		System.out.println("destroy projectile");
@@ -398,6 +409,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 	void spawnGiant(int x,int y)
 	{
+		System.out.println("giant created");
 		Giant giant= new Giant(x,y);
 
 		enemies.add(giant);
@@ -408,10 +420,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		enemies.add(zombie);
 	}
-	void enemies()
-	{
 
-	}
 	void deleteEnemy(AEnemy enemy)
 	{
 		for(int i=0;i<enemies.size;i++)
