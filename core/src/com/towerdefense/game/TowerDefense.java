@@ -7,9 +7,14 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polyline;
+import com.badlogic.gdx.utils.Array;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
@@ -18,22 +23,23 @@ import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.ArcherTower;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
 	private double frameCount = 0;
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private AEnemy zombie;
-	private AEnemy giant;
+	private AEnemy zombie, giant;
 	private Castle castle;
 	private ATower archerTower;
+	private List<ATower> towerList;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
 	private PauseMenu pausemenu;
-	private CloseButton closeButton;
-	private TowerButton towerButton;
+	private Button closeButton, towerButton;
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
@@ -45,6 +51,9 @@ public class TowerDefense extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		// list
+		towerList = new ArrayList<>();
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
@@ -101,7 +110,7 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 
 		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
-		System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
+		// System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
 
 		castle.displayHitbox();
 		giant.displayHitbox();
@@ -124,6 +133,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
+		// pause condition
 		if (!isPaused) {
 			// all movements should be inside this condition
 			if (frameCount % 24 == 0) {
@@ -137,6 +147,16 @@ public class TowerDefense extends ApplicationAdapter {
 
 			if (towerButton.getIsSetPressed()) {
 				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
+
+				if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+					towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+				}
+			}
+
+			for(ATower tower : towerList) {
+				if (tower instanceof ArcherTower) {
+					batch.draw(((ArcherTower) tower).getImg(), ((ArcherTower) tower).getAxisX(), ((ArcherTower) tower).getAxisY());
+				}
 			}
 
 			if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {

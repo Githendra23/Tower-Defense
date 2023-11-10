@@ -112,7 +112,7 @@ public abstract class ATower implements ITower {
     }
 
     public void attack(AEnemy enemy) {
-        enemy.takeDamage(this.damage);
+        enemy.loseHp(this.damage);
     }
 
     public boolean isInRange(AEnemy enemy) {

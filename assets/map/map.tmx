@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="40">
  <tileset firstgid="1" source="map tileset.tsx"/>
- <layer id="1" name="Tile Layer 1" width="50" height="30">
+ <layer id="1" name="GroundTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2LEOgzAMRVGjAANT6QAMwNahc3+wn15XiiUGDEJBih94uLuPwEqUQEQj9+Yq0Gqu4EK0TNHTgvWMDrH8exiYK8UhXcUhu5J7tlSH7AqSZc2BaNEcYkHZlS0H0s5fyfFRargepIF7KX2Bcoet3GErd9jqDo6O8p9vR87BoIRyJ9m7X7nDHWc7SgOzpTrQDJoD6X/SHIjfQhzLd9Lc86Q45F0XuZn7AQnj+0w=
+   eJzt2DEPgkAMhuEjJw5MygAOwubg7B/kp1OS+zarMSW5ftjh3fsEmrtcTindpafUknaWGikXy1Q8V7L64oBl6+JgLosDHcWBXak9m9WBXWGyvHMwWjQHLCy78snBtPNHcryUOmkk6SY9lBaiwuGrcPgqHL76B8eQ6p9vv5yDWYnlTvLtfhWOcOztODmYzepgM2gOpv9JczB+Czi22fFOWnseiwPvuszN0goIU/tL
   </data>
  </layer>
  <layer id="3" name="Tile Layer 2" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJztz7ENgEAMBEEHlEHLQMt8AR9ZlmzQjHT5bQQA8HXXZvfa03kqQccsOmbRMYuOWf7SAQAZR/eBImf3gSIvyF4mzQ==
+   eJzt0rENACAMA0FvlgmBlWGAVDQY609yn5ciSaUcpaweeEn6LVqALKPZPFsvj7pAhxc6vNDhhQ4vKR0AAOB/G/ALKCc=
   </data>
  </layer>
+ <objectgroup id="6" name="enemyPathLayer">
+  <object id="38" x="1500" y="478.788">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="9" name="startPoint">
+  <object id="36" x="0" y="320" width="64" height="320.004"/>
+ </objectgroup>
 </map>
