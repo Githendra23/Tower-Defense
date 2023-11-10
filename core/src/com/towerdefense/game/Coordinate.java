@@ -1,7 +1,7 @@
 package com.towerdefense.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Coordinate {
     private int axisX;
@@ -15,8 +15,8 @@ public class Coordinate {
         return axisY;
     }
 
-    public void setAxisX(int axisX, Texture img) throws NoSuchGameException {
-        if (Gdx.graphics.getWidth() - img.getWidth() < axisX) {
+    public void setAxisX(int axisX, TextureRegion img) throws NoSuchGameException {
+        if (Gdx.graphics.getWidth() - img.getRegionWidth() < axisX) {
             throw new NoSuchGameException("AxisX higher than window size");
         }
         else if (axisX < 0) {
@@ -27,8 +27,8 @@ public class Coordinate {
         }
     }
 
-    public void setAxisY(int axisY, Texture img) throws NoSuchGameException {
-        if (Gdx.graphics.getHeight() - img.getHeight() < axisY) {
+    public void setAxisY(int axisY, TextureRegion img) throws NoSuchGameException {
+        if (Gdx.graphics.getHeight() - img.getRegionHeight() < axisY) {
             throw new NoSuchGameException("AxisY higher than window size");
         }
         else if (axisY < 0) {

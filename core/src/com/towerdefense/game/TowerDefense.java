@@ -4,26 +4,20 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import sun.jvm.hotspot.gc.shared.Space;
+import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.towerdefense.game.UI.*;
+import com.towerdefense.game.enemy.Giant;
+import com.towerdefense.game.enemy.Zombie;
 
-import javax.swing.*;
+import java.math.BigInteger;
 
 public class TowerDefense extends ApplicationAdapter {
 	private int coins = 0;
-	private int frameCount;
+	private BigInteger frameCount = BigInteger.ZERO;
 	private SpriteBatch batch;
 	private BitmapFont font;
 //	private HomingRocket missile;
@@ -45,37 +39,62 @@ public class TowerDefense extends ApplicationAdapter {
 
 	private boolean isPaused = false;
 	private Texture menuPause;
-
-	private void pauseMenu() {
-		float centerX = Gdx.graphics.getWidth() / 2f - (menuPause.getWidth() + 300) / 2f;
-		float centerY = Gdx.graphics.getHeight() / 2f - (menuPause.getHeight() + 200) / 2f;
-
-		batch.draw(new TextureRegion(menuPause), centerX, centerY, 730, 370);
-	}
+	private PauseMenu pausemenu;
+	private CloseButton closeButton;
+	private TowerButton towerButton;
+	private TiledMap map;
+	private OrthogonalTiledMapRenderer mapRenderer;
+	private OrthographicCamera camera;
+	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	@Override
 	public void create () {
-
 		batch = new SpriteBatch();
 		img = new Texture("turret.png");
 //		missile= new HomingRocket(5,5);
-		bullet= new Bullet(5,5);
+		// bullet= new Bullet(5,5);
 		castle = new Castle(2000);
 		zombie = new Zombie();
 		giant = new Giant();
 		menuPause = new Texture("menu.png");
 
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
+		// map
+		map = new TmxMapLoader().load("map/map.tmx");
+
+		tileWidth = map.getProperties().get("tilewidth", Integer.class);
+		tileHeight = map.getProperties().get("tileheight", Integer.class);
+
+		// For Layer
+		layerWidth = map.getProperties().get("width", Integer.class);
+		layerHeight = map.getProperties().get("height", Integer.class);
+
+		mapRenderer = new OrthogonalTiledMapRenderer(map);
+
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); // Center the camera
+		camera.update();
+
+		// items, mobs etc...
+		castle = new Castle(2000, 1400, 350);
+		zombie = new Zombie(100, 100);
+		giant = new Giant(X, Y);
+		pausemenu = new PauseMenu();
+		closeButton = new CloseButton(500, 500);
+		towerButton = new TowerButton(1000, 200);
+
+		// mouse cursor
+		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
 		int xHotspot = 15, yHotspot = 15;
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
-		pixmap.dispose(); // We don't need the pixmap anymore
+		Cursor cursor = Gdx.graphics.newCursor(pixmapMouse, xHotspot, yHotspot);
+		pixmapMouse.dispose();
 		Gdx.graphics.setCursor(cursor);
 
 		font = new BitmapFont();
 		font.setColor(1, 1, 1, 1); // Set the font color (white in this example)
 	}
 
-	float X = 200, Y = 200;
+	int X = 200, Y = 200;
 	@Override
 	public void render () {
 		ScreenUtils.clear(0.3f, 0.5f, 0, 1);
@@ -107,34 +126,70 @@ public class TowerDefense extends ApplicationAdapter {
 //		batch.draw(bullet.drawRocket(),bullet.getPositionX(),bullet.getPositionY());
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 		int mouseX = Gdx.input.getX();
-		int mouseY = Gdx.input.getY();
-		frameCount++;
+		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		frameCount = frameCount.add(BigInteger.ONE);
+
+		// Render the map
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		mapRenderer.setView(camera);
+		mapRenderer.render();
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			isPaused = !isPaused;
 		}
 
+		giant.setCoords(X, Y);
+		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
 
+		castle.displayHitbox();
+		giant.displayHitbox();
 
+		batch.begin();
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 
+		// display Coordinates of the mouse cursor
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
-		batch.draw(zombie.getImg(), 100, 100);
+		// display mobs
+		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
+		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		batch.draw(giant.getImg(), X, Y);
-		batch.draw(castle.getImg(), Gdx.graphics.getWidth() - 400, ((float) Gdx.graphics.getHeight() / 2) - 150,71*5,44*5);
+
+
+		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
 		if (!isPaused) {
 			// all movements should be inside this condition
-			if (frameCount >= 24 ) {
-				X += giant.getSpeed() + 3;
-				frameCount = 0;
+			if (frameCount.mod(new BigInteger("24")).equals(BigInteger.ZERO)) {
+				X += giant.getSpeed() + 15;
+				// frameCount = BigInteger.ZERO;
 			}
 
+			if (towerButton.isClicked(mouseX, mouseY)) {
+				towerButton.setPressed(true);
+			}
+
+			if (towerButton.getIsSetPressed()) {
+				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
+			}
+
+			if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+				towerButton.setPressed(false);
+			}
 		}
 		else {
-			pauseMenu();
+			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
+			float centerY = Gdx.graphics.getHeight() / 2f - (pausemenu.getAxisY()) / 2f;
+
+			batch.draw(pausemenu.getImg(),centerX, centerY, 730, 370);
+			batch.draw(closeButton.getTexture(), 500, 500);
+
+			if (closeButton.isClicked(mouseX, mouseY)) {
+				System.out.println("done");
+			}
 		}
 
 		batch.end();
@@ -143,6 +198,8 @@ public class TowerDefense extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
+		map.dispose();
+		mapRenderer.dispose();
 	}
 	void spawnRocket(int spawnX,int spawnY,float targetX, float targetY)
 	{
