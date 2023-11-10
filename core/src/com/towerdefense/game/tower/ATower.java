@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.towerdefense.game.Coordinate;
 import com.towerdefense.game.NoSuchGameException;
@@ -16,15 +17,21 @@ public abstract class ATower implements ITower {
     protected int targetNumber;
     protected TextureRegion img;
     protected Coordinate coords;
-    private Rectangle hitbox;
-    private ShapeRenderer shapeRenderer;
+    protected Rectangle hitbox;
+    protected ShapeRenderer shapeRenderer;
+    protected Circle rangeHitbox;
 
     public ATower(int damage, int range, int x, int y, String img) {
         this.damage = damage;
         this.range = range;
         this.img = new TextureRegion(new Texture(img));
+        this.coords = new Coordinate();
+
         this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
+        this.rangeHitbox = new Circle(x + this.img.getRegionWidth() / 2f, y + this.img.getRegionHeight() / 2f, this.range);
         this.shapeRenderer = new ShapeRenderer();
+
+        this.setCoords(x, y);
     }
 
     public int getLevel() {
@@ -87,11 +94,23 @@ public abstract class ATower implements ITower {
     public Rectangle hitbox() {
         return this.hitbox;
     }
+    public Circle hitRange() {
+        return rangeHitbox;
+    }
 
     public void displayHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        shapeRenderer.end();
+    }
+
+    public void displayRangeHitbox() {
+        // Draw the border of the circle in red
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.circle(rangeHitbox.x, rangeHitbox.y, rangeHitbox.radius);
+
         shapeRenderer.end();
     }
 }

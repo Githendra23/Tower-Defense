@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
+import com.towerdefense.game.tower.ArcherTower;
 
 import java.math.BigInteger;
 
@@ -23,6 +25,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private Zombie zombie;
 	private Giant giant;
 	private Castle castle;
+	private ArcherTower archerTower;
 
 	private boolean isPaused = false;
 	private Texture menuPause;
@@ -62,6 +65,7 @@ public class TowerDefense extends ApplicationAdapter {
 		pausemenu = new PauseMenu();
 		closeButton = new CloseButton(500, 500);
 		towerButton = new TowerButton(1000, 200);
+		archerTower = new ArcherTower(1200, 200);
 
 		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
@@ -93,10 +97,13 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 
 		giant.setCoords(X, Y);
-		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+		System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
 
 		castle.displayHitbox();
 		giant.displayHitbox();
+		archerTower.displayHitbox();
+		archerTower.displayRangeHitbox();
 
 		batch.begin();
 		// display FPS
@@ -109,6 +116,7 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		batch.draw(giant.getImg(), X, Y);
+		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
 
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
