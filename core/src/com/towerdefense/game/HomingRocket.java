@@ -43,5 +43,7 @@ public class HomingRocket extends Projectile
         positionX+=speedX;
         positionY+=speedY;
         aim(targetX,targetY);
+        hitbox.x=positionX;
+        hitbox.y=positionY;
     }
 }
