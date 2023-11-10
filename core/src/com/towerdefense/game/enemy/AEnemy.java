@@ -69,16 +69,11 @@ public abstract class AEnemy implements IEnemy {
     }
 
     public void setCoords(int x, int y) {
-        try {
-            coords.setAxisX(x, this.img);
-            coords.setAxisY(y, this.img);
+        coords.setAxisX(x);
+        coords.setAxisY(y);
 
-            this.hitbox.x = x;
-            this.hitbox.y = y;
-
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
+        this.hitbox.x = x;
+        this.hitbox.y = y;
     }
 
     public boolean attack(Object object) {

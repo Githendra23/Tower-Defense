@@ -105,6 +105,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		castle.displayHitbox();
 		giant.displayHitbox();
+
 		archerTower.displayHitbox();
 		archerTower.displayRangeHitbox();
 
@@ -120,7 +121,6 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		batch.draw(giant.getImg(), giant.getAxisX(), giant.getAxisY());
 		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
-
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 

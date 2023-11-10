@@ -54,16 +54,11 @@ public abstract class ATower implements ITower {
     }
 
     public void setCoords(int x, int y) {
-        try {
-            this.coords.setAxisX(x, img);
-            this.coords.setAxisY(y, img);
+        this.coords.setAxisX(x);
+        this.coords.setAxisY(y);
 
-            this.hitbox.x = x;
-            this.hitbox.y = y;
-
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
+        this.hitbox.x = x;
+        this.hitbox.y = y;
     }
 
     public int getAxisX() {

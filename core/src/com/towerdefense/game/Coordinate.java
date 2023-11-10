@@ -15,27 +15,11 @@ public class Coordinate {
         return axisY;
     }
 
-    public void setAxisX(int axisX, TextureRegion img) throws NoSuchGameException {
-        if (Gdx.graphics.getWidth() - img.getRegionWidth() < axisX) {
-            throw new NoSuchGameException("AxisX higher than window size");
-        }
-        else if (axisX < 0) {
-            throw new NoSuchGameException("AxisX lower than window size");
-        }
-        else {
-          this.axisX = axisX;
-        }
+    public void setAxisX(int axisX) {
+        this.axisX = axisX;
     }
 
-    public void setAxisY(int axisY, TextureRegion img) throws NoSuchGameException {
-        if (Gdx.graphics.getHeight() - img.getRegionHeight() < axisY) {
-            throw new NoSuchGameException("AxisY higher than window size");
-        }
-        else if (axisY < 0) {
-            throw new NoSuchGameException("AxisY lower than window size");
-        }
-        else {
-            this.axisY = axisY;
-        }
+    public void setAxisY(int axisY) {
+        this.axisY = axisY;
     }
 }

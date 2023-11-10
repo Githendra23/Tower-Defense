@@ -42,13 +42,8 @@ public abstract class Button {
     }
 
     public void setCoords(int x, int y) {
-        try {
-            this.coords.setAxisX(x, img);
-            this.coords.setAxisY(y, img);
-
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
+            this.coords.setAxisX(x);
+            this.coords.setAxisY(y);
     }
 
     public boolean isClicked(int mouseX, int mouseY) {

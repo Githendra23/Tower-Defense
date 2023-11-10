@@ -16,13 +16,8 @@ public abstract class Menu {
     }
 
     public void setCoords(int x, int y) {
-        try {
-            coords.setAxisX(x, this.img);
-            coords.setAxisY(y, this.img);
-
-        } catch (NoSuchGameException e) {
-            System.out.println(e.getMessage());
-        }
+            coords.setAxisX(x);
+            coords.setAxisY(y);
     }
 
     public int getAxisX() {
