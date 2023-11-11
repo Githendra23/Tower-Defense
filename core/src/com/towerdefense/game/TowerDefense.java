@@ -49,7 +49,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 	int X = 200, Y = 200;
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
 
 		// list
@@ -93,7 +93,7 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		int mouseX = Gdx.input.getX();
 		int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		frameCount++;
@@ -115,8 +115,12 @@ public class TowerDefense extends ApplicationAdapter {
 		castle.displayHitbox();
 		giant.displayHitbox();
 
-		archerTower.displayHitbox();
-		archerTower.displayRangeHitbox();
+		towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY);
+
+		for (ATower tower : towerList) {
+			tower.displayHitbox();
+			tower.displayRangeHitbox();
+		}
 
 		batch.begin();
 		// display FPS
@@ -141,25 +145,29 @@ public class TowerDefense extends ApplicationAdapter {
 				// frameCount = BigInteger.ZERO;
 			}
 
-			if (towerButton.isClicked(mouseX, mouseY)) {
-				towerButton.setPressed(true);
-			}
-
 			if (towerButton.getIsSetPressed()) {
 				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
 
 				if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-					towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+
+					int count = 0;
+					for (ATower tower : towerList) {
+						if (!(towerButton.isOverlaping(tower))) {
+							count++;
+						}
+					}
+
+					if (count == towerList.size()) {
+						towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+					}
 				}
 			}
 
-			for(ATower tower : towerList) {
-				if (tower instanceof ArcherTower) {
-					batch.draw(((ArcherTower) tower).getImg(), ((ArcherTower) tower).getAxisX(), ((ArcherTower) tower).getAxisY());
-				}
+			if (towerButton.isClicked(mouseX, mouseY)) {
+				towerButton.setPressed(true);
 			}
 
-			if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
 				towerButton.setPressed(false);
 			}
 		}
@@ -173,6 +181,10 @@ public class TowerDefense extends ApplicationAdapter {
 			if (closeButton.isClicked(mouseX, mouseY)) {
 				System.out.println("done");
 			}
+		}
+
+		for (ATower tower : towerList) {
+			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
 		}
 
 		batch.end();
