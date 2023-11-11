@@ -73,24 +73,4 @@ public abstract class Button {
     public boolean getIsSetPressed() {
         return this.isSetPressed;
     }
-
-    public boolean isOverlaping(ATower tower) {
-        return this.hitbox.overlaps(tower.hitbox());
-    }
-
-    public void displayHitbox(int x, int y, SpriteBatch batch) {
-        hitbox.x = x;
-        hitbox.y = y;
-
-        batch.setColor(Color.RED);
-
-        // Draw the borders using lines
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y, this.selectedImg.getRegionWidth(), 1);
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y + this.selectedImg.getRegionHeight(), this.selectedImg.getRegionWidth(), 1);
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y, 1, this.selectedImg.getRegionHeight());
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x + this.selectedImg.getRegionWidth(), y, 1, this.selectedImg.getRegionHeight());
-
-        // Reset the color to white
-        batch.setColor(Color.WHITE);
-    }
 }

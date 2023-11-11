@@ -33,7 +33,8 @@ public class TowerDefense extends ApplicationAdapter {
 	private boolean isPaused = false;
 	private Texture menuPause;
 	private PauseMenu pausemenu;
-	private Button closeButton, towerButton;
+	private Button closeButton;
+	private TowerButton towerButton;
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
