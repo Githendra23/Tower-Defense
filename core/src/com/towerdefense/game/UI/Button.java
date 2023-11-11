@@ -3,7 +3,10 @@ package com.towerdefense.game.UI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.towerdefense.game.Coordinate;
@@ -75,13 +78,19 @@ public abstract class Button {
         return this.hitbox.overlaps(tower.hitbox());
     }
 
-    public void displayHitbox(int x, int y) {
+    public void displayHitbox(int x, int y, SpriteBatch batch) {
         hitbox.x = x;
         hitbox.y = y;
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line); // Line type for the border
-        shapeRenderer.setColor(Color.RED); // Set the color of the border
-        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-        shapeRenderer.end();
+        batch.setColor(Color.RED);
+
+        // Draw the borders using lines
+        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y, this.selectedImg.getRegionWidth(), 1);
+        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y + this.selectedImg.getRegionHeight(), this.selectedImg.getRegionWidth(), 1);
+        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y, 1, this.selectedImg.getRegionHeight());
+        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x + this.selectedImg.getRegionWidth(), y, 1, this.selectedImg.getRegionHeight());
+
+        // Reset the color to white
+        batch.setColor(Color.WHITE);
     }
 }

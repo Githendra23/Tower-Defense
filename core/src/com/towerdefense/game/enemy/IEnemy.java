@@ -2,6 +2,7 @@ package com.towerdefense.game.enemy;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.towerdefense.game.Castle;
 
 public interface IEnemy {
     public int getHp();
@@ -14,7 +15,7 @@ public interface IEnemy {
 
     public int getLevel();
 
-    public boolean attack(Object object);
+    public void attack(Castle castle);
 
     public void levelUp(int damage);
 

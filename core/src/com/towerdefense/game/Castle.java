@@ -12,6 +12,7 @@ public class Castle extends Coordinate {
     private Coordinate coords;
     private Rectangle hitbox;
     private ShapeRenderer shapeRenderer;
+    private boolean isDestroyed;
 
     public Castle(int hp, int x, int y) {
         this.coords = new Coordinate();
@@ -41,7 +42,11 @@ public class Castle extends Coordinate {
     }
 
     public void loseHp(int hp) {
-        this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+        if (!isDestroyed) {
+            this.hp -= Math.max(this.hp - hp, 0);
+
+            isDestroyed = this.hp == 0;
+        }
     }
 
     public int getHp() {

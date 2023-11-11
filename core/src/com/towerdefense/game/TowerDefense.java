@@ -7,14 +7,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Polyline;
-import com.badlogic.gdx.utils.Array;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
@@ -110,12 +104,10 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 
 		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
-		// System.out.println(Intersector.overlaps(archerTower.hitRange(), giant.hitbox()));
+		// System.out.println(archerTower.isInRange(giant));
 
 		castle.displayHitbox();
 		giant.displayHitbox();
-
-		towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY);
 
 		for (ATower tower : towerList) {
 			tower.displayHitbox();
@@ -147,6 +139,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 			if (towerButton.getIsSetPressed()) {
 				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
+				towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
 
 				if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 

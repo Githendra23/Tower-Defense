@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.towerdefense.game.Castle;
 import com.towerdefense.game.Coordinate;
 import com.towerdefense.game.NoSuchGameException;
 
@@ -76,10 +77,6 @@ public abstract class AEnemy implements IEnemy {
         this.hitbox.y = y;
     }
 
-    public boolean attack(Object object) {
-        return isCloseToCastle;
-    }
-
     public boolean isCloseToCastle() {
         return this.isCloseToCastle;
     }
@@ -122,5 +119,13 @@ public abstract class AEnemy implements IEnemy {
 
     public void move(int x, int y) {
         setCoords(this.coords.getAxisX() + (this.speed * x), this.coords.getAxisY() + (this.speed * y));
+    }
+
+    public boolean isInRange(Castle castle) {
+        return this.hitbox.overlaps(castle.hitbox());
+    }
+
+    public void attack(Castle castle) {
+         castle.loseHp(this.damage);
     }
 }
