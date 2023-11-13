@@ -39,7 +39,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private Castle castle;
 	private ATower archerTower;
 	private List<ATower> towerList;
-
+	private List<AEnemy> enemyList;
 	private boolean isPaused = false;
 	private Texture menuPause;
 	private PauseMenu pausemenu;
@@ -64,8 +64,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// list
 		towerList = new ArrayList<>();
-		Xx = new ArrayList<>();
-		Yy = new ArrayList<>();
+		enemyList = new ArrayList<>();
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
@@ -135,6 +134,12 @@ public class TowerDefense extends ApplicationAdapter {
 			tower.displayRangeHitbox();
 		}
 
+		for(AEnemy enemy : enemyList) {
+			if (enemyList.size() > 0) {
+				enemy.displayHitbox();
+			}
+		}
+
 		batch.begin();
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
@@ -152,6 +157,12 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.draw(giant.getImg(), giant.getAxisX(), giant.getAxisY());
 		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
 
+		for(AEnemy enemy : enemyList) {
+			if (enemyList.size() > 0) {
+				batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
+			}
+		}
+
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
 
 		// pause condition
@@ -159,6 +170,14 @@ public class TowerDefense extends ApplicationAdapter {
 			// all movements should be inside this condition
 			if (frameCount % 24 == 0) {
 				giant.move(RIGHT, STAY);
+
+				if (frameCount % 120 == 0) {
+					spawnNewEnemy("Giant");
+				}
+
+				for (AEnemy enemy : enemyList) {
+					enemy.move(RIGHT, STAY);
+				}
 				// frameCount = BigInteger.ZERO;
 			}
 
@@ -207,8 +226,6 @@ public class TowerDefense extends ApplicationAdapter {
 		for (ATower tower : towerList) {
 			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
 		}
-
-		spawnEnemies(batch);
 
 		batch.end();
 	}
@@ -259,28 +276,24 @@ public class TowerDefense extends ApplicationAdapter {
 		// If the number of intersects is odd, the point is inside the polygon
 		return intersects % 2 == 1;
 	}
-	private List<Integer> Xx;
-	private List<Integer> Yy;
-	private void spawnEnemies(SpriteBatch batch) {
-		// Retrieve the rectangle dimensions
+
+	private void spawnNewEnemy(String enemyName) {
 		Rectangle randomRectangle = randomRectangleObject.getRectangle();
 		float minX = randomRectangle.x;
 		float minY = randomRectangle.y;
 		float maxX = randomRectangle.x + randomRectangle.width;
 		float maxY = randomRectangle.y + randomRectangle.height;
 
-// Generate random coordinates within the rectangle
 		int randomX = (int) MathUtils.random(minX, maxX);
 		int randomY = (int) MathUtils.random(minY, maxY);
 
-		Xx.add(randomX);
-		Yy.add(randomY);
-
-		for (int i = 0; i < Xx.size(); i++) {
-			batch.draw(new Texture("white_pixel.png"), Xx.get(i), Yy.get(i));
+		switch (enemyName) {
+			case "Giant":
+				Giant giant = new Giant(randomX, randomY);
+				giant.setCoords(randomX - (giant.getImg().getRegionWidth() / 2), randomY);
+				enemyList.add(giant);
+				break;
 		}
-
-		System.out.println(randomX + ", " + randomY);
 	}
 
 	@Override

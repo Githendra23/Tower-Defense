@@ -117,8 +117,8 @@ public abstract class AEnemy implements IEnemy {
         shapeRenderer.end();
     }
 
-    public void move(int x, int y) {
-        setCoords(this.coords.getAxisX() + (this.speed * x), this.coords.getAxisY() + (this.speed * y));
+    public void move(int horizontalDirection, int verticalDirection) {
+        setCoords(this.coords.getAxisX() + (this.speed * horizontalDirection), this.coords.getAxisY() + (this.speed * verticalDirection));
     }
 
     public boolean isInRange(Castle castle) {

@@ -11,11 +11,6 @@
    eJzt0rENACAMA0FvlgmBlWGAVDQY609yn5ciSaUcpaweeEn6LVqALKPZPFsvj7pAhxc6vNDhhQ4vKR0AAOB/G/ALKCc=
   </data>
  </layer>
- <objectgroup id="6" name="enemyPathLayer">
-  <object id="40" x="20" y="484">
-   <polyline points="0,0 1484,-2"/>
-  </object>
- </objectgroup>
  <objectgroup id="10" name="nonTowerZone">
   <object id="44" x="0" y="-0.333333">
    <properties>
@@ -31,5 +26,10 @@
  </objectgroup>
  <objectgroup id="9" name="startPoint">
   <object id="36" x="0" y="380" width="74" height="198.004"/>
+ </objectgroup>
+ <objectgroup id="6" name="enemyPathLayer">
+  <object id="40" x="20" y="484">
+   <polyline points="0,0 1484,-2"/>
+  </object>
  </objectgroup>
 </map>
