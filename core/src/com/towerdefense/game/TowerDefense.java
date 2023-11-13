@@ -7,8 +7,16 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Polyline;
+import com.badlogic.gdx.math.Rectangle;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
@@ -38,9 +46,12 @@ public class TowerDefense extends ApplicationAdapter {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
+	private MapObjects objects;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
+	private List<Polyline> blockedZones = new ArrayList<>();
+	private boolean isTowerPlaceable = false;
 
 	int X = 200, Y = 200;
 	@Override
@@ -52,6 +63,8 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
+
+		objects = map.getLayers().get("nonTowerZone").getObjects();
 
 		tileWidth = map.getProperties().get("tilewidth", Integer.class);
 		tileHeight = map.getProperties().get("tileheight", Integer.class);
@@ -122,6 +135,9 @@ public class TowerDefense extends ApplicationAdapter {
 		// display Coordinates of the mouse cursor
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
+		isTowerPlaceable = canPlaceTower(mouseX, mouseY);
+		System.out.println(isTowerPlaceable);
+
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
@@ -152,7 +168,9 @@ public class TowerDefense extends ApplicationAdapter {
 					}
 
 					if (count == towerList.size()) {
-						towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+						if (isTowerPlaceable) {
+							towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+						}
 					}
 				}
 			}
@@ -189,5 +207,53 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.dispose();
 		map.dispose();
 		mapRenderer.dispose();
+	}
+
+	private boolean isMouseInsideObject(float mouseX, float mouseY) {
+		boolean isInside = false;
+
+		for (MapObject object : objects) {
+			if (object instanceof RectangleMapObject) {
+				Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+				if (rectangle.contains(mouseX, mouseY)) {
+					isInside = true;
+					break;  // No need to check other objects if the mouse is inside one
+				}
+			} else if (object instanceof PolygonMapObject) {
+				Polygon polygon = ((PolygonMapObject) object).getPolygon();
+				float[] vertices = polygon.getTransformedVertices();
+				if (polygonContains(vertices, mouseX, mouseY)) {
+					isInside = true;
+					break;  // No need to check other objects if the mouse is inside one
+				}
+			}
+			// Handle other object types if needed
+		}
+
+		return isInside;
+	}
+
+	private boolean canPlaceTower(float mouseX, float mouseY) {
+		return !isMouseInsideObject(mouseX, mouseY);
+	}
+
+	private boolean polygonContains(float[] vertices, float x, float y) {
+		int intersects = 0;
+		int numVertices = vertices.length / 2;
+
+		for (int i = 0, j = numVertices - 1; i < numVertices; j = i++) {
+			float xi = vertices[i * 2];
+			float yi = vertices[i * 2 + 1];
+			float xj = vertices[j * 2];
+			float yj = vertices[j * 2 + 1];
+
+			boolean intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+			if (intersect) {
+				intersects++;
+			}
+		}
+
+		// If the number of intersects is odd, the point is inside the polygon
+		return intersects % 2 == 1;
 	}
 }

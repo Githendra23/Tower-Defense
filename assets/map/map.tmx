@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="40">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="48">
  <tileset firstgid="1" source="map tileset.tsx"/>
  <layer id="1" name="GroundTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2DEPgkAMhuEjJw5MygAOwubg7B/kp1OS+zarMSW5ftjh3fsEmrtcTindpafUknaWGikXy1Q8V7L64oBl6+JgLosDHcWBXak9m9WBXWGyvHMwWjQHLCy78snBtPNHcryUOmkk6SY9lBaiwuGrcPgqHL76B8eQ6p9vv5yDWYnlTvLtfhWOcOztODmYzepgM2gOpv9JczB+Czi22fFOWnseiwPvuszN0goIU/tL
+   eJzt2DEOgzAMheGgQIdOpQPt0LJ1YOYaHIqj90XCG26FghQ/8PDv/pREiRJDCBMaUEPaBVUoohd6L56WrPviEEvqZmCuHId0FEfaX2x7a80hZ4XJsuZgtGgOsbCclV8OpjN/JMeodEUPkp7oozQT5Q5bucNW7rDVGRxdKH+/bbkHoxLLm+Tf+8od7tjbURuYLdfBZtAcTPtJczCuhTjS7PJPWnqeHIf86zLXoy9sz/t7
   </data>
  </layer>
- <layer id="3" name="Tile Layer 2" width="50" height="30">
+ <layer id="3" name="waterTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
    eJzt0rENACAMA0FvlgmBlWGAVDQY609yn5ciSaUcpaweeEn6LVqALKPZPFsvj7pAhxc6vNDhhQ4vKR0AAOB/G/ALKCc=
   </data>
  </layer>
  <objectgroup id="6" name="enemyPathLayer">
-  <object id="38" x="1500" y="478.788">
-   <point/>
+  <object id="40" x="28" y="484">
+   <polyline points="0,0 1476,-2"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="nonTowerZone">
+  <object id="44" x="0" y="-0.333333">
+   <properties>
+    <property name="blocked" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 33,-0.333333 32.6667,17 65,17 64.6667,49.3333 128.667,49 128.667,145.333 161,145.667 161,177.667 192.667,177.667 192.667,209.333 224.667,209.333 224.667,320.333 1599.33,320.333 1599.67,640.333 192.333,640.333 192.333,768.667 160.333,769 160.333,800.333 128.333,800.667 128.333,864.333 96.3333,864.667 96.3333,896.667 0.333333,897"/>
+  </object>
+  <object id="46" x="0.5" y="944" width="1599" height="15.5">
+   <properties>
+    <property name="blocked" type="bool" value="true"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="9" name="startPoint">
