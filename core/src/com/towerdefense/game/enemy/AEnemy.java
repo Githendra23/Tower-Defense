@@ -95,7 +95,7 @@ public abstract class AEnemy implements IEnemy {
 
     public void loseHp(int hp) {
         if (!this.isDead) {
-            this.hp -= this.hp - hp == 0 ? 0 : this.hp - hp;
+            this.hp = Math.max(this.hp - damage, 0);
 
             isDead = this.hp == 0;
         }
@@ -120,9 +120,6 @@ public abstract class AEnemy implements IEnemy {
         shapeRenderer.end();
     }
 
-    public void takeDamage(int damage) {
-        this.hp = Math.max(this.hp - damage, 0);
-    }
 
     public void move(int x, int y) {
         setCoords(this.coords.getAxisX() + (this.speed * x), this.coords.getAxisY() + (this.speed * y));

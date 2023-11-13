@@ -29,8 +29,8 @@ public abstract class ATower implements ITower {
         this.img = new TextureRegion(new Texture(img));
         this.coords = new Coordinate();
 
-        this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
-        this.rangeHitbox = new Circle(x + this.img.getRegionWidth() / 2f, y + this.img.getRegionHeight() / 2f, this.range);
+        this.hitbox = new Rectangle(x, y, this.img.getRegionWidth()*2, this.img.getRegionHeight()*2);
+        this.rangeHitbox = new Circle(x + this.img.getRegionWidth()*2 / 2f, y + this.img.getRegionHeight()*2 / 2f, this.range);
         this.shapeRenderer = new ShapeRenderer();
 
         this.setCoords(x, y);
@@ -111,9 +111,6 @@ public abstract class ATower implements ITower {
         shapeRenderer.end();
     }
 
-    public void attack(AEnemy enemy) {
-        enemy.takeDamage(this.damage);
-    }
 
     public boolean isInRange(AEnemy enemy) {
         return Intersector.overlaps(this.hitRange(), enemy.hitbox());
