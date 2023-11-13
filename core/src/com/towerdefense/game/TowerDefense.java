@@ -117,6 +117,7 @@ public class TowerDefense extends ApplicationAdapter {
 		{
 			enemy.displayHitbox();
 		}
+
 		batch.begin();
 		batch.draw(img, (Gdx.input.getX()-120f), (float)-Gdx.input.getY() + (Gdx.graphics.getHeight()),35*2,37*2);
 //		missile.homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
@@ -323,9 +324,11 @@ public class TowerDefense extends ApplicationAdapter {
 
 				for(int u=0; u<projectileArray.size;u++)
 				{
-					for (AEnemy enemy : enemies)
+					for (int x=enemies.size-1; x>=0;x--)
+
 //					if (projectileArray.get(u).getTower()==towers.get(i))
 					{
+						AEnemy enemy= enemies.get(x);
 						if (tower.isInRange(enemy)) {
 //							System.out.println("shoot god dammit");
 //							spawnRocket(towerCoordX.get(i), towerCoordY.get(i)+125, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
