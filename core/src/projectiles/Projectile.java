@@ -1,4 +1,4 @@
-package com.towerdefense.game;
+package projectiles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,8 +18,26 @@ public abstract class Projectile {
     protected Texture img;
     protected float rotation;
     protected ATower tower;
-    protected Rectangle hitbox;
+    public Rectangle hitbox;
     private ShapeRenderer sr;
+    protected int dmg;
+    protected int lifetime;
+
+    public int getLifetime() {
+        return lifetime;
+    }
+
+    public int getDmg() {
+        return dmg;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
+    }
+
+    public void setLifetime(int lifetime) {
+        this.lifetime = lifetime;
+    }
 
     public int getPositionX() {
         return positionX;
@@ -58,6 +76,11 @@ public abstract class Projectile {
         rotation=angle;
         return angle;
     }
+
+    public float getRotation() {
+        return rotation;
+    }
+
     public void displayHitbox() {
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.RED); // Set the color of the hitbox

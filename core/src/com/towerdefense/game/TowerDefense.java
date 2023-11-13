@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
@@ -18,6 +17,9 @@ import com.towerdefense.game.enemy.Zombie;
 import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.ArcherTower;
 import com.towerdefense.game.tower.Cannon;
+import projectiles.Bullet;
+import projectiles.HomingRocket;
+import projectiles.Projectile;
 
 import java.math.BigInteger;
 
@@ -133,7 +135,7 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.Q))
 		{
-			spawnGiant(500, 500);
+			spawnGiant(-20, (int)(Math.random()*(550-200)+200));
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A))
 		{
@@ -158,7 +160,7 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 
 		giant.setCoords(X, Y);
-		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+//		System.out.println(giant.hitbox().overlaps(castle.hitbox()));
 
 
 //		castle.displayHitbox();
@@ -174,7 +176,7 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY(),castle.getImg().getRegionWidth()*4,castle.getImg().getRegionHeight()*4);
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
-		batch.draw(giant.getImg(), X, Y);
+//		batch.draw(giant.getImg(), X, Y);
 
 
 		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
@@ -206,7 +208,7 @@ public class TowerDefense extends ApplicationAdapter {
 			batch.draw(closeButton.getTexture(), 500, 500);
 
 			if (closeButton.isClicked(mouseX, mouseY)) {
-				System.out.println("done");
+//				System.out.println("done");
 			}
 		}
 		towers();
@@ -242,6 +244,19 @@ public class TowerDefense extends ApplicationAdapter {
 		HomingRocket homingRocket=new HomingRocket((int)spawnX,(int)spawnY);
 		homingRocket.aim(targetX,targetY);
 		homingRocket.setTower(origin);
+		homingRocket.setLifetime(210);
+		homingRocket.setDmg(20);
+		projectileArray.add(homingRocket);
+		projectileTargetX.add(targetX);
+		projectileTargetY.add(targetY);
+	}
+	void spawnUpgradedRocket(float spawnX,float spawnY,float targetX, float targetY, ATower origin,int level)
+	{
+		HomingRocket homingRocket=new HomingRocket((int)spawnX,(int)spawnY);
+		homingRocket.aim(targetX,targetY);
+		homingRocket.setTower(origin);
+		homingRocket.setLifetime(210*level);
+		homingRocket.setDmg(20*level);
 		projectileArray.add(homingRocket);
 		projectileTargetX.add(targetX);
 		projectileTargetY.add(targetY);
@@ -313,11 +328,12 @@ public class TowerDefense extends ApplicationAdapter {
 				for (AEnemy enemy : enemies)
 //					if (projectileArray.get(u).getTower()==towers.get(i))
 				{
-					System.out.println("test");
-					System.out.println("cooldown: " +towerCooldown.get(i));
-					System.out.println("range: "+ tower.isInRange(enemy));
+//					System.out.println("test");
+//					System.out.println("cooldown: " +towerCooldown.get(i));
+//					System.out.println("range: "+ tower.isInRange(enemy));
 					if (towerCooldown.get(i) <= 0 && tower.isInRange(enemy)) {
-						spawnRocket(towerCoordX.get(i), towerCoordY.get(i) + 125, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
+						if(tower.getLevel()<=1)	spawnRocket(towerCoordX.get(i)-20, towerCoordY.get(i) + 50, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
+						else spawnUpgradedRocket(towerCoordX.get(i)-20, towerCoordY.get(i) + 50, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower,tower.getLevel());
 						towerCooldown.set(i, 120);
 					}
 				}
@@ -355,7 +371,7 @@ public class TowerDefense extends ApplicationAdapter {
 				{
 					if (projectileArray.get(u).getTower()==towers.get(i))
 					{
-						System.out.println("shoot again");
+//						System.out.println("shoot again");
 						projectileTargetX.set(u, (float)giant.getAxisX());
 						projectileTargetY.set(u, (float)giant.getAxisY());
 					}
@@ -370,12 +386,14 @@ public class TowerDefense extends ApplicationAdapter {
 		for (int i = 0; i<projectileArray.size; i++)
 		{
 			Projectile projectiles = projectileArray.get(i);
+
 			if (projectiles instanceof HomingRocket) {
 				HomingRocket missile=(HomingRocket) projectiles;
 				missile.homing(projectileTargetX.get(i),projectileTargetY.get(i));
-				batch.draw(missile.drawShadow(), missile.positionX+20, missile.positionY-20, 9, 9, 21, 7, 2, 2, missile.rotation);
+				batch.draw(missile.drawShadow(), missile.getPositionX() +20, missile.getPositionY() -20, 9, 9, 21, 7, 2, 2, missile.getRotation());
 //				missile.displayHitbox();
-				batch.draw(missile.drawRocket(), missile.positionX, missile.positionY, 9, 9, 21, 7, 2, 2, missile.rotation);
+				batch.draw(missile.drawRocket(), missile.getPositionX(), missile.getPositionY(), 9, 9, 21, 7, 2, 2, missile.getRotation());
+				System.out.println("missile lifetime: "+missile.getLifetime());
 
 			}
 			if(projectiles instanceof Bullet)
@@ -388,8 +406,15 @@ public class TowerDefense extends ApplicationAdapter {
 			{
 				if (projectiles.hitbox.overlaps(enemy.hitbox())) {
 					deleteProjectile(projectiles);
-					enemy.loseHp(20);
+					enemy.loseHp(projectiles.getDmg());
 				}
+			}
+			projectiles.setLifetime(projectiles.getLifetime()-1);
+			System.out.println("lifetime: "+projectiles.getLifetime());
+			if(projectiles.getLifetime()<0)
+			{
+//				System.out.println("removed");
+				deleteProjectile(projectiles);
 			}
 		}
 	}
@@ -398,7 +423,7 @@ public class TowerDefense extends ApplicationAdapter {
 		for (int i=0;i<enemies.size;i++)
 		{
 			AEnemy enemy=enemies.get(i);
-			System.out.println(enemy.getHp());
+//			System.out.println(enemy.getHp());
 			if (enemy instanceof Giant)
 			{
 				Giant giant = (Giant) enemy;
