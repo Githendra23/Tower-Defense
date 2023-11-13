@@ -12,8 +12,8 @@
   </data>
  </layer>
  <objectgroup id="6" name="enemyPathLayer">
-  <object id="40" x="28" y="484">
-   <polyline points="0,0 1476,-2"/>
+  <object id="40" x="20" y="484">
+   <polyline points="0,0 1484,-2"/>
   </object>
  </objectgroup>
  <objectgroup id="10" name="nonTowerZone">
@@ -30,6 +30,6 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="startPoint">
-  <object id="36" x="0" y="320" width="64" height="320.004"/>
+  <object id="36" x="0" y="320" width="74" height="320.004"/>
  </objectgroup>
 </map>

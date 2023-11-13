@@ -135,7 +135,7 @@ public class TowerDefense extends ApplicationAdapter {
 		// display Coordinates of the mouse cursor
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
-		isTowerPlaceable = canPlaceTower(mouseX, mouseY);
+		isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
 		System.out.println(isTowerPlaceable);
 
 		// display mobs
@@ -201,13 +201,6 @@ public class TowerDefense extends ApplicationAdapter {
 
 		batch.end();
 	}
-	
-	@Override
-	public void dispose() {
-		batch.dispose();
-		map.dispose();
-		mapRenderer.dispose();
-	}
 
 	private boolean isMouseInsideObject(float mouseX, float mouseY) {
 		boolean isInside = false;
@@ -255,5 +248,12 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// If the number of intersects is odd, the point is inside the polygon
 		return intersects % 2 == 1;
+	}
+	
+	@Override
+	public void dispose() {
+		batch.dispose();
+		map.dispose();
+		mapRenderer.dispose();
 	}
 }
