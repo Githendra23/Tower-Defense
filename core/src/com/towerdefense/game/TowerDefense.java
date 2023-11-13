@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,6 +26,7 @@ import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.ArcherTower;
 
 import java.math.BigInteger;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,25 +48,30 @@ public class TowerDefense extends ApplicationAdapter {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
-	private MapObjects objects;
+	private MapObjects noTowerZoneObject;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
 	private List<Polyline> blockedZones = new ArrayList<>();
 	private boolean isTowerPlaceable = false;
+	private RectangleMapObject randomRectangleObject;
 
 	int X = 200, Y = 200;
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 
 		// list
 		towerList = new ArrayList<>();
+		Xx = new ArrayList<>();
+		Yy = new ArrayList<>();
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
 
-		objects = map.getLayers().get("nonTowerZone").getObjects();
+		noTowerZoneObject = map.getLayers().get("nonTowerZone").getObjects();
+		randomRectangleObject = map.getLayers().get("startPoint").getObjects().getByType(RectangleMapObject.class).first();;
 
 		tileWidth = map.getProperties().get("tilewidth", Integer.class);
 		tileHeight = map.getProperties().get("tileheight", Integer.class);
@@ -135,8 +142,9 @@ public class TowerDefense extends ApplicationAdapter {
 		// display Coordinates of the mouse cursor
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
-		isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
-		System.out.println(isTowerPlaceable);
+		isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2),
+				mouseY + towerButton.getTexture().getRegionHeight())
+				&& canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
 
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
@@ -155,7 +163,8 @@ public class TowerDefense extends ApplicationAdapter {
 			}
 
 			if (towerButton.getIsSetPressed()) {
-				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
+				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
+						mouseY);
 				towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
 
 				if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -169,7 +178,8 @@ public class TowerDefense extends ApplicationAdapter {
 
 					if (count == towerList.size()) {
 						if (isTowerPlaceable) {
-							towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+							towerList.add(new ArcherTower(
+									(int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
 						}
 					}
 				}
@@ -182,12 +192,11 @@ public class TowerDefense extends ApplicationAdapter {
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
 				towerButton.setPressed(false);
 			}
-		}
-		else {
+		} else {
 			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
 			float centerY = Gdx.graphics.getHeight() / 2f - (pausemenu.getAxisY()) / 2f;
 
-			batch.draw(pausemenu.getImg(),centerX, centerY, 730, 370);
+			batch.draw(pausemenu.getImg(), centerX, centerY, 730, 370);
 			batch.draw(closeButton.getTexture(), 500, 500);
 
 			if (closeButton.isClicked(mouseX, mouseY)) {
@@ -199,28 +208,29 @@ public class TowerDefense extends ApplicationAdapter {
 			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
 		}
 
+		spawnEnemies(batch);
+
 		batch.end();
 	}
 
 	private boolean isMouseInsideObject(float mouseX, float mouseY) {
 		boolean isInside = false;
 
-		for (MapObject object : objects) {
+		for (MapObject object : noTowerZoneObject) {
 			if (object instanceof RectangleMapObject) {
 				Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 				if (rectangle.contains(mouseX, mouseY)) {
 					isInside = true;
-					break;  // No need to check other objects if the mouse is inside one
+					break;
 				}
 			} else if (object instanceof PolygonMapObject) {
 				Polygon polygon = ((PolygonMapObject) object).getPolygon();
 				float[] vertices = polygon.getTransformedVertices();
 				if (polygonContains(vertices, mouseX, mouseY)) {
 					isInside = true;
-					break;  // No need to check other objects if the mouse is inside one
+					break;
 				}
 			}
-			// Handle other object types if needed
 		}
 
 		return isInside;
@@ -249,7 +259,30 @@ public class TowerDefense extends ApplicationAdapter {
 		// If the number of intersects is odd, the point is inside the polygon
 		return intersects % 2 == 1;
 	}
-	
+	private List<Integer> Xx;
+	private List<Integer> Yy;
+	private void spawnEnemies(SpriteBatch batch) {
+		// Retrieve the rectangle dimensions
+		Rectangle randomRectangle = randomRectangleObject.getRectangle();
+		float minX = randomRectangle.x;
+		float minY = randomRectangle.y;
+		float maxX = randomRectangle.x + randomRectangle.width;
+		float maxY = randomRectangle.y + randomRectangle.height;
+
+// Generate random coordinates within the rectangle
+		int randomX = (int) MathUtils.random(minX, maxX);
+		int randomY = (int) MathUtils.random(minY, maxY);
+
+		Xx.add(randomX);
+		Yy.add(randomY);
+
+		for (int i = 0; i < Xx.size(); i++) {
+			batch.draw(new Texture("white_pixel.png"), Xx.get(i), Yy.get(i));
+		}
+
+		System.out.println(randomX + ", " + randomY);
+	}
+
 	@Override
 	public void dispose() {
 		batch.dispose();

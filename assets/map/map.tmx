@@ -30,6 +30,6 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="startPoint">
-  <object id="36" x="0" y="320" width="74" height="320.004"/>
+  <object id="36" x="0" y="380" width="74" height="198.004"/>
  </objectgroup>
 </map>
