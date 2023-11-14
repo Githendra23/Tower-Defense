@@ -132,18 +132,21 @@ public abstract class AEnemy implements IEnemy {
             int x2 = (int) vertices[points + 2];
             int y2 = (int) vertices[points + 3];
 
-            float angle =(float) Math.atan2(y2 - this.getAxisY(),x2 - this.getAxisX());
-            int x =(int) (this.getAxisX() + Math.cos(angle) * this.speed);
-            int y =(int) (this.getAxisY() + Math.sin(angle) * this.speed);
+            float angle = (float) Math.atan2(y2 - this.getAxisY(), x2 - this.getAxisX());
+            int deltaX = (int) (this.speed * Math.cos(angle));
+            int deltaY = (int) (this.speed * Math.sin(angle));
 
-            this.setCoords(x, y);
+            // Move the object
+            this.setCoords(this.getAxisX() + deltaX, this.getAxisY() + deltaY);
 
-            if ((this.getAxisX() >= x2 - speed && this.getAxisX() <= x2 + speed) && (this.getAxisY() >= y2 - speed && this.getAxisY() <= y2 + speed)) {
+            // Check if the object has reached the next point
+            if (Math.abs(this.getAxisX() - x2) <= speed && Math.abs(this.getAxisY() - y2) <= speed) {
                 points += 2;
-            }
 
-            if (points + 2 >= vertices.length) {
-                isMoving = false;
+                // Check if there is a next point
+                if (points + 2 >= vertices.length) {
+                    isMoving = false;
+                }
             }
         }
     }
