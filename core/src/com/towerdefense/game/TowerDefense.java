@@ -391,8 +391,7 @@ public class TowerDefense extends ApplicationAdapter {
 				for (AEnemy enemy : enemies)
 				{
 					if (towerCooldown.get(i) <= 0 && tower.isInRange(enemy)) {
-						if(tower.getLevel()<=1)	spawnBullet(towerCoordX.get(i)-20, towerCoordY.get(i) + 50, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
-						else spawnUpgradedRocket(towerCoordX.get(i)-20, towerCoordY.get(i) + 50, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower,tower.getLevel());
+						if(tower.getLevel()<=1)	spawnBullet(towerCoordX.get(i)-10, towerCoordY.get(i) + 20, Gdx.input.getX(), -Gdx.input.getY() + (Gdx.graphics.getHeight()), tower);
 						if (120-5*tower.getLevel()>5)towerCooldown.set(i, 50-5*tower.getLevel());
 						else towerCooldown.set(i, 5);
 					}

@@ -8,7 +8,7 @@ public class Bullet extends Projectile{
     private float speedY=0;
     TextureRegion region;
     public Bullet(int positionX, int positionY) {
-        super(positionX, positionY, 2,2, new Texture("rocket.png"));
+        super(positionX, positionY, 2,2, new Texture("bullet.png"));
         region=new TextureRegion(img);
 //        homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
     }

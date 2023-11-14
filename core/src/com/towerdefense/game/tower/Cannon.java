@@ -4,6 +4,6 @@ import com.towerdefense.game.tower.ATower;
 
 public class Cannon extends ATower {
     public Cannon(int x, int y) {
-        super(200, 200, x, y, "turret.png");
+        super(200, 300, x, y, "turret.png");
     }
 }
