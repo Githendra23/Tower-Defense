@@ -24,9 +24,8 @@ public class Bullet extends Projectile{
 //        if (positionX>targetX) positionX-=speed;
 //        if (positionY<targetY) positionY+=speed;
 //        if (positionY>targetY) positionY-=speed;
+
         float angle =(float) Math.atan2(targetY-getPositionY(),targetX-getPositionX());
-        System.out.println(Math.sin(angle)*speed);
-        System.out.println(Math.cos(angle)*speed);
         positionX=(int)(getPositionX()+Math.cos(angle)*speed);
         positionY=(int)(getPositionY()+Math.sin(angle)*speed);
         hitbox.x=getPositionX();
