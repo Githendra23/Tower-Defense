@@ -25,9 +25,8 @@ import com.towerdefense.game.enemy.Zombie;
 import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.ArcherTower;
 
-import java.math.BigInteger;
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TowerDefense extends ApplicationAdapter {
@@ -48,7 +47,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
-	private MapObjects noTowerZoneObject;
+	private MapObjects noTowerZoneObject, enemyPathObject;
 	private int tileHeight, tileWidth, layerHeight, layerWidth;
 
 	private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
@@ -70,7 +69,8 @@ public class TowerDefense extends ApplicationAdapter {
 		map = new TmxMapLoader().load("map/map.tmx");
 
 		noTowerZoneObject = map.getLayers().get("nonTowerZone").getObjects();
-		randomRectangleObject = map.getLayers().get("startPoint").getObjects().getByType(RectangleMapObject.class).first();;
+		randomRectangleObject = map.getLayers().get("startPoint").getObjects().getByType(RectangleMapObject.class).first();
+		enemyPathObject = map.getLayers().get("enemyPathLayer").getObjects();
 
 		tileWidth = map.getProperties().get("tilewidth", Integer.class);
 		tileHeight = map.getProperties().get("tileheight", Integer.class);
@@ -88,8 +88,8 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// items, mobs etc...
 		castle = new Castle(2000, 1400, 350);
-		zombie = new Zombie(100, 100);
-		giant = new Giant(X, Y);
+		zombie = new Zombie(100, 100, enemyPath());
+		giant = new Giant(X, Y, enemyPath());
 		pausemenu = new PauseMenu();
 		closeButton = new CloseButton(500, 500);
 		towerButton = new TowerButton(1000, 200);
@@ -105,6 +105,7 @@ public class TowerDefense extends ApplicationAdapter {
 		font = new BitmapFont();
 		font.setColor(1, 1, 1, 1); // Set the font color
 	}
+	int count = 1;
 
 	@Override
 	public void render() {
@@ -127,7 +128,6 @@ public class TowerDefense extends ApplicationAdapter {
 		// System.out.println(archerTower.isInRange(giant));
 
 		castle.displayHitbox();
-		giant.displayHitbox();
 
 		for (ATower tower : towerList) {
 			tower.displayHitbox();
@@ -154,7 +154,6 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
-		batch.draw(giant.getImg(), giant.getAxisX(), giant.getAxisY());
 		batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
 
 		for(AEnemy enemy : enemyList) {
@@ -168,15 +167,17 @@ public class TowerDefense extends ApplicationAdapter {
 		// pause condition
 		if (!isPaused) {
 			// all movements should be inside this condition
-			if (frameCount % 24 == 0) {
-				giant.move(RIGHT, STAY);
+			if (frameCount % 1 == 0) {
 
 				if (frameCount % 120 == 0) {
-					spawnNewEnemy("Giant");
+					if (true) {
+						spawnNewEnemy("Zombie");
+					}
+					count++;
 				}
 
 				for (AEnemy enemy : enemyList) {
-					enemy.move(RIGHT, STAY);
+					enemy.move();
 				}
 				// frameCount = BigInteger.ZERO;
 			}
@@ -226,7 +227,7 @@ public class TowerDefense extends ApplicationAdapter {
 		for (ATower tower : towerList) {
 			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
 		}
-
+		enemyPath();
 		batch.end();
 	}
 
@@ -289,11 +290,32 @@ public class TowerDefense extends ApplicationAdapter {
 
 		switch (enemyName) {
 			case "Giant":
-				Giant giant = new Giant(randomX, randomY);
+				Giant giant = new Giant(randomX, randomY, enemyPath());
 				giant.setCoords(randomX - (giant.getImg().getRegionWidth() / 2), randomY);
 				enemyList.add(giant);
 				break;
+
+			case "Zombie":
+				Zombie zombie = new Zombie(randomX, randomY, enemyPath());
+				zombie.setCoords(randomX - (zombie.getImg().getRegionWidth() / 2), randomY);
+				enemyList.add(zombie);
+				break;
 		}
+	}
+
+	private float[] enemyPath() {
+		float[] vertices = null;
+
+		for (MapObject object : enemyPathObject) {
+			if (object instanceof PolylineMapObject) {
+				Polyline polyline = ((PolylineMapObject) object).getPolyline();
+
+				vertices = polyline.getTransformedVertices();
+				// The vertices array is in the format [x1, y1, x2, y2, x3, y3, ...]
+			}
+		}
+		// System.out.println(Arrays.toString(vertices));
+		return vertices;
 	}
 
 	@Override
