@@ -36,6 +36,10 @@ public abstract class ATower implements ITower {
         this.setCoords(x, y);
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public int getLevel() {
         return this.level;
     }
