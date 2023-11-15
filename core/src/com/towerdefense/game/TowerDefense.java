@@ -137,13 +137,46 @@ public class TowerDefense extends ApplicationAdapter {
 			tower.displayHitbox();
 			tower.displayRangeHitbox();
 		}
-		for (AEnemy enemy : enemies) {
+		for (AEnemy enemy : enemyList) {
 			enemy.displayHitbox();
 		}
 		for (Projectile projectile : projectileArray) {
 			projectile.displayHitbox();
 		}
 
+
+
+		// Render the map
+
+		// batch.draw(missile.drawRocket(),missile.positionX,missile.positionY,9,9,307,137,1,1,missile.rotation);
+		// batch.draw(bullet.drawRocket(),bullet.getPositionX(),bullet.getPositionY());
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			isPaused = !isPaused;
+		}
+
+		giant.setCoords(X, Y);
+		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+
+		// castle.displayHitbox();
+		// giant.displayHitbox();
+		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+		// System.out.println(archerTower.isInRange(giant));
+
+//		castle.displayHitbox();
+//
+//		for (ATower tower : towerList) {
+//			tower.displayHitbox();
+//			tower.displayRangeHitbox();
+//		}
+//
+//		for (AEnemy enemy : enemyList) {
+//			if (enemyList.size() > 0) {
+//				enemy.displayHitbox();
+//			}
+//		}
+
+		// batch.begin();
 		batch.begin();
 		batch.draw(img, (Gdx.input.getX()), (float) -Gdx.input.getY() + (Gdx.graphics.getHeight()), 35 * 2, 37 * 2);
 		// missile.homing(Gdx.input.getX() - (((float) img.getHeight()) / 2),
@@ -165,38 +198,6 @@ public class TowerDefense extends ApplicationAdapter {
 
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 		frameCount++;
-
-		// Render the map
-
-		// batch.draw(missile.drawRocket(),missile.positionX,missile.positionY,9,9,307,137,1,1,missile.rotation);
-		// batch.draw(bullet.drawRocket(),bullet.getPositionX(),bullet.getPositionY());
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-			isPaused = !isPaused;
-		}
-
-		giant.setCoords(X, Y);
-		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
-
-		// castle.displayHitbox();
-		// giant.displayHitbox();
-		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
-		// System.out.println(archerTower.isInRange(giant));
-
-		castle.displayHitbox();
-
-		for (ATower tower : towerList) {
-			tower.displayHitbox();
-			tower.displayRangeHitbox();
-		}
-
-		for (AEnemy enemy : enemyList) {
-			if (enemyList.size() > 0) {
-				enemy.displayHitbox();
-			}
-		}
-
-		// batch.begin();
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
 
@@ -490,7 +491,7 @@ public class TowerDefense extends ApplicationAdapter {
 				// towerCoordY.get(i), Gdx.input.getX() - 120, -Gdx.input.getY() +
 				// (Gdx.graphics.getHeight()));
 
-				for (AEnemy enemy : enemies)
+				for (AEnemy enemy : enemyList)
 				// if (projectileArray.get(u).getTower()==towers.get(i))
 				{
 
@@ -521,11 +522,11 @@ public class TowerDefense extends ApplicationAdapter {
 				}
 
 				for (int u = 0; u < projectileArray.size; u++) {
-					for (int x = enemies.size - 1; x >= 0; x--)
+					for (int x = enemyList.toArray().length - 1; x >= 0; x--)
 
 					// if (projectileArray.get(u).getTower()==towers.get(i))
 					{
-						AEnemy enemy = enemies.get(x);
+						AEnemy enemy = enemyList.get(x);
 						if (tower.isInRange(enemy)) {
 							// System.out.println("shoot god dammit");
 							// spawnRocket(towerCoordX.get(i), towerCoordY.get(i)+125, Gdx.input.getX(),
@@ -549,7 +550,7 @@ public class TowerDefense extends ApplicationAdapter {
 				// towerCooldown.set(i,90-2*tower.getLevel());
 				// }
 
-				for (AEnemy enemy : enemies) {
+				for (AEnemy enemy : enemyList) {
 					if (towerCooldown.get(i) <= 0 && tower.isInRange(enemy)) {
 						if (tower.getLevel() <= 1)
 							spawnBullet(towerCoordX.get(i) - 10, towerCoordY.get(i) + 20, Gdx.input.getX(),
@@ -561,11 +562,11 @@ public class TowerDefense extends ApplicationAdapter {
 					}
 				}
 				for (int u = 0; u < projectileArray.size; u++) {
-					for (int x = enemies.size - 1; x >= 0; x--)
+					for (int x = enemyList.size() - 1; x >= 0; x--)
 
 					// if (projectileArray.get(u).getTower()==towers.get(i))
 					{
-						AEnemy enemy = enemies.get(x);
+						AEnemy enemy = enemyList.get(x);
 						if (tower.isInRange(enemy)) {
 							// System.out.println("shoot god dammit");
 							// spawnRocket(towerCoordX.get(i), towerCoordY.get(i)+125, Gdx.input.getX(),
@@ -603,25 +604,26 @@ public class TowerDefense extends ApplicationAdapter {
 				batch.draw(bullet.drawRocket(), bullet.getPositionX(), bullet.getPositionY(), 9, 9, 21, 7, 2, 2,
 						bullet.getRotation());
 			}
-			for (AEnemy enemy : enemies) {
+			for (AEnemy enemy : enemyList) {
 				if (projectiles.hitbox.overlaps(enemy.hitbox())) {
 					deleteProjectile(projectiles);
 					enemy.loseHp(projectiles.getDmg());
 				}
 			}
+
 			projectiles.setLifetime(projectiles.getLifetime() - 1);
 			// System.out.println("lifetime: "+projectiles.getLifetime());
-			// if(projectiles.getLifetime()<0 || enemies.size <=0)
-			// {
-			//// System.out.println("removed");
-			// deleteProjectile(projectiles);
-			// }
+			 if(projectiles.getLifetime()<0 || enemyList.size() <=0)
+			 {
+			// System.out.println("removed");
+			 deleteProjectile(projectiles);
+			 }
 		}
 	}
 
 	void enemies() {
-		for (int i = 0; i < enemies.size; i++) {
-			AEnemy enemy = enemies.get(i);
+		for (int i = 0; i < enemyList.size(); i++) {
+			AEnemy enemy = enemyList.get(i);
 			System.out.println("health: " + enemy.getHp());
 			// System.out.println(enemy.getHp());
 			if (enemy instanceof Giant) {
@@ -659,8 +661,8 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 
 	void deleteEnemy(AEnemy enemy) {
-		for (int i = 0; i < enemies.size; i++) {
-			if (enemy == enemies.get(i)) {
+		for (int i = 0; i < enemyList.size(); i++) {
+			if (enemy == enemyList.get(i)) {
 				projectileArray.removeIndex(i);
 				projectileTargetY.removeIndex(i);
 				projectileTargetX.removeIndex(i);
@@ -669,6 +671,6 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 
 	void deleteEnemy(int index) {
-		enemies.removeIndex(index);
+		enemyList.remove(index);
 	}
 }
