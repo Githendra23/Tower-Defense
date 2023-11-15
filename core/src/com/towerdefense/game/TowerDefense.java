@@ -50,6 +50,7 @@ public class TowerDefense extends ApplicationAdapter {
 	private final Array<Float> towerCoordY = new Array<Float>();
 	private final Array<Integer> towerCooldown = new Array<Integer>();
 	private final Array<AEnemy> enemies = new Array<AEnemy>();
+	private List<TowerButton> towerButtonList;
 
 	private AEnemy zombie, giant;
 	private Castle castle;
@@ -60,7 +61,6 @@ public class TowerDefense extends ApplicationAdapter {
 	private Texture menuPause;
 	private PauseMenu pausemenu;
 	private Button closeButton;
-	private TowerButton towerButton;
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
@@ -80,6 +80,9 @@ public class TowerDefense extends ApplicationAdapter {
 		// list
 		towerList = new ArrayList<>();
 		enemyList = new ArrayList<>();
+		towerButtonList = new ArrayList<>();
+
+		towerButtonList.add(new RocketTurretButton(1480, 20));
 
 		// map
 		map = new TmxMapLoader().load("map/map.tmx");
@@ -103,7 +106,6 @@ public class TowerDefense extends ApplicationAdapter {
 		giant = new Giant(X, Y, enemyPath());
 		pausemenu = new PauseMenu();
 		closeButton = new CloseButton(500, 500);
-		towerButton = new TowerButton(1000, 200);
 
 		// mouse cursor
 		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
@@ -147,50 +149,29 @@ public class TowerDefense extends ApplicationAdapter {
 
 
 		// Render the map
-
-		// batch.draw(missile.drawRocket(),missile.positionX,missile.positionY,9,9,307,137,1,1,missile.rotation);
-		// batch.draw(bullet.drawRocket(),bullet.getPositionX(),bullet.getPositionY());
-
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			isPaused = !isPaused;
 		}
 
-		giant.setCoords(X, Y);
-		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
+		castle.displayHitbox();
 
-		// castle.displayHitbox();
-		// giant.displayHitbox();
-		// System.out.println(giant.hitbox().overlaps(castle.hitbox()));
-		// System.out.println(archerTower.isInRange(giant));
+		for (ATower tower : towerList) {
+			tower.displayHitbox();
+			tower.displayRangeHitbox();
+		}
 
-//		castle.displayHitbox();
-//
-//		for (ATower tower : towerList) {
-//			tower.displayHitbox();
-//			tower.displayRangeHitbox();
-//		}
-//
-//		for (AEnemy enemy : enemyList) {
-//			if (enemyList.size() > 0) {
-//				enemy.displayHitbox();
-//			}
-//		}
+		for (AEnemy enemy : enemyList) {
+			if (enemyList.size() > 0) {
+				enemy.displayHitbox();
+			}
+		}
 
-		// batch.begin();
 		batch.begin();
-		batch.draw(img, (Gdx.input.getX()), (float) -Gdx.input.getY() + (Gdx.graphics.getHeight()), 35 * 2, 37 * 2);
-		// missile.homing(Gdx.input.getX() - (((float) img.getHeight()) / 2),
-		// -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) /
-		// 2)));
+
 		bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2),
 				-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
 		// System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
-		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-			addCannon(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-		}
-		if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-			addArcher((Gdx.input.getX()), Gdx.graphics.getHeight() - Gdx.input.getY());
-		}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
 			spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2),
 					-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
@@ -204,13 +185,8 @@ public class TowerDefense extends ApplicationAdapter {
 		// display Coordinates of the mouse cursor
 		font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
 
-		isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2),
-				mouseY + towerButton.getTexture().getRegionHeight())
-				&& canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
-
 		// display mobs
-		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY(), castle.getImg().getRegionWidth() * 4,
-				castle.getImg().getRegionHeight() * 4);
+		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
 		// batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
 
@@ -220,7 +196,17 @@ public class TowerDefense extends ApplicationAdapter {
 			}
 		}
 
-		batch.draw(towerButton.getTexture(), towerButton.getAxisX(), towerButton.getAxisY());
+		towers();
+		enemies();
+		projectiles();
+
+		for (ATower tower : towerList) {
+			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
+		}
+
+		for (TowerButton tower : towerButtonList) {
+			batch.draw(tower.getTexture(), tower.getAxisX(), tower.getAxisY());
+		}
 
 		// pause condition
 		if (!isPaused) {
@@ -243,36 +229,46 @@ public class TowerDefense extends ApplicationAdapter {
 				// System.out.println(castle.getHp());
 			}
 
-			if (towerButton.getIsSetPressed()) {
-				batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
-						mouseY);
-				towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
+			for (TowerButton towerButton : towerButtonList) {
+				isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
 
-				if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+				if (towerButton.getIsSetPressed()) {
+					batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
+					towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
 
-					int count = 0;
-					for (ATower tower : towerList) {
-						if (!(towerButton.isOverlaping(tower))) {
-							count++;
+					if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+
+						int count = 0;
+						for (ATower tower : towerList) {
+							if (!(towerButton.isOverlaping(tower))) {
+								count++;
+							}
 						}
-					}
 
-					if (count == towerList.size()) {
-						if (isTowerPlaceable) {
-							towerList.add(new ArcherTower(
-									(int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+						if (count == towerList.size()) {
+							if (isTowerPlaceable) {
+								towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+
+								/*if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+									addCannon(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+								}
+								if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+									addArcher((Gdx.input.getX()), Gdx.graphics.getHeight() - Gdx.input.getY());
+								}*/
+							}
 						}
 					}
 				}
+
+				if (towerButton.getIsSetPressed() == true && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+					towerButton.setPressed(false);
+				}
+
+				if (towerButton.isClicked(mouseX, mouseY)) {
+					towerButton.setPressed(true);
+				}
 			}
 
-			if (towerButton.isClicked(mouseX, mouseY)) {
-				towerButton.setPressed(true);
-			}
-
-			if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-				towerButton.setPressed(false);
-			}
 		} else {
 			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
 			float centerY = Gdx.graphics.getHeight() / 2f - (pausemenu.getAxisY()) / 2f;
@@ -284,13 +280,7 @@ public class TowerDefense extends ApplicationAdapter {
 				// System.out.println("done");
 			}
 		}
-		towers();
-		enemies();
-		projectiles();
 
-		for (ATower tower : towerList) {
-			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
-		}
 		enemyPath();
 		batch.end();
 	}

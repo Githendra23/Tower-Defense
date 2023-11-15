@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.towerdefense.game.tower.ATower;
 
-public class TowerButton extends Button {
-    public TowerButton(int x, int y) {
-        super(x, y, "tower/towerdefense.png", "tower/towerdefense_selected.png");
+public abstract class TowerButton extends Button {
+    public TowerButton(int x, int y, String img, String selectedImg) {
+        super(x, y, img, selectedImg);
     }
 
     public boolean isOverlaping(ATower tower) {
@@ -32,4 +32,6 @@ public class TowerButton extends Button {
         // Reset the color to white
         batch.setColor(Color.WHITE);
     }
+
+    public abstract ATower getATower(int x, int y);
 }
