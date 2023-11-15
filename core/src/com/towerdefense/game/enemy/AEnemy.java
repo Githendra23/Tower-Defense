@@ -1,5 +1,6 @@
 package com.towerdefense.game.enemy;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AEnemy implements IEnemy {
+    private float attackTimer;
+    private static final float ATTACK_INTERVAL = 1.0f; // 1 second interval
     private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
     protected TextureRegion img;
     protected int speed;
@@ -37,6 +40,7 @@ public abstract class AEnemy implements IEnemy {
         this.shapeRenderer = new ShapeRenderer();
         this.vertices = vertices;
         this.distanceBetweenPoint = y - (int) vertices[1];
+        this.attackTimer = 0;
 
         this.coords = new Coordinate();
         this.setCoords(x, y);
@@ -102,7 +106,7 @@ public abstract class AEnemy implements IEnemy {
 
     public void loseHp(int hp) {
         if (!this.isDead) {
-            this.hp -= Math.max(this.hp - hp, 0);
+            this.hp = Math.max(this.hp - hp, 0);
 
             isDead = this.hp == 0;
         }
@@ -158,12 +162,20 @@ public abstract class AEnemy implements IEnemy {
     }
 
     public boolean isInRange(Castle castle) {
-        this.isMoving = !this.hitbox.overlaps(castle.hitbox());
         return this.hitbox.overlaps(castle.hitbox());
     }
 
     public void attack(Castle castle) {
-        castle.loseHp(this.damage);
+        if (isInRange(castle)) {
+            this.isMoving = !this.hitbox.overlaps(castle.hitbox());
+            attackTimer += Gdx.graphics.getDeltaTime();
+
+            // Check if it's time to attack
+            if (attackTimer >= ATTACK_INTERVAL) {
+                castle.loseHp(this.damage);
+                attackTimer = 0;
+            }
+        }
     }
 
     public float[] getVertices() {

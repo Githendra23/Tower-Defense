@@ -41,10 +41,9 @@ public class Castle extends Coordinate {
         return coords.getAxisY();
     }
 
-    public void loseHp(int hp) {
+    public void loseHp(int damage) {
         if (!isDestroyed) {
-            this.hp -= Math.max(this.hp - hp, 0);
-
+            this.hp = Math.max(this.hp - damage, 0);
             isDestroyed = this.hp == 0;
         }
     }

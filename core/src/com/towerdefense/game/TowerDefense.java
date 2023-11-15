@@ -170,16 +170,20 @@ public class TowerDefense extends ApplicationAdapter {
 			if (frameCount % 1 == 0) {
 
 				if (frameCount % 120 == 0) {
-					if (true) {
+					if (count < 2) {
 						spawnNewEnemy("Zombie");
 					}
 					count++;
 				}
 
-				for (AEnemy enemy : enemyList) {
-					enemy.move();
+
+				if (enemyList.size() > 0) {
+					for (AEnemy enemy : enemyList) {
+						enemy.attack(castle);
+						enemy.move();
+					}
 				}
-				// frameCount = BigInteger.ZERO;
+				// System.out.println(castle.getHp());
 			}
 
 			if (towerButton.getIsSetPressed()) {

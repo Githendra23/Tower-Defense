@@ -5,6 +5,6 @@ import com.towerdefense.game.enemy.AEnemy;
 
 public class Zombie extends AEnemy {
     public Zombie(int x, int y, float[] vertices) {
-        super(100, 10, 2, vertices, x, y, "zombie.png");
+        super(100, 10, 5, vertices, x, y, "zombie.png");
     }
 }
