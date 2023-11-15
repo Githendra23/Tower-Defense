@@ -146,8 +146,6 @@ public class TowerDefense extends ApplicationAdapter {
 			projectile.displayHitbox();
 		}
 
-
-
 		// Render the map
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			isPaused = !isPaused;
@@ -188,17 +186,14 @@ public class TowerDefense extends ApplicationAdapter {
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
 		batch.draw(zombie.getImg(), zombie.getAxisX(), zombie.getAxisY());
-		// batch.draw(archerTower.getImg(), archerTower.getAxisX(), archerTower.getAxisY());
+		// batch.draw(archerTower.getImg(), archerTower.getAxisX(),
+		// archerTower.getAxisY());
 
 		for (AEnemy enemy : enemyList) {
 			if (enemyList.size() > 0) {
 				batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
 			}
 		}
-
-		towers();
-		enemies();
-		projectiles();
 
 		for (ATower tower : towerList) {
 			batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
@@ -247,14 +242,16 @@ public class TowerDefense extends ApplicationAdapter {
 
 						if (count == towerList.size()) {
 							if (isTowerPlaceable) {
-								towerList.add(new ArcherTower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+								towerList.add(towerButton.getATower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
 
-								/*if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-									addCannon(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-								}
-								if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-									addArcher((Gdx.input.getX()), Gdx.graphics.getHeight() - Gdx.input.getY());
-								}*/
+								/*
+								 * if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+								 * addCannon(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+								 * }
+								 * if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+								 * addArcher((Gdx.input.getX()), Gdx.graphics.getHeight() - Gdx.input.getY());
+								 * }
+								 */
 							}
 						}
 					}
@@ -268,6 +265,10 @@ public class TowerDefense extends ApplicationAdapter {
 					towerButton.setPressed(true);
 				}
 			}
+
+			/*towers();
+			enemies();
+			projectiles();*/
 
 		} else {
 			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
@@ -468,9 +469,9 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 
 	public void towers() {
-		for (int i = 0; i < towers.size; i++) {
+		for (int i = 0; i < towerList.size(); i++) {
 
-			ATower tower = towers.get(i);
+			ATower tower = towerList.get(i);
 			towerCooldown.set(i, towerCooldown.get(i) - 1);
 			if (tower instanceof Cannon) {
 
@@ -482,7 +483,7 @@ public class TowerDefense extends ApplicationAdapter {
 				// (Gdx.graphics.getHeight()));
 
 				for (AEnemy enemy : enemyList)
-				// if (projectileArray.get(u).getTower()==towers.get(i))
+				// if (projectileArray.get(u).getTower()==towerList.get(i))
 				{
 
 					// System.out.println("test");
@@ -514,7 +515,7 @@ public class TowerDefense extends ApplicationAdapter {
 				for (int u = 0; u < projectileArray.size; u++) {
 					for (int x = enemyList.toArray().length - 1; x >= 0; x--)
 
-					// if (projectileArray.get(u).getTower()==towers.get(i))
+					// if (projectileArray.get(u).getTower()==towerList.get(i))
 					{
 						AEnemy enemy = enemyList.get(x);
 						if (tower.isInRange(enemy)) {
@@ -554,7 +555,7 @@ public class TowerDefense extends ApplicationAdapter {
 				for (int u = 0; u < projectileArray.size; u++) {
 					for (int x = enemyList.size() - 1; x >= 0; x--)
 
-					// if (projectileArray.get(u).getTower()==towers.get(i))
+					// if (projectileArray.get(u).getTower()==towerList.get(i))
 					{
 						AEnemy enemy = enemyList.get(x);
 						if (tower.isInRange(enemy)) {
@@ -603,11 +604,10 @@ public class TowerDefense extends ApplicationAdapter {
 
 			projectiles.setLifetime(projectiles.getLifetime() - 1);
 			// System.out.println("lifetime: "+projectiles.getLifetime());
-			 if(projectiles.getLifetime()<0 || enemyList.size() <=0)
-			 {
-			// System.out.println("removed");
-			 deleteProjectile(projectiles);
-			 }
+			if (projectiles.getLifetime() < 0 || enemyList.size() <= 0) {
+				// System.out.println("removed");
+				deleteProjectile(projectiles);
+			}
 		}
 	}
 
@@ -640,14 +640,14 @@ public class TowerDefense extends ApplicationAdapter {
 	}
 
 	void deleteTower(ATower tower) {
-		for (int i = 0; i < towers.size; i++) {
-			if (tower == towers.get(i))
+		for (int i = 0; i < towerList.size(); i++) {
+			if (tower == towerList.get(i))
 				projectileArray.removeIndex(i);
 		}
 	}
 
 	void deleteTower(int index) {
-		towers.removeIndex(index);
+		towerList.remove(index);
 	}
 
 	void deleteEnemy(AEnemy enemy) {
