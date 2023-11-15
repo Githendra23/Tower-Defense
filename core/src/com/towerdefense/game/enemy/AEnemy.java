@@ -1,48 +1,65 @@
 package com.towerdefense.game.enemy;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.towerdefense.game.Castle;
 import com.towerdefense.game.Coordinate;
 import com.towerdefense.game.NoSuchGameException;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class AEnemy implements IEnemy {
+    private float attackTimer;
+    private static final float ATTACK_INTERVAL = 1.0f; // 1 second interval
+    private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
     protected TextureRegion img;
     protected int speed;
     protected int hp;
     protected int damage;
     protected int level = 1;
     protected boolean isDead = false;
-    protected boolean isCloseToCastle = false;
+    protected boolean isMoving = true;
     protected Coordinate coords;
+    protected float[] vertices; // The vertices array is in the format [x1, y1, x2, y2, x3, y3, ...]
     private Rectangle hitbox;
     private ShapeRenderer shapeRenderer;
+    private int points = 0;
+    private final int distanceBetweenPoint;
 
-    public AEnemy(int hp, int damage, int speed, int x, int y, String img) {
+    public AEnemy(int hp, int damage, int speed, float[] vertices, int x, int y, String img) {
         this.hp = hp;
         this.damage = damage;
         this.speed = speed;
         this.img = new TextureRegion(new Texture("enemy/" + img));
         this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
         this.shapeRenderer = new ShapeRenderer();
+        this.vertices = vertices;
+        this.distanceBetweenPoint = y - (int) vertices[1];
+        this.attackTimer = 0;
 
         this.coords = new Coordinate();
         this.setCoords(x, y);
     }
 
-    /*public AEnemy(int hp, int damage, int speed, String img, int height, int width) {
-        this.hp = hp;
-        this.damage = damage;
-        this.speed = speed;
-
-        this.img = new TextureRegion(new Texture("enemy/" + img));
-        this.img.setRegionWidth(width);
-        this.img.setRegionHeight(height);
-
-        this.coords = new Coordinate();
-    }*/
+    /*
+     * public AEnemy(int hp, int damage, int speed, String img, int height, int
+     * width) {
+     * this.hp = hp;
+     * this.damage = damage;
+     * this.speed = speed;
+     * 
+     * this.img = new TextureRegion(new Texture("enemy/" + img));
+     * this.img.setRegionWidth(width);
+     * this.img.setRegionHeight(height);
+     * 
+     * this.coords = new Coordinate();
+     * }
+     */
 
     public int getDamage() {
         return this.damage;
@@ -69,23 +86,17 @@ public abstract class AEnemy implements IEnemy {
     }
 
     public void setCoords(int x, int y) {
-        coords.setAxisX(x);
-        coords.setAxisY(y);
+        if (isMoving) {
+            coords.setAxisX(x);
+            coords.setAxisY(y);
 
-        this.hitbox.x = x;
-        this.hitbox.y = y;
+            this.hitbox.x = x;
+            this.hitbox.y = y;
+        }
     }
 
-    public boolean attack(Object object) {
-        return isCloseToCastle;
-    }
-
-    public boolean isCloseToCastle() {
-        return this.isCloseToCastle;
-    }
-
-    public void setCloseToCastle(boolean closeToCastle) {
-        this.isCloseToCastle = closeToCastle;
+    public boolean isMoving() {
+        return this.isMoving;
     }
 
     public void levelUp(int damage) {
@@ -93,7 +104,7 @@ public abstract class AEnemy implements IEnemy {
         this.damage += damage;
     }
 
-    public void loseHp(int hp) {
+    public void loseHp(int damage) {
         if (!this.isDead) {
             this.hp = Math.max(this.hp - damage, 0);
 
@@ -120,8 +131,48 @@ public abstract class AEnemy implements IEnemy {
         shapeRenderer.end();
     }
 
+    public void move() {
+        if (isMoving) {
+            int x2 = (int) vertices[points + 2];
+            int y2 = (int) vertices[points + 3];
 
-    public void move(int x, int y) {
-        setCoords(this.coords.getAxisX() + (this.speed * x), this.coords.getAxisY() + (this.speed * y));
+            float angle = (float) Math.atan2(y2 - this.getAxisY(), x2 - this.getAxisX());
+            int deltaX = (int) (this.speed * Math.cos(angle));
+            int deltaY = (int) (this.speed * Math.sin(angle));
+
+            // Move the object
+            this.setCoords(this.getAxisX() + deltaX, this.getAxisY() + deltaY);
+
+            // Check if the object has reached the next point
+            if (Math.abs(this.getAxisX() - x2) <= speed && Math.abs(this.getAxisY() - y2) <= speed) {
+                points += 2;
+
+                // Check if there is a next point
+                if (points + 2 >= vertices.length) {
+                    isMoving = false;
+                }
+            }
+        }
+    }
+
+    public boolean isInRange(Castle castle) {
+        return this.hitbox.overlaps(castle.hitbox());
+    }
+
+    public void attack(Castle castle) {
+        if (isInRange(castle)) {
+            this.isMoving = !this.hitbox.overlaps(castle.hitbox());
+            attackTimer += Gdx.graphics.getDeltaTime();
+
+            // Check if it's time to attack
+            if (attackTimer >= ATTACK_INTERVAL) {
+                castle.loseHp(this.damage);
+                attackTimer = 0;
+            }
+        }
+    }
+
+    public float[] getVertices() {
+        return this.vertices;
     }
 }

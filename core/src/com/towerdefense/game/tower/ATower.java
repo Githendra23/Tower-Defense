@@ -29,8 +29,9 @@ public abstract class ATower implements ITower {
         this.img = new TextureRegion(new Texture(img));
         this.coords = new Coordinate();
 
-        this.hitbox = new Rectangle(x, y, this.img.getRegionWidth()*2, this.img.getRegionHeight()*2);
-        this.rangeHitbox = new Circle(x + this.img.getRegionWidth()*2 / 2f, y + this.img.getRegionHeight()*2 / 2f, this.range);
+        this.hitbox = new Rectangle(x, y, this.img.getRegionWidth() * 2, this.img.getRegionHeight() * 2);
+        this.rangeHitbox = new Circle(x + this.img.getRegionWidth() * 2 / 2f, y + this.img.getRegionHeight() * 2 / 2f,
+                this.range);
         this.shapeRenderer = new ShapeRenderer();
 
         this.setCoords(x, y);
@@ -80,13 +81,14 @@ public abstract class ATower implements ITower {
     public void addDamage(int damage) {
         this.damage += damage;
     }
+
     public void addRange(int range) {
         this.range += range;
     }
+
     public int getTargetNumber() {
         return this.targetNumber;
     }
-
 
     public TextureRegion getImg() {
         return this.img;
@@ -95,6 +97,7 @@ public abstract class ATower implements ITower {
     public Rectangle hitbox() {
         return this.hitbox;
     }
+
     public Circle hitRange() {
         return rangeHitbox;
     }
@@ -115,6 +118,9 @@ public abstract class ATower implements ITower {
         shapeRenderer.end();
     }
 
+    public void attack(AEnemy enemy) {
+        enemy.loseHp(this.damage);
+    }
 
     public boolean isInRange(AEnemy enemy) {
         return Intersector.overlaps(this.hitRange(), enemy.hitbox());
