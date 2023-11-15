@@ -3,6 +3,7 @@ package com.towerdefense.game.tower;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.towerdefense.game.enemy.AEnemy;
+import com.towerdefense.game.tower.projectiles.Bullet;
 import com.towerdefense.game.tower.projectiles.HomingRocket;
 
 import java.util.ArrayList;
@@ -33,14 +34,34 @@ public class Cannon extends ATower {
     }
 
     public void updateProjectile(AEnemy enemy) {
-
+        if (!rocketList.isEmpty()) {
+            for (HomingRocket rocket : rocketList) {
+                rocket.setTargetCoords(enemy.getAxisX() + ((float) enemy.getImg().getRegionWidth() / 2), enemy.getAxisY() + ((float) enemy.getImg().getRegionHeight() / 2));
+            }
+        }
     }
 
     public void ProjectileHit(AEnemy enemy) {
+        if(!rocketList.isEmpty()) {
+            for (int i=0; i<rocketList.size();i++) {
+                HomingRocket rocket= rocketList.get(i);
+                if (rocket.hitbox.overlaps(enemy.hitbox())) {
+                    rocketList.remove(rocket);
+                    enemy.loseHp(damage);
+                }
+            }
+        }
 
     }
 
     public void bulletAim(SpriteBatch batch) {
+        for (HomingRocket rocket: rocketList)
+        {
+            rocket.homing(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
+            rocket.aim(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
+            batch.draw(rocket.drawShadow(),rocket.getPositionX()-20, rocket.getPositionY()-20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
+            batch.draw(rocket.drawRocket(),rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
+        }
 
     }
 }
