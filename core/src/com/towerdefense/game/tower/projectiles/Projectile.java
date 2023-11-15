@@ -1,4 +1,4 @@
-package projectiles;
+package com.towerdefense.game.tower.projectiles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.towerdefense.game.Coordinate;
 import com.towerdefense.game.tower.ATower;
 
 public abstract class Projectile {
@@ -22,6 +23,7 @@ public abstract class Projectile {
     private ShapeRenderer sr;
     protected int dmg;
     protected int lifetime;
+    protected Coordinate targetCoords = new Coordinate();
 
     public int getLifetime() {
         return lifetime;
@@ -86,5 +88,18 @@ public abstract class Projectile {
         sr.setColor(Color.RED); // Set the color of the hitbox
         sr.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         sr.end();
+    }
+
+    public void setTargetCoords(float x, float y) {
+        targetCoords.setFAxisX(x);
+        targetCoords.setFAxisY(y);
+    }
+
+    public float getTargetCoordsX() {
+        return targetCoords.getFAxisX();
+    }
+
+    public float getTargetCoordsY() {
+        return targetCoords.getFAxisY();
     }
 }

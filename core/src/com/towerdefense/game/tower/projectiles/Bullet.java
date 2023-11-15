@@ -1,9 +1,9 @@
-package projectiles;
+package com.towerdefense.game.tower.projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Bullet extends Projectile{
+public class Bullet extends Projectile {
     private float speedX=0;
     private float speedY=0;
     TextureRegion region;

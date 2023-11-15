@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="49">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="52">
  <tileset firstgid="1" source="map tileset.tsx"/>
  <layer id="1" name="GroundTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
@@ -18,7 +18,7 @@
    </properties>
    <polygon points="0,0 33,-0.333333 32.6667,17 65,17 64.6667,49.3333 128.667,49 128.667,145.333 161,145.667 161,177.667 192.667,177.667 192.667,209.333 224.667,209.333 224.667,320.333 1599.33,320.333 1599.67,640.333 192.333,640.333 192.333,768.667 160.333,769 160.333,800.333 128.333,800.667 128.333,864.333 96.3333,864.667 96.3333,896.667 0.333333,897"/>
   </object>
-  <object id="46" x="0.5" y="944" width="1599" height="15.5">
+  <object id="46" x="-14.6515" y="943.74" width="1632.33" height="46.3238">
    <properties>
     <property name="blocked" type="bool" value="true"/>
    </properties>

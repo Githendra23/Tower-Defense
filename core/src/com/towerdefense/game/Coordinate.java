@@ -4,15 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Coordinate {
-    private int axisX;
-    private int axisY;
+    private float axisX;
+    private float axisY;
 
     public int getAxisX() {
-        return axisX;
+        return (int) axisX;
     }
 
     public int getAxisY() {
-        return axisY;
+        return (int) axisY;
+    }
+
+    public float getFAxisX() {
+        return this.axisX;
+    }
+
+    public float getFAxisY() {
+        return this.axisY;
     }
 
     public void setAxisX(int axisX) {
@@ -20,6 +28,14 @@ public class Coordinate {
     }
 
     public void setAxisY(int axisY) {
+        this.axisY = axisY;
+    }
+
+    public void setFAxisX(float axisX) {
+        this.axisX = axisX;
+    }
+
+    public void setFAxisY(float axisY) {
         this.axisY = axisY;
     }
 }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.towerdefense.game.Coordinate;
-import com.towerdefense.game.NoSuchGameException;
 import com.towerdefense.game.enemy.AEnemy;
 
 public abstract class ATower implements ITower {
@@ -22,6 +21,7 @@ public abstract class ATower implements ITower {
     protected Rectangle hitbox;
     protected ShapeRenderer shapeRenderer;
     protected Circle rangeHitbox;
+    protected int coolDown = 0;
 
     public ATower(int damage, int range, int x, int y, String img) {
         this.damage = damage;
@@ -125,4 +125,18 @@ public abstract class ATower implements ITower {
     public boolean isInRange(AEnemy enemy) {
         return Intersector.overlaps(this.hitRange(), enemy.hitbox());
     }
+
+    public int getCoolDown() {
+        return coolDown;
+    }
+
+    /*void spawnBullet(float spawnX, float spawnY, float targetX, float targetY, ATower origin) {
+		Bullet bullet = new Bullet((int) spawnX, (int) spawnY);
+		bullet.aim(targetX, targetY);
+		bullet.setTower(origin);
+		bullet.setLifetime(210);
+		bullet.setDmg(5);
+		projectileArray.add(bullet);
+		bullet.setTargetCoords(targetX, targetY);
+	}*/
 }

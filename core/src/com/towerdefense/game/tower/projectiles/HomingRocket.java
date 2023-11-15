@@ -1,4 +1,4 @@
-package projectiles;
+package com.towerdefense.game.tower.projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
