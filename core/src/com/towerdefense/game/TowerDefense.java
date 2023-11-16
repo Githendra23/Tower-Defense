@@ -259,12 +259,13 @@ public class TowerDefense extends ApplicationAdapter {
 				ATower tower = towerList.get(i);
 
 				for (AEnemy enemy : enemyList) {
-					if (tower.isInRange(enemy))
+					if (tower.isInRange(enemy)) {
 						tower.spawnProjectile(enemy.getAxisX(), enemy.getAxisY());
 
-					tower.updateProjectile(enemy);
-					tower.ProjectileHit(enemy);
-					tower.projectileAim(enemy);
+						tower.updateProjectile(enemy);
+						tower.ProjectileHit(enemy);
+						tower.projectileAim(enemy);
+					}
 				}
 			}
 

@@ -40,11 +40,14 @@ public class Cannon extends ATower {
     }
 
     public void updateProjectile(AEnemy enemy) {
-        if (this.enemy == null || this.enemy.isDead() || !this.isInRange(this.enemy)) {
+        if (this.enemy == null || this.enemy.isDead()) {
             if (this.isInRange(enemy)) {
                 this.enemy = enemy;
             } else {
                 this.enemy = null;
+
+                if (!rocketList.isEmpty())
+                    rocketList.remove(0);
             }
             return;
         }
@@ -57,11 +60,14 @@ public class Cannon extends ATower {
     }
 
     public void ProjectileHit(AEnemy enemy) {
-        if (this.enemy == null || this.enemy.isDead() || !this.isInRange(this.enemy)) {
+        if (this.enemy == null || this.enemy.isDead()) {
             if (this.isInRange(enemy)) {
                 this.enemy = enemy;
             } else {
                 this.enemy = null;
+
+                if (!rocketList.isEmpty())
+                    rocketList.remove(0);
             }
             return;
         }
@@ -82,26 +88,40 @@ public class Cannon extends ATower {
     }
 
     public void projectileAim(AEnemy enemy) {
-        if (this.enemy == null || this.enemy.isDead() || !this.isInRange(this.enemy)) {
+        if (this.enemy == null || this.enemy.isDead()) {
             if (this.isInRange(enemy)) {
                 this.enemy = enemy;
             } else {
                 this.enemy = null;
+
+                if (!rocketList.isEmpty())
+                    rocketList.remove(0);
             }
             return;
         }
 
-        for (HomingRocket rocket : rocketList) {
-            rocket.homing(this.enemy.getAxisX(), this.enemy.getAxisY());
-            rocket.aim(this.enemy.getAxisX(), this.enemy.getAxisY());
+        if (!rocketList.isEmpty()) {
+            for (HomingRocket rocket : rocketList) {
+                rocket.homing(this.enemy.getAxisX(), this.enemy.getAxisY());
+                rocket.aim(this.enemy.getAxisX(), this.enemy.getAxisY());
+            }
         }
     }
 
     public void drawProjectile(SpriteBatch batch) {
-        for (HomingRocket rocket : rocketList) {
-            if (this.enemy == null || this.isInRange(this.enemy)) {
-                batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
-                batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
+        if (this.enemy == null || this.enemy.isDead()) {
+            if (!rocketList.isEmpty())
+                rocketList.remove(0);
+
+            return;
+        }
+
+        if (!rocketList.isEmpty()) {
+            for (HomingRocket rocket : rocketList) {
+                if (this.enemy == null || this.isInRange(this.enemy)) {
+                    batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
+                    batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
+                }
             }
         }
     }
