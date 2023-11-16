@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArcherTower extends ATower {
-    private final List<Bullet> bulletList;
-    private final float ATTACK_INTERVAL = (float) 1/3;
+    protected final List<Bullet> bulletList;
+    private final float ATTACK_INTERVAL = (float) 1;
     private float spawnTimer = 0;
     public ArcherTower(int x, int y) {
         super(50, 200, x, y, "gun.png");
@@ -47,7 +47,7 @@ public class ArcherTower extends ATower {
             for (int i = 0; i < bulletList.size(); i++) {
                 Bullet bullet = bulletList.get(i);
 
-                if (bullet.hitbox.overlaps(enemy.hitbox())) {
+                if (bullet.hitbox.overlaps(enemy.hitbox()) && this.isInRange(enemy)) {
                     bulletList.remove(i);
                     enemy.loseHp(bullet.getDmg());
                 }
@@ -63,5 +63,9 @@ public class ArcherTower extends ATower {
                 batch.draw(bullet.drawRocket(), bullet.getPositionX(), bullet.getPositionY(), 9, 9, 21, 7, 2, 2, bullet.getRotation());
             }
         }
+    }
+
+    public List<Bullet> getProjectileList() {
+        return bulletList;
     }
 }

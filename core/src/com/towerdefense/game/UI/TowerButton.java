@@ -18,16 +18,17 @@ public abstract class TowerButton extends Button {
     }
 
     public void displayHitbox(int x, int y, SpriteBatch batch) {
+        String img = "white_pixel.png";
         hitbox.x = x;
         hitbox.y = y;
 
         batch.setColor(Color.RED);
 
         // Draw the borders using lines
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y, this.selectedImg.getRegionWidth(), 1);
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y + this.selectedImg.getRegionHeight(), this.selectedImg.getRegionWidth(), 1);
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x, y, 1, this.selectedImg.getRegionHeight());
-        batch.draw(new TextureRegion(new Texture("white_pixel.png")), x + this.selectedImg.getRegionWidth(), y, 1, this.selectedImg.getRegionHeight());
+        batch.draw(new TextureRegion(new Texture(img)), x, y, this.selectedImg.getRegionWidth(), 1);
+        batch.draw(new TextureRegion(new Texture(img)), x, y + this.selectedImg.getRegionHeight(), this.selectedImg.getRegionWidth(), 1);
+        batch.draw(new TextureRegion(new Texture(img)), x, y, 1, this.selectedImg.getRegionHeight());
+        batch.draw(new TextureRegion(new Texture(img)), x + this.selectedImg.getRegionWidth(), y, 1, this.selectedImg.getRegionHeight());
 
         // Reset the color to white
         batch.setColor(Color.WHITE);
