@@ -131,7 +131,7 @@ public abstract class ATower implements ITower {
         return coolDown;
     }
 
-    public abstract void projectileAim();
+    public abstract void projectileAim(AEnemy enemy);
     public abstract void ProjectileHit(AEnemy enemy);
 
     public abstract void updateProjectile(AEnemy enemy);

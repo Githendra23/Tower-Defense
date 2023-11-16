@@ -39,24 +39,25 @@ public class Cannon extends ATower {
         }
     }
 
-    @Override
     public void updateProjectile(AEnemy enemy) {
+        if (this.enemy == null || this.enemy.isDead() || !this.isInRange(this.enemy)) {
+            if (this.isInRange(enemy)) {
+                this.enemy = enemy;
+            } else {
+                this.enemy = null;
+            }
+            return;
+        }
+
         if (!rocketList.isEmpty()) {
             for (HomingRocket rocket : rocketList) {
-                rocket.setTargetCoords(enemy.getAxisX() + ((float) enemy.getImg().getRegionWidth() / 2),
-                        enemy.getAxisY() + ((float) enemy.getImg().getRegionHeight() / 2));
+                rocket.setTargetCoords(this.enemy.getAxisX() + ((float) this.enemy.getImg().getRegionWidth() / 2), this.enemy.getAxisY() + ((float) this.enemy.getImg().getRegionHeight() / 2));
             }
         }
     }
 
-    @Override
     public void ProjectileHit(AEnemy enemy) {
-        if (enemy == null || enemy.isDead()) {
-            this.enemy = null;
-            return;
-        }
-
-        if (this.enemy == null || this.enemy.isDead()) {
+        if (this.enemy == null || this.enemy.isDead() || !this.isInRange(this.enemy)) {
             if (this.isInRange(enemy)) {
                 this.enemy = enemy;
             } else {
@@ -75,21 +76,33 @@ public class Cannon extends ATower {
                 }
             }
         }
+        else {
 
+        }
     }
 
-    @Override
-    public void projectileAim() {
+    public void projectileAim(AEnemy enemy) {
+        if (this.enemy == null || this.enemy.isDead() || !this.isInRange(this.enemy)) {
+            if (this.isInRange(enemy)) {
+                this.enemy = enemy;
+            } else {
+                this.enemy = null;
+            }
+            return;
+        }
+
         for (HomingRocket rocket : rocketList) {
-            rocket.homing(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
-            rocket.aim(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
+            rocket.homing(this.enemy.getAxisX(), this.enemy.getAxisY());
+            rocket.aim(this.enemy.getAxisX(), this.enemy.getAxisY());
         }
     }
 
     public void drawProjectile(SpriteBatch batch) {
         for (HomingRocket rocket : rocketList) {
-            batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
-            batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
+            if (this.enemy == null || this.isInRange(this.enemy)) {
+                batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
+                batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
+            }
         }
     }
 

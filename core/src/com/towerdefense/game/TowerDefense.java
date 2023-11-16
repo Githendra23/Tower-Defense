@@ -264,7 +264,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 					tower.updateProjectile(enemy);
 					tower.ProjectileHit(enemy);
-					tower.projectileAim();
+					tower.projectileAim(enemy);
 				}
 			}
 
