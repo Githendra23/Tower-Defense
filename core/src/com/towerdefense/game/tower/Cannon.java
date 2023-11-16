@@ -3,7 +3,6 @@ package com.towerdefense.game.tower;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.towerdefense.game.enemy.AEnemy;
-import com.towerdefense.game.tower.projectiles.Bullet;
 import com.towerdefense.game.tower.projectiles.HomingRocket;
 
 import java.util.ArrayList;
@@ -21,17 +20,18 @@ public class Cannon extends ATower {
         rocketList = new ArrayList<>();
     }
 
-    public void spawnProjectile(float targetX, float targetY) {
+    @Override
+    public void spawnProjectile(int x, int y) {
         if (rocketList.isEmpty()) {
             spawnTimer += Gdx.graphics.getDeltaTime();
 
             if (spawnTimer >= ATTACK_INTERVAL) {
                 HomingRocket homingRocket = new HomingRocket(this.getAxisX(), this.getAxisY());
-                homingRocket.aim(targetX, targetY);
+                homingRocket.aim(x, y);
                 homingRocket.setTower(this);
                 homingRocket.setLifetime(210);
                 homingRocket.setDmg(20);
-                homingRocket.setTargetCoords(targetX, targetY);
+                homingRocket.setTargetCoords(x, y);
                 rocketList.add(homingRocket);
 
                 spawnTimer = 0;
@@ -39,6 +39,7 @@ public class Cannon extends ATower {
         }
     }
 
+    @Override
     public void updateProjectile(AEnemy enemy) {
         if (!rocketList.isEmpty()) {
             for (HomingRocket rocket : rocketList) {
@@ -48,6 +49,7 @@ public class Cannon extends ATower {
         }
     }
 
+    @Override
     public void ProjectileHit(AEnemy enemy) {
         if (enemy == null || enemy.isDead()) {
             this.enemy = null;
@@ -76,14 +78,18 @@ public class Cannon extends ATower {
 
     }
 
-    public void bulletAim(SpriteBatch batch) {
+    @Override
+    public void projectileAim() {
         for (HomingRocket rocket : rocketList) {
             rocket.homing(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
             rocket.aim(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
-            batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2,
-                    rocket.getRotation());
-            batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2,
-                    rocket.getRotation());
+        }
+    }
+
+    public void drawProjectile(SpriteBatch batch) {
+        for (HomingRocket rocket : rocketList) {
+            batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
+            batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
         }
     }
 

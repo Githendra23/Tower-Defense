@@ -2,6 +2,7 @@ package com.towerdefense.game.tower;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
@@ -130,13 +131,10 @@ public abstract class ATower implements ITower {
         return coolDown;
     }
 
-    /*void spawnBullet(float spawnX, float spawnY, float targetX, float targetY, ATower origin) {
-		Bullet bullet = new Bullet((int) spawnX, (int) spawnY);
-		bullet.aim(targetX, targetY);
-		bullet.setTower(origin);
-		bullet.setLifetime(210);
-		bullet.setDmg(5);
-		projectileArray.add(bullet);
-		bullet.setTargetCoords(targetX, targetY);
-	}*/
+    public abstract void projectileAim();
+    public abstract void ProjectileHit(AEnemy enemy);
+
+    public abstract void updateProjectile(AEnemy enemy);
+    public abstract void spawnProjectile(int x, int y);
+    public abstract void drawProjectile(SpriteBatch batch);
 }

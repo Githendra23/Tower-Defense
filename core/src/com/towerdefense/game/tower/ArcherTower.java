@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.tower.projectiles.Bullet;
+import com.towerdefense.game.tower.projectiles.HomingRocket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +56,18 @@ public class ArcherTower extends ATower {
         }
     }
 
-    public void bulletAim(SpriteBatch batch) {
+    public void projectileAim() {
         if (!bulletList.isEmpty()) {
             for (Bullet bullet : bulletList) {
                 bullet.shootAt(bullet.getTargetCoordsX(), bullet.getTargetCoordsY(), this.getDamage());
                 bullet.aim(bullet.getTargetCoordsX(), bullet.getTargetCoordsY());
-                batch.draw(bullet.drawRocket(), bullet.getPositionX(), bullet.getPositionY(), 9, 9, 21, 7, 2, 2, bullet.getRotation());
             }
+        }
+    }
+
+    public void drawProjectile(SpriteBatch batch) {
+        for (Bullet bullet : bulletList) {
+            batch.draw(bullet.drawRocket(), bullet.getPositionX(), bullet.getPositionY(), 9, 9, 21, 7, 2, 2, bullet.getRotation());
         }
     }
 
