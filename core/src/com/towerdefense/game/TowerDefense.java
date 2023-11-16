@@ -84,7 +84,8 @@ public class TowerDefense extends ApplicationAdapter {
 		map = new TmxMapLoader().load("map/map.tmx");
 
 		noTowerZoneObject = map.getLayers().get("nonTowerZone").getObjects();
-		randomRectangleObject = map.getLayers().get("startPoint").getObjects().getByType(RectangleMapObject.class).first();
+		randomRectangleObject = map.getLayers().get("startPoint").getObjects().getByType(RectangleMapObject.class)
+				.first();
 		enemyPathObject = map.getLayers().get("enemyPathLayer").getObjects();
 
 		// For Layer
@@ -161,12 +162,17 @@ public class TowerDefense extends ApplicationAdapter {
 
 		batch.begin();
 
-		bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
+		bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2),
+				-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
 		// System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
 
-		/*if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));
-		}*/
+		/*
+		 * if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+		 * spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2),
+		 * -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) /
+		 * 2)));
+		 * }
+		 */
 
 		// display FPS
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
@@ -222,11 +228,15 @@ public class TowerDefense extends ApplicationAdapter {
 			}
 
 			for (TowerButton towerButton : towerButtonList) {
-				isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
+				isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2),
+						mouseY + towerButton.getTexture().getRegionHeight())
+						&& canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
 
 				if (towerButton.getIsSetPressed()) {
-					batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
-					towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
+					batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
+							mouseY);
+					towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY,
+							batch);
 
 					if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 
@@ -239,7 +249,8 @@ public class TowerDefense extends ApplicationAdapter {
 
 						if (count == towerList.size()) {
 							if (isTowerPlaceable) {
-								towerList.add(towerButton.getATower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+								towerList.add(towerButton.getATower(
+										(int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
 							}
 						}
 					}
@@ -255,7 +266,7 @@ public class TowerDefense extends ApplicationAdapter {
 			}
 
 			towers();
-			//projectiles();
+			// projectiles();
 
 		} else {
 			float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
@@ -367,58 +378,62 @@ public class TowerDefense extends ApplicationAdapter {
 		mapRenderer.dispose();
 	}
 
-	/*void spawnRocket(float spawnX, float spawnY, float targetX, float targetY, ATower origin) {
-		HomingRocket homingRocket = new HomingRocket((int) spawnX, (int) spawnY);
-		homingRocket.aim(targetX, targetY);
-		homingRocket.setTower(origin);
-		homingRocket.setLifetime(210);
-		homingRocket.setDmg(20);
-		projectileArray.add(homingRocket);
-		homingRocket.setTargetCoords(targetX, targetY);
-	}*/
+	/*
+	 * void spawnRocket(float spawnX, float spawnY, float targetX, float targetY,
+	 * ATower origin) {
+	 * HomingRocket homingRocket = new HomingRocket((int) spawnX, (int) spawnY);
+	 * homingRocket.aim(targetX, targetY);
+	 * homingRocket.setTower(origin);
+	 * homingRocket.setLifetime(210);
+	 * homingRocket.setDmg(20);
+	 * projectileArray.add(homingRocket);
+	 * homingRocket.setTargetCoords(targetX, targetY);
+	 * }
+	 */
 
-	/*void spawnUpgradedRocket(float spawnX, float spawnY, float targetX, float targetY, ATower origin, int level) {
-		HomingRocket homingRocket = new HomingRocket((int) spawnX, (int) spawnY);
-		homingRocket.aim(targetX, targetY);
-		homingRocket.setTower(origin);
-		homingRocket.setLifetime(210 * level);
-		homingRocket.setDmg(20 * level);
-		projectileArray.add(homingRocket);
-		homingRocket.setTargetCoords(targetX, targetY);
-	}*/
+	/*
+	 * void spawnUpgradedRocket(float spawnX, float spawnY, float targetX, float
+	 * targetY, ATower origin, int level) {
+	 * HomingRocket homingRocket = new HomingRocket((int) spawnX, (int) spawnY);
+	 * homingRocket.aim(targetX, targetY);
+	 * homingRocket.setTower(origin);
+	 * homingRocket.setLifetime(210 * level);
+	 * homingRocket.setDmg(20 * level);
+	 * projectileArray.add(homingRocket);
+	 * homingRocket.setTargetCoords(targetX, targetY);
+	 * }
+	 */
 
-	/*void spawnBullet(int spawnX, int spawnY, float targetX, float targetY) {
-		Bullet bullet = new Bullet(spawnX, spawnY);
-		bullet.aim(targetX, targetY);
-		bullet.setLifetime(210);
-		bullet.setDmg(5);
-		projectileArray.add(bullet);
-		bullet.setTargetCoords(targetX, targetY);
-	}*/
+	/*
+	 * void spawnBullet(int spawnX, int spawnY, float targetX, float targetY) {
+	 * Bullet bullet = new Bullet(spawnX, spawnY);
+	 * bullet.aim(targetX, targetY);
+	 * bullet.setLifetime(210);
+	 * bullet.setDmg(5);
+	 * projectileArray.add(bullet);
+	 * bullet.setTargetCoords(targetX, targetY);
+	 * }
+	 */
 
-	public void towers()
-	{
-		for (int i =0; i< towerList.size();i++)
-		{
+	public void towers() {
+		for (int i = 0; i < towerList.size(); i++) {
 			ATower tower = towerList.get(i);
 
-			if (tower instanceof Cannon)
-			{
+			if (tower instanceof Cannon) {
 				Cannon cannon = (Cannon) tower;
-				for (AEnemy enemy : enemyList)
-				{
-					if(cannon.isInRange(enemy))cannon.spawnProjectile(enemy.getAxisX(),enemy.getAxisY());
+				for (AEnemy enemy : enemyList) {
+					if (cannon.isInRange(enemy))
+						cannon.spawnProjectile(enemy.getAxisX(), enemy.getAxisY());
 					cannon.updateProjectile(enemy);
 					cannon.ProjectileHit(enemy);
 					cannon.bulletAim(batch);
 				}
 			}
-			if (tower instanceof ArcherTower)
-			{
+			if (tower instanceof ArcherTower) {
 				ArcherTower archer = (ArcherTower) tower;
-				for (AEnemy enemy : enemyList)
-				{
-					if(archer.isInRange(enemy)) archer.spawnProjectile(enemy.getAxisX(),enemy.getAxisY());
+				for (AEnemy enemy : enemyList) {
+					if (archer.isInRange(enemy))
+						archer.spawnProjectile(enemy.getAxisX(), enemy.getAxisY());
 					archer.updateProjectile(enemy);
 					archer.ProjectileHit(enemy);
 					archer.bulletAim(batch);
@@ -427,42 +442,53 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 	}
 
-	/*void projectiles() {
-		for (int i = 0; i < projectileArray.size; i++) {
-			Projectile projectiles = projectileArray.get(i);
+	/*
+	 * void projectiles() {
+	 * for (int i = 0; i < projectileArray.size; i++) {
+	 * Projectile projectiles = projectileArray.get(i);
+	 * 
+	 * if (projectiles instanceof HomingRocket) {
+	 * HomingRocket missile = (HomingRocket) projectiles;
+	 * missile.homing(projectiles.getTargetCoordsX(),
+	 * projectiles.getTargetCoordsY());
+	 * }
+	 * 
+	 *//*
+		 * if (projectiles instanceof Bullet) {
+		 * Bullet bullet = (Bullet) projectiles;
+		 * bullet.shootAt(projectiles.getTargetCoordsX(),
+		 * projectiles.getTargetCoordsY(), 50);
+		 * bullet.aim(projectiles.getTargetCoordsX(), projectiles.getTargetCoordsY());
+		 * batch.draw(bullet.drawRocket(), bullet.getPositionX(), bullet.getPositionY(),
+		 * 9, 9, 21, 7, 2, 2, bullet.getRotation());
+		 * }
+		 *//*
+			
+			*//*
+				 * for (AEnemy enemy : enemyList) {
+				 * if (projectiles.hitbox.overlaps(enemy.hitbox())) {
+				 * deleteProjectile(projectiles);
+				 * enemy.loseHp(projectiles.getDmg());
+				 * }
+				 * }
+				 *//*
+					 * 
+					 * projectiles.setLifetime(projectiles.getLifetime() - 1);
+					 * if (projectiles.getLifetime() < 0 || enemyList.size() <= 0) {
+					 * deleteProjectile(projectiles);
+					 * }
+					 * }
+					 * }
+					 */
 
-			if (projectiles instanceof HomingRocket) {
-				HomingRocket missile = (HomingRocket) projectiles;
-				missile.homing(projectiles.getTargetCoordsX(), projectiles.getTargetCoordsY());
-			}
-
-			*//*if (projectiles instanceof Bullet) {
-				Bullet bullet = (Bullet) projectiles;
-				bullet.shootAt(projectiles.getTargetCoordsX(), projectiles.getTargetCoordsY(), 50);
-				bullet.aim(projectiles.getTargetCoordsX(), projectiles.getTargetCoordsY());
-				batch.draw(bullet.drawRocket(), bullet.getPositionX(), bullet.getPositionY(), 9, 9, 21, 7, 2, 2, bullet.getRotation());
-			}*//*
-
-			*//*for (AEnemy enemy : enemyList) {
-				if (projectiles.hitbox.overlaps(enemy.hitbox())) {
-					deleteProjectile(projectiles);
-					enemy.loseHp(projectiles.getDmg());
-				}
-			}*//*
-
-			projectiles.setLifetime(projectiles.getLifetime() - 1);
-			if (projectiles.getLifetime() < 0 || enemyList.size() <= 0) {
-				deleteProjectile(projectiles);
-			}
-		}
-	}*/
-
-	/*void deleteProjectile(Projectile projectile) {
-		for (int i = 0; i < projectileArray.size; i++) {
-			if (projectile == projectileArray.get(i))
-				projectileArray.removeIndex(i);
-		}
-	}*/
+	/*
+	 * void deleteProjectile(Projectile projectile) {
+	 * for (int i = 0; i < projectileArray.size; i++) {
+	 * if (projectile == projectileArray.get(i))
+	 * projectileArray.removeIndex(i);
+	 * }
+	 * }
+	 */
 
 	void deleteTower(ATower tower) {
 		for (int i = 0; i < towerList.size(); i++) {

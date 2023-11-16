@@ -14,6 +14,7 @@ public class Cannon extends ATower {
     private final float ATTACK_INTERVAL = (float) 1;
     private AEnemy enemy = null;
     private float spawnTimer = 0;
+
     public Cannon(int x, int y) {
         super(200, 300, x, y, "defense/rocket_turret/turret.png");
         this.coolDown = 20;
@@ -41,7 +42,8 @@ public class Cannon extends ATower {
     public void updateProjectile(AEnemy enemy) {
         if (!rocketList.isEmpty()) {
             for (HomingRocket rocket : rocketList) {
-                rocket.setTargetCoords(enemy.getAxisX() + ((float) enemy.getImg().getRegionWidth() / 2), enemy.getAxisY() + ((float) enemy.getImg().getRegionHeight() / 2));
+                rocket.setTargetCoords(enemy.getAxisX() + ((float) enemy.getImg().getRegionWidth() / 2),
+                        enemy.getAxisY() + ((float) enemy.getImg().getRegionHeight() / 2));
             }
         }
     }
@@ -61,7 +63,7 @@ public class Cannon extends ATower {
             return;
         }
 
-        if(!rocketList.isEmpty()) {
+        if (!rocketList.isEmpty()) {
             for (int i = 0; i < rocketList.size(); i++) {
                 HomingRocket rocket = rocketList.get(i);
 
@@ -75,12 +77,13 @@ public class Cannon extends ATower {
     }
 
     public void bulletAim(SpriteBatch batch) {
-        for (HomingRocket rocket : rocketList)
-        {
+        for (HomingRocket rocket : rocketList) {
             rocket.homing(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
             rocket.aim(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
-            batch.draw(rocket.drawShadow(),rocket.getPositionX()-20, rocket.getPositionY()-20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
-            batch.draw(rocket.drawRocket(),rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
+            batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2,
+                    rocket.getRotation());
+            batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2,
+                    rocket.getRotation());
         }
     }
 
