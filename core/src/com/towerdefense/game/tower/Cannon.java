@@ -11,7 +11,8 @@ import java.util.List;
 
 public class Cannon extends ATower {
     private final List<HomingRocket> rocketList;
-    private final float ATTACK_INTERVAL = (float) 1/3;
+    private final float ATTACK_INTERVAL = (float) 1;
+    private AEnemy enemy = null;
     private float spawnTimer = 0;
     public Cannon(int x, int y) {
         super(200, 300, x, y, "defense/rocket_turret/turret.png");
@@ -19,17 +20,21 @@ public class Cannon extends ATower {
         rocketList = new ArrayList<>();
     }
 
-    public void spawnProjectile(float spawnX, float spawnY, float targetX, float targetY, ATower tower) {
-        spawnTimer += Gdx.graphics.getDeltaTime();
+    public void spawnProjectile(float targetX, float targetY) {
+        if (rocketList.isEmpty()) {
+            spawnTimer += Gdx.graphics.getDeltaTime();
 
-        if (spawnTimer >= ATTACK_INTERVAL) {
-            HomingRocket homingRocket = new HomingRocket((int) spawnX, (int) spawnY);
-            homingRocket.aim(targetX, targetY);
-            homingRocket.setTower(tower);
-            homingRocket.setLifetime(210);
-            homingRocket.setDmg(20);
-            homingRocket.setTargetCoords(targetX, targetY);
-            rocketList.add(homingRocket);
+            if (spawnTimer >= ATTACK_INTERVAL) {
+                HomingRocket homingRocket = new HomingRocket(this.getAxisX(), this.getAxisY());
+                homingRocket.aim(targetX, targetY);
+                homingRocket.setTower(this);
+                homingRocket.setLifetime(210);
+                homingRocket.setDmg(20);
+                homingRocket.setTargetCoords(targetX, targetY);
+                rocketList.add(homingRocket);
+
+                spawnTimer = 0;
+            }
         }
     }
 
@@ -42,12 +47,27 @@ public class Cannon extends ATower {
     }
 
     public void ProjectileHit(AEnemy enemy) {
+        if (enemy == null || enemy.isDead()) {
+            this.enemy = null;
+            return;
+        }
+
+        if (this.enemy == null || this.enemy.isDead()) {
+            if (this.isInRange(enemy)) {
+                this.enemy = enemy;
+            } else {
+                this.enemy = null;
+            }
+            return;
+        }
+
         if(!rocketList.isEmpty()) {
-            for (int i=0; i<rocketList.size();i++) {
-                HomingRocket rocket= rocketList.get(i);
-                if (rocket.hitbox.overlaps(enemy.hitbox())) {
+            for (int i = 0; i < rocketList.size(); i++) {
+                HomingRocket rocket = rocketList.get(i);
+
+                if (rocket.hitbox.overlaps(this.enemy.hitbox())) {
                     rocketList.remove(rocket);
-                    enemy.loseHp(damage);
+                    this.enemy.loseHp(this.damage);
                 }
             }
         }
@@ -55,13 +75,16 @@ public class Cannon extends ATower {
     }
 
     public void bulletAim(SpriteBatch batch) {
-        for (HomingRocket rocket: rocketList)
+        for (HomingRocket rocket : rocketList)
         {
             rocket.homing(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
             rocket.aim(rocket.getTargetCoordsX(), rocket.getTargetCoordsY());
             batch.draw(rocket.drawShadow(),rocket.getPositionX()-20, rocket.getPositionY()-20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
             batch.draw(rocket.drawRocket(),rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
         }
+    }
 
+    public List<HomingRocket> getProjectileList() {
+        return rocketList;
     }
 }

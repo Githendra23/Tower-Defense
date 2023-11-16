@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Bullet extends Projectile {
-    private float speedX=0;
-    private float speedY=0;
+    private float speedX = 0;
+    private float speedY = 0;
     TextureRegion region;
     public Bullet(int positionX, int positionY) {
         super(positionX, positionY, 2,2, new Texture("bullet.png"));
@@ -25,11 +25,11 @@ public class Bullet extends Projectile {
 //        if (positionY<targetY) positionY+=speed;
 //        if (positionY>targetY) positionY-=speed;
 
-        float angle =(float) Math.atan2(targetY-getPositionY(),targetX-getPositionX());
-        positionX=(int)(getPositionX()+Math.cos(angle)*speed);
-        positionY=(int)(getPositionY()+Math.sin(angle)*speed);
-        hitbox.x=getPositionX();
-        hitbox.y=getPositionY();
+        float angle = (float) Math.atan2(targetY-getPositionY(),targetX-getPositionX());
+        positionX = (int)(getPositionX()+Math.cos(angle)*speed);
+        positionY = (int)(getPositionY()+Math.sin(angle)*speed);
+        hitbox.x = getPositionX();
+        hitbox.y = getPositionY();
 
     }
 }

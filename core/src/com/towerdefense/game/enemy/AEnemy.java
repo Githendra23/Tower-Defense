@@ -107,7 +107,7 @@ public abstract class AEnemy implements IEnemy {
     public void loseHp(int damage) {
         if (!this.isDead) {
             this.hp = Math.max(this.hp - damage, 0);
-
+            System.out.println(this.hp);
             isDead = this.hp == 0;
         }
     }

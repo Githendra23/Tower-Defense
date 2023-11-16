@@ -14,8 +14,6 @@ public abstract class Projectile {
     protected int positionY;
     protected int sizeX;
     protected int sizeY;
-    protected int targetX;
-    protected int TargetY;
     protected Texture img;
     protected float rotation;
     protected ATower tower;
