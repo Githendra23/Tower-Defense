@@ -96,7 +96,6 @@ public class Cannon extends ATower {
         }
     }
     public void projectileAim(AEnemy enemy) {
-        System.out.println("X:"+targetX+" Y:"+targetY);
         targetX=enemy.getAxisX();
         targetY= enemy.getAxisY();
         if (this.enemy == null || this.enemy.isDead()) {
@@ -130,7 +129,7 @@ public class Cannon extends ATower {
         if (!rocketList.isEmpty()) {
             for (HomingRocket rocket : rocketList) {
                 if (this.enemy == null || this.isInRange(this.enemy)) {
-                    batch.draw(rocket.drawShadow(), rocket.getPositionX() - 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
+                    batch.draw(rocket.drawShadow(), rocket.getPositionX() + 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
                     batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
                 }
             }
