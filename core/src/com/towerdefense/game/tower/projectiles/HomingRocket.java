@@ -31,10 +31,10 @@ public class HomingRocket extends Projectile
     }
 
     public void homing(float targetX, float targetY){
-        if (speedX<0)speedX+=0.05f;
-        if (speedX>0)speedX-=0.05f;
-        if (speedY<0)speedY+=0.05f;
-        if (speedY>0)speedY-=0.05f;
+        if (speedX<0)speedX+=0.07f;
+        if (speedX>0)speedX-=0.07f;
+        if (speedY<0)speedY+=0.07f;
+        if (speedY>0)speedY-=0.07f;
         if (positionX<targetX) speedX++;
         if (positionX>targetX) speedX--;
         if (positionY<targetY) speedY++;

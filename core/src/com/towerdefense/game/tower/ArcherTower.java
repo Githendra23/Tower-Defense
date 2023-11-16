@@ -56,6 +56,15 @@ public class ArcherTower extends ATower {
         }
     }
 
+    int targetX;
+    int targetY;
+    public void projectileMove()
+    {
+        for (Bullet bullet : bulletList) {
+            bullet.shootAt(targetX, targetY,20);
+            bullet.aim(targetX, targetY);
+        }
+    }
     public void projectileAim(AEnemy enemy) {
         if (!bulletList.isEmpty()) {
             for (Bullet bullet : bulletList) {

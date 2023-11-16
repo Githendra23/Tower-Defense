@@ -137,4 +137,5 @@ public abstract class ATower implements ITower {
     public abstract void updateProjectile(AEnemy enemy);
     public abstract void spawnProjectile(int x, int y);
     public abstract void drawProjectile(SpriteBatch batch);
+    public abstract void projectileMove();
 }

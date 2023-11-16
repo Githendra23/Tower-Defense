@@ -257,8 +257,10 @@ public class TowerDefense extends ApplicationAdapter {
 			// towers shooting projectiles
 			for (int i = 0; i < towerList.size(); i++) {
 				ATower tower = towerList.get(i);
+				tower.projectileMove();
 
-				for (AEnemy enemy : enemyList) {
+				for (int u = enemyList.size()-1; u>=0;u--) {
+					AEnemy enemy = enemyList.get(u);
 					if (tower.isInRange(enemy)) {
 						tower.spawnProjectile(enemy.getAxisX(), enemy.getAxisY());
 
