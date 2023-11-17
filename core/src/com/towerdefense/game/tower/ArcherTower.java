@@ -17,6 +17,8 @@ public class ArcherTower extends ATower {
         super(50, 200, x, y, "gun.png");
         this.coolDown = 20;
         bulletList = new ArrayList<>();
+
+        this.price = 50;
     }
 
     public void spawnProjectile(int x, int y) {

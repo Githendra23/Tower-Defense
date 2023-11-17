@@ -16,6 +16,7 @@ public abstract class ATower implements ITower {
     protected int damage;
     protected boolean isAreaDamage = false;
     protected int level = 1;
+    protected int price = 0;
     protected int targetNumber;
     protected TextureRegion img;
     protected Coordinate coords;
@@ -129,6 +130,10 @@ public abstract class ATower implements ITower {
 
     public int getCoolDown() {
         return coolDown;
+    }
+
+    public int getPrice() {
+        return this.price;
     }
 
     public abstract void projectileAim(AEnemy enemy);

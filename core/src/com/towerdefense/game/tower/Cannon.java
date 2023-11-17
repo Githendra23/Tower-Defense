@@ -20,6 +20,8 @@ public class Cannon extends ATower {
         super(20, 300, x, y, "defense/rocket_turret/turret.png");
         this.coolDown = 20;
         rocketList = new ArrayList<>();
+
+        this.price = 50;
     }
 
     @Override

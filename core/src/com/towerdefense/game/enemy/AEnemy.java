@@ -29,6 +29,7 @@ public abstract class AEnemy implements IEnemy {
     private Rectangle hitbox;
     private ShapeRenderer shapeRenderer;
     private int points = 0;
+    protected int coins = 0;
     private final int distanceBetweenPoint;
 
     public AEnemy(int hp, int damage, int speed, float[] vertices, int x, int y, String img) {
@@ -107,7 +108,7 @@ public abstract class AEnemy implements IEnemy {
     public void loseHp(int damage) {
         if (!this.isDead) {
             this.hp = Math.max(this.hp - damage, 0);
-            System.out.println(this.hp);
+
             isDead = this.hp == 0;
         }
     }
@@ -171,6 +172,14 @@ public abstract class AEnemy implements IEnemy {
             }
         }
     }
+
+    public int getCoins() {
+        return this.coins;
+    }
+
+    /*public void dispose() {
+        enemyTexture.dispose();
+    }*/
 
     public float[] getVertices() {
         return this.vertices;

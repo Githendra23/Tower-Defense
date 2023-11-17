@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TowerDefense extends ApplicationAdapter {
-	private int coins = 0;
+	private int coins = 200;
 	private double frameCount = 0;
 	private SpriteBatch batch;
 	private BitmapFont font;
@@ -171,7 +171,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 		// display mobs
 		batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
-
+System.out.println(this.coins);
 		for (AEnemy enemy : enemyList) {
 			if (enemyList.size() > 0) {
 				batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
@@ -212,14 +212,13 @@ public class TowerDefense extends ApplicationAdapter {
 				AEnemy enemy = enemyList.get(i);
 
 				if (enemy.isDead()) {
+					this.coins += enemy.getCoins();
 					enemyList.remove(i);
 				}
 			}
 
 			for (TowerButton towerButton : towerButtonList) {
-				isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2),
-						mouseY + towerButton.getTexture().getRegionHeight())
-						&& canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
+				isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
 
 				if (towerButton.getIsSetPressed()) {
 					batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
@@ -237,7 +236,9 @@ public class TowerDefense extends ApplicationAdapter {
 						}
 
 						if (count == towerList.size()) {
-							if (isTowerPlaceable) {
+							if (isTowerPlaceable && this.coins - towerButton.getTowerPrice() >= 0) {
+								this.coins -= towerButton.getTowerPrice();
+
 								towerList.add(towerButton.getATower(
 										(int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
 							}
@@ -377,6 +378,7 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.dispose();
 		map.dispose();
 		mapRenderer.dispose();
+
 	}
 
 	void deleteTower(ATower tower) {
