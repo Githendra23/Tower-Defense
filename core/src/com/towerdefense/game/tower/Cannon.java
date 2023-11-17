@@ -24,7 +24,7 @@ public class Cannon extends ATower {
 
     @Override
     public void spawnProjectile(int x, int y) {
-        if (rocketList.isEmpty()) {
+        if (rocketList.size()<=10) {
             spawnTimer += Gdx.graphics.getDeltaTime();
 
             if (spawnTimer >= ATTACK_INTERVAL) {
@@ -71,6 +71,7 @@ public class Cannon extends ATower {
                 if (!rocketList.isEmpty())
                     rocketList.remove(0);
             }
+            System.gc();
             return;
         }
 
@@ -91,6 +92,7 @@ public class Cannon extends ATower {
     public void projectileMove()
     {
         for (HomingRocket rocket : rocketList) {
+            rocket.setLifetime(rocket.getLifetime()-1);
             rocket.homing(targetX, targetY);
             rocket.aim(targetX, targetY);
         }

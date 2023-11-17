@@ -24,6 +24,7 @@ import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 import com.towerdefense.game.tower.ATower;
+import com.towerdefense.game.tower.SniperTower;
 import com.towerdefense.game.tower.projectiles.Bullet;
 import com.towerdefense.game.tower.projectiles.Projectile;
 
@@ -54,9 +55,12 @@ public class TowerDefense extends ApplicationAdapter {
 	private MapObjects noTowerZoneObject, enemyPathObject;
 	private boolean isTowerPlaceable = false;
 	private RectangleMapObject randomRectangleObject;
+	private SniperTower sniperTower;
 
 	@Override
 	public void create() {
+		sniperTower = new SniperTower(500,50);
+
 		batch = new SpriteBatch();
 		img = new Texture("turret.png");
 		// missile= new HomingRocket(5,5);
@@ -68,7 +72,7 @@ public class TowerDefense extends ApplicationAdapter {
 		towerList = new ArrayList<>();
 		enemyList = new ArrayList<>();
 		towerButtonList = new ArrayList<>();
-
+		towerList.add(sniperTower);
 		towerButtonList.add(new RocketTurretButton(1480, 20));
 
 		// map
@@ -123,6 +127,10 @@ public class TowerDefense extends ApplicationAdapter {
 		for (ATower tower : towers) {
 			tower.displayHitbox();
 			tower.displayRangeHitbox();
+			if (tower instanceof SniperTower) {
+				SniperTower sniper = (SniperTower) tower;
+				sniper.sniperLaser();
+			}
 		}
 		for (AEnemy enemy : enemyList) {
 			enemy.displayHitbox();
@@ -150,6 +158,8 @@ public class TowerDefense extends ApplicationAdapter {
 		}
 
 		batch.begin();
+
+//		batch.draw(sniperTower.getImg(), sniperTower.getAxisX(), sniperTower.getAxisY());
 
 		bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2),
 				-Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
@@ -193,7 +203,7 @@ public class TowerDefense extends ApplicationAdapter {
 			if (frameCount % 1 == 0) {
 
 				if (frameCount % 120 == 0) {
-					if (true) {
+					if (count < 50) {
 						spawnNewEnemy("Zombie");
 					}
 					count++;
@@ -212,7 +222,8 @@ public class TowerDefense extends ApplicationAdapter {
 				AEnemy enemy = enemyList.get(i);
 
 				if (enemy.isDead()) {
-					enemyList.remove(i);
+
+					enemyList.remove(enemy);
 				}
 			}
 
@@ -377,6 +388,7 @@ public class TowerDefense extends ApplicationAdapter {
 		batch.dispose();
 		map.dispose();
 		mapRenderer.dispose();
+		System.gc();
 	}
 
 	void deleteTower(ATower tower) {

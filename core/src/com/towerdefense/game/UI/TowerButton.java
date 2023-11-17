@@ -17,9 +17,9 @@ public abstract class TowerButton extends Button {
     public boolean isOverlaping(ATower tower) {
         return this.hitbox.overlaps(tower.hitbox());
     }
-
+    TextureRegion drawImg = new TextureRegion(new Texture("white_pixel.png"));
     public void displayHitbox(int x, int y, SpriteBatch batch) {
-        TextureRegion drawImg = new TextureRegion(new Texture("white_pixel.png"));
+
         hitbox.x = x;
         hitbox.y = y;
 
