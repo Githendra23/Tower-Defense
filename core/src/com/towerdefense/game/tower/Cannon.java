@@ -13,9 +13,11 @@ public class Cannon extends ATower {
     private final float ATTACK_INTERVAL = (float) 1;
     private AEnemy enemy = null;
     private float spawnTimer = 0;
+    private int targetX;
+    private int targetY;
 
     public Cannon(int x, int y) {
-        super(200, 300, x, y, "defense/rocket_turret/turret.png");
+        super(20, 300, x, y, "defense/rocket_turret/turret.png");
         this.coolDown = 20;
         rocketList = new ArrayList<>();
     }
@@ -86,8 +88,6 @@ public class Cannon extends ATower {
 
         }
     }
-    int targetX;
-    int targetY;
     public void projectileMove()
     {
         for (HomingRocket rocket : rocketList) {
