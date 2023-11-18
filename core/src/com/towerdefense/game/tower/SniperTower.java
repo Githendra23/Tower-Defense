@@ -64,9 +64,12 @@ boolean isShooting;
     {
         System.out.println(targetX+"+"+targetY);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        if (isShooting==true) shapeRenderer.setColor(Color.YELLOW);
-        else shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
-        shapeRenderer.line(hitbox.x, hitbox.y+ hitbox().getHeight()-8, targetX, targetY);
+        if (isShooting==true) {
+            shapeRenderer.setColor(Color.YELLOW);
+            shapeRenderer.line(hitbox.x, hitbox.y+ hitbox().getHeight()-8, targetX, targetY);
+        }
+        shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
+        shapeRenderer.line(hitbox.x+30, hitbox.y+ hitbox().getHeight()-15, targetX, targetY);
         shapeRenderer.end();
     }
     public void projectileAim(AEnemy enemy) {
