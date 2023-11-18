@@ -45,7 +45,7 @@ boolean isShooting;
 //
 //                if (bullet.hitbox.overlaps(enemy.hitbox()) && this.isInRange(enemy)) {
 //                    bulletList.remove(i);
-                    enemy.loseHp(50);
+        if (isShooting)enemy.loseHp(100);
                 }
 
 

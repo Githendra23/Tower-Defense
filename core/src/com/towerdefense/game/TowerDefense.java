@@ -59,7 +59,7 @@ public class TowerDefense extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		sniperTower = new SniperTower(500,50);
+		sniperTower = new SniperTower(500,200);
 
 		batch = new SpriteBatch();
 		img = new Texture("turret.png");
