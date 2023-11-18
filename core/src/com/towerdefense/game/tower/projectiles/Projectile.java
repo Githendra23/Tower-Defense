@@ -100,4 +100,10 @@ public abstract class Projectile {
     public float getTargetCoordsY() {
         return targetCoords.getFAxisY();
     }
+
+    public void dispose() {
+        // Dispose of any resources used by Projectile
+        img.dispose();
+        sr.dispose();
+    }
 }

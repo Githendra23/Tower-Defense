@@ -17,7 +17,7 @@ public class Cannon extends ATower {
     private int targetY;
 
     public Cannon(int x, int y) {
-        super(20, 300, x, y, "defense/rocket_turret/turret.png");
+        super(200, 300, x, y, "defense/rocket_turret/turret.png");
         this.coolDown = 20;
         rocketList = new ArrayList<>();
 
@@ -53,7 +53,6 @@ public class Cannon extends ATower {
                 if (!rocketList.isEmpty())
                     rocketList.remove(0);
             }
-            return;
         }
 
         if (!rocketList.isEmpty()) {
@@ -64,7 +63,7 @@ public class Cannon extends ATower {
     }
 
     public void ProjectileHit(AEnemy enemy) {
-        if (this.enemy == null || this.enemy.isDead()) {
+        /*if (this.enemy == null || this.enemy.isDead()) {
             if (this.isInRange(enemy)) {
                 this.enemy = enemy;
             } else {
@@ -73,8 +72,7 @@ public class Cannon extends ATower {
                 if (!rocketList.isEmpty())
                     rocketList.remove(0);
             }
-            return;
-        }
+        }*/
 
         if (!rocketList.isEmpty()) {
             for (int i = 0; i < rocketList.size(); i++) {
@@ -86,9 +84,6 @@ public class Cannon extends ATower {
                 }
             }
         }
-        else {
-
-        }
     }
     public void projectileMove()
     {
@@ -98,18 +93,26 @@ public class Cannon extends ATower {
         }
     }
     public void projectileAim(AEnemy enemy) {
-        targetX=enemy.getAxisX();
-        targetY= enemy.getAxisY();
-        if (this.enemy == null || this.enemy.isDead()) {
+        /*if (this.enemy == null || this.enemy.isDead()) {
             if (this.isInRange(enemy)) {
+                this.enemy = enemy;
 
+                targetX=this.enemy.getAxisX();
+                targetY= this.enemy.getAxisY();
             } else {
                 this.enemy = null;
 
                 if (!rocketList.isEmpty())
                     rocketList.remove(0);
             }
-            return;
+        } else {
+            targetX=this.enemy.getAxisX();
+            targetY= this.enemy.getAxisY();
+        }*/
+
+        if (this.enemy != null) {
+            targetX = this.enemy.getAxisX();
+            targetY = this.enemy.getAxisY();
         }
 
 //        if (!rocketList.isEmpty()) {
@@ -117,20 +120,18 @@ public class Cannon extends ATower {
 //                rocket.homing(this.enemy.getAxisX(), this.enemy.getAxisY());
 //                rocket.aim(this.enemy.getAxisX(), this.enemy.getAxisY());
 //            }
-        }
+    }
 
 
     public void drawProjectile(SpriteBatch batch) {
-        if (this.enemy == null || this.enemy.isDead()) {
+        /*if (this.enemy == null || this.enemy.isDead()) {
             if (!rocketList.isEmpty())
                 rocketList.remove(0);
-
-            return;
-        }
+        }*/
 
         if (!rocketList.isEmpty()) {
             for (HomingRocket rocket : rocketList) {
-                if (this.enemy == null || this.isInRange(this.enemy)) {
+                if (this.enemy != null) {
                     batch.draw(rocket.drawShadow(), rocket.getPositionX() + 20, rocket.getPositionY() - 20, 9, 9, 21, 7, 2, 2, rocket.getRotation());
                     batch.draw(rocket.drawRocket(), rocket.getPositionX(), rocket.getPositionY(), 9, 9, 21, 7, 2, 2, rocket.getRotation());
                 }
@@ -140,5 +141,13 @@ public class Cannon extends ATower {
 
     public List<HomingRocket> getProjectileList() {
         return rocketList;
+    }
+
+    @Override
+    public void dispose() {
+        // Dispose of any resources used by the Cannon
+        for (HomingRocket rocket : rocketList) {
+            rocket.dispose();
+        }
     }
 }

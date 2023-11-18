@@ -47,4 +47,12 @@ public class HomingRocket extends Projectile
         hitbox.x=positionX;
         hitbox.y=positionY;
     }
+
+    @Override
+    public void dispose() {
+        super.dispose(); // Dispose of the resources in the superclass
+
+        // Dispose of any additional resources used by HomingRocket
+        shadow.dispose();
+    }
 }

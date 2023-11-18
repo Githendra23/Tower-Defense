@@ -19,17 +19,17 @@ public class Bullet extends Projectile {
     }
 
     public void shootAt(float targetX, float targetY,int speed){
-
-//        if (positionX<targetX) positionX+=speed;
-//        if (positionX>targetX) positionX-=speed;
-//        if (positionY<targetY) positionY+=speed;
-//        if (positionY>targetY) positionY-=speed;
-
         float angle = (float) Math.atan2(targetY-getPositionY(),targetX-getPositionX());
         positionX = (int)(getPositionX()+Math.cos(angle)*speed);
         positionY = (int)(getPositionY()+Math.sin(angle)*speed);
         hitbox.x = getPositionX();
         hitbox.y = getPositionY();
+    }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        region.getTexture().dispose();
     }
 }
