@@ -46,7 +46,6 @@ public class GameMenuScreen implements Screen {
     private Castle castle;
     private List<ATower> towerList;
     private List<AEnemy> enemyList;
-    private boolean isPaused = false;
     private Texture menuPause;
     private PauseMenu pausemenu;
     private Button closeButton;
@@ -56,6 +55,7 @@ public class GameMenuScreen implements Screen {
     private MapObjects noTowerZoneObject, enemyPathObject;
     private boolean isTowerPlaceable = false;
     private RectangleMapObject randomRectangleObject;
+    private int mouseX, mouseY;
 
     public GameMenuScreen(final TowerDefense game) {
         this.game = game;
@@ -113,8 +113,8 @@ public class GameMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        int mouseX = Gdx.input.getX();
-        int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+        mouseX = Gdx.input.getX();
+        mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         frameCount++;
 
         // Render the map
@@ -133,11 +133,6 @@ public class GameMenuScreen implements Screen {
         }
         for (Projectile projectile : projectileArray) {
             projectile.displayHitbox();
-        }
-
-        // Render the map
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            isPaused = !isPaused;
         }
 
         castle.displayHitbox();
@@ -190,102 +185,6 @@ public class GameMenuScreen implements Screen {
             batch.draw(tower.getTexture(), tower.getAxisX(), tower.getAxisY());
         }
 
-        // pause condition
-        if (!isPaused) {
-            // all movements should be inside this condition
-            if (frameCount % 1 == 0) {
-
-                if (frameCount % 120 == 0) {
-                    if (true) {
-                        spawnNewEnemy("Zombie");
-                    }
-                    count++;
-                }
-
-                if (!enemyList.isEmpty()) {
-                    for (AEnemy enemy : enemyList) {
-                        enemy.attack(castle);
-                        enemy.move();
-                    }
-                }
-            }
-
-            // remove enemy when hp == 0
-            for (int i = 0; i < enemyList.size(); i++) {
-                AEnemy enemy = enemyList.get(i);
-
-                if (enemy.isDead()) {
-                    this.coins += enemy.getCoins();
-                    enemyList.remove(i);
-                }
-            }
-
-            for (TowerButton towerButton : towerButtonList) {
-                isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
-
-                if (towerButton.getIsSetPressed()) {
-                    batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
-                            mouseY);
-                    towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY,
-                            batch);
-
-                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-
-                        int count = 0;
-                        for (ATower tower : towerList) {
-                            if (!(towerButton.isOverlaping(tower))) {
-                                count++;
-                            }
-                        }
-
-                        if (count == towerList.size()) {
-                            if (isTowerPlaceable && this.coins - towerButton.getTowerPrice() >= 0) {
-                                this.coins -= towerButton.getTowerPrice();
-
-                                towerList.add(towerButton.getATower(
-                                        (int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
-                            }
-                        }
-                    }
-                }
-
-                if (towerButton.getIsSetPressed() && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-                    towerButton.setPressed(false);
-                }
-
-                if (towerButton.isClicked(mouseX, mouseY)) {
-                    towerButton.setPressed(true);
-                }
-            }
-
-            // towers shooting projectiles
-            for (ATower tower : towerList) {
-                tower.projectileMove();
-
-                for (int u = enemyList.size() - 1; u >= 0; u--) {
-                    AEnemy enemy = enemyList.get(u);
-                    if (tower.isInRange(enemy)) {
-                        tower.spawnProjectile(enemy.getAxisX(), enemy.getAxisY());
-
-                        tower.updateProjectile(enemy);
-                        tower.ProjectileHit(enemy);
-                        tower.projectileAim(enemy);
-                    }
-                }
-            }
-
-        } else {
-            float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
-            float centerY = Gdx.graphics.getHeight() / 2f - (pausemenu.getAxisY()) / 2f;
-
-            batch.draw(pausemenu.getImg(), centerX, centerY, 730, 370);
-            batch.draw(closeButton.getTexture(), 500, 500);
-
-            if (closeButton.isClicked(mouseX, mouseY)) {
-                isPaused = false;
-            }
-        }
-
         enemyPath();
         batch.end();
     }
@@ -297,12 +196,107 @@ public class GameMenuScreen implements Screen {
 
     @Override
     public void pause() {
+        batch.begin();
 
+        float centerX = Gdx.graphics.getWidth() / 2f - (pausemenu.getAxisX()) / 2f;
+        float centerY = Gdx.graphics.getHeight() / 2f - (pausemenu.getAxisY()) / 2f;
+
+        batch.draw(pausemenu.getImg(), centerX, centerY, 730, 370);
+        batch.draw(closeButton.getTexture(), 500, 500);
+
+        if (closeButton.isClicked(mouseX, mouseY)) {
+            game.resumeGame();
+        }
+
+        batch.end();
     }
 
     @Override
     public void resume() {
-        
+        batch.begin();
+
+        if (frameCount % 1 == 0) {
+
+            if (frameCount % 120 == 0) {
+                if (true) {
+                    spawnNewEnemy("Zombie");
+                }
+                count++;
+            }
+
+            if (!enemyList.isEmpty()) {
+                for (AEnemy enemy : enemyList) {
+                    enemy.attack(castle);
+                    enemy.move();
+                }
+            }
+        }
+
+        // remove enemy when hp == 0
+        for (int i = 0; i < enemyList.size(); i++) {
+            AEnemy enemy = enemyList.get(i);
+
+            if (enemy.isDead()) {
+                this.coins += enemy.getCoins();
+                enemyList.remove(i);
+            }
+        }
+
+        for (TowerButton towerButton : towerButtonList) {
+            isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
+
+            if (towerButton.getIsSetPressed()) {
+                batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
+                        mouseY);
+                towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY,
+                        batch);
+
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+
+                    int count = 0;
+                    for (ATower tower : towerList) {
+                        if (!(towerButton.isOverlaping(tower))) {
+                            count++;
+                        }
+                    }
+
+                    if (count == towerList.size()) {
+                        if (isTowerPlaceable && this.coins - towerButton.getTowerPrice() >= 0) {
+                            this.coins -= towerButton.getTowerPrice();
+
+                            towerList.add(towerButton.getATower(
+                                    (int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+                        }
+                    }
+                }
+            }
+
+            if (towerButton.getIsSetPressed() && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+                towerButton.setPressed(false);
+            }
+
+            if (towerButton.isClicked(mouseX, mouseY)) {
+                towerButton.setPressed(true);
+            }
+        }
+
+        // towers shooting projectiles
+        for (ATower tower : towerList) {
+            tower.projectileMove();
+
+            for (int u = enemyList.size() - 1; u >= 0; u--) {
+                AEnemy enemy = enemyList.get(u);
+                if (tower.isInRange(enemy)) {
+                    tower.spawnProjectile(enemy.getAxisX(), enemy.getAxisY());
+
+                    tower.updateProjectile(enemy);
+                    tower.ProjectileHit(enemy);
+                    tower.projectileAim(enemy);
+                }
+            }
+        }
+
+        batch.end();
     }
 
     @Override
