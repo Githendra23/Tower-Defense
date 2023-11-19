@@ -6,4 +6,5 @@ public interface ITower {
     public int getDamage();
     public int getRange();
     public void levelUp(int addDamage);
+    public void dispose();
 }

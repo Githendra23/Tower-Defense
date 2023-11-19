@@ -3,49 +3,50 @@ package com.towerdefense.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.towerdefense.game.TowerDefense;
+import com.towerdefense.game.UI.StartButton;
 
 public class StartMenuScreen implements Screen {
     private final TowerDefense game;
-    private Stage stage;
-    private Viewport viewport;
-    private OrthographicCamera camera;
+    private final SpriteBatch batch;
+    private final Texture background;
+    private StartButton startButton;
+    private int mouseX, mouseY;
 
     public StartMenuScreen(TowerDefense game) {
         this.game = game;
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-        stage = new Stage(viewport, new SpriteBatch());
+        this.batch = new SpriteBatch();
+        this.background = new Texture("background_img.png");
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        int centerWidth = Gdx.graphics.getWidth() / 2;
+        int centerHeight = Gdx.graphics.getHeight() / 2;
+
+        startButton = new StartButton(0, 0, "start_button.png");
+        startButton.setCoords(centerWidth - (startButton.getTexture().getRegionWidth() / 2), centerHeight - (startButton.getTexture().getRegionHeight() / 2));
     }
 
     @Override
     public void render(float delta) {
+        mouseX = Gdx.input.getX();
+        mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+        batch.begin();
+        batch.draw(background, 0, 0, 1600, 960);
+        batch.draw(startButton.getTexture(), startButton.getAxisX(), startButton.getAxisY());
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+
     }
 
     @Override
@@ -55,7 +56,9 @@ public class StartMenuScreen implements Screen {
 
     @Override
     public void resume() {
-
+        if (startButton.isClicked(mouseX, mouseY)) {
+            game.startGame();
+        }
     }
 
     @Override
@@ -65,6 +68,8 @@ public class StartMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
+        background.dispose();
+        batch.dispose();
+        startButton.dispose();
     }
 }

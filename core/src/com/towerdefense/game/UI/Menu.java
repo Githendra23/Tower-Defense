@@ -31,4 +31,8 @@ public abstract class Menu {
     public TextureRegion getImg() {
         return this.img;
     }
+
+    public void dispose() {
+        img.getTexture().dispose();
+    }
 }

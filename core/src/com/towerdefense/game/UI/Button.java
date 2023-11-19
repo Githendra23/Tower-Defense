@@ -18,18 +18,16 @@ import javax.swing.*;
 
 public abstract class Button {
     protected TextureRegion img;
-    protected TextureRegion selectedImg;
     protected Coordinate coords;
     protected boolean isSetPressed = false;
     protected Rectangle hitbox;
     protected ShapeRenderer shapeRenderer;
 
 
-    public Button(int x, int y, String img, String selectedImg) {
+    public Button(int x, int y, String img) {
         this.coords = new Coordinate();
         this.img = new TextureRegion(new Texture(img));
-        this.selectedImg = new TextureRegion(new Texture(selectedImg));
-        this.hitbox = new Rectangle(x, y, this.selectedImg.getRegionWidth(), this.selectedImg.getRegionHeight());
+        this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
         this.shapeRenderer = new ShapeRenderer();
         this.setCoords(x, y);
     }
@@ -62,15 +60,16 @@ public abstract class Button {
         return Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && this.isMouseInside(mouseX, mouseY);
     }
 
-    public TextureRegion getSelectedImg() {
-        return this.selectedImg;
-    }
-
     public void setPressed(boolean is) {
         this.isSetPressed = is;
     }
 
     public boolean getIsSetPressed() {
         return this.isSetPressed;
+    }
+
+    public void dispose() {
+        img.getTexture().dispose();
+        shapeRenderer.dispose();
     }
 }

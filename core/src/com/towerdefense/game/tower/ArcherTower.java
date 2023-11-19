@@ -87,4 +87,13 @@ public class ArcherTower extends ATower {
     public List<Bullet> getProjectileList() {
         return bulletList;
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        for (Bullet bullet : bulletList) {
+            bullet.dispose();
+        }
+    }
 }

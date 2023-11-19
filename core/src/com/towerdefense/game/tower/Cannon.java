@@ -145,7 +145,8 @@ public class Cannon extends ATower {
 
     @Override
     public void dispose() {
-        // Dispose of any resources used by the Cannon
+        super.dispose();
+
         for (HomingRocket rocket : rocketList) {
             rocket.dispose();
         }

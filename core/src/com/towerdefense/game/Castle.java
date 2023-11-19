@@ -66,4 +66,13 @@ public class Castle extends Coordinate {
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
     }
+
+    public boolean isDestroyed() {
+        return this.hp == 0;
+    }
+
+    public void dispose() {
+        img.getTexture().dispose();
+        shapeRenderer.dispose();
+    }
 }

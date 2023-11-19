@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.towerdefense.game.tower.ATower;
 
 public abstract class TowerButton extends Button {
+    protected TextureRegion selectedImg;
     protected int towerPrice = 0;
     public TowerButton(int x, int y, String img, String selectedImg) {
-        super(x, y, img, selectedImg);
+        super(x, y, img);
+        this.selectedImg = new TextureRegion(new Texture(selectedImg));
     }
 
     public boolean isOverlaping(ATower tower) {
@@ -38,6 +40,14 @@ public abstract class TowerButton extends Button {
     public int getTowerPrice() {
         return this.towerPrice;
     }
+    public TextureRegion getSelectedImg() {
+        return this.selectedImg;
+    }
 
     public abstract ATower getATower(int x, int y);
+
+    public void dispose() {
+        super.dispose();
+        selectedImg.getTexture().dispose();
+    }
 }

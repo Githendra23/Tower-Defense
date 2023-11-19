@@ -136,11 +136,6 @@ public abstract class ATower implements ITower {
         return this.price;
     }
 
-    public void dispose() {
-        // Dispose of any resources used by ATower
-        img.getTexture().dispose();
-    }
-
     public abstract void projectileAim(AEnemy enemy);
     public abstract void ProjectileHit(AEnemy enemy);
 
@@ -148,4 +143,9 @@ public abstract class ATower implements ITower {
     public abstract void spawnProjectile(int x, int y);
     public abstract void drawProjectile(SpriteBatch batch);
     public abstract void projectileMove();
+
+    public void dispose() {
+        img.getTexture().dispose();
+        shapeRenderer.dispose();
+    }
 }

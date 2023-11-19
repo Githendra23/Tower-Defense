@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class AEnemy implements IEnemy {
     private float attackTimer;
-    private static final float ATTACK_INTERVAL = 1.0f; // 1 second interval
+    private static float ATTACK_INTERVAL = 1.0f; // 1 second interval
     private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
     protected TextureRegion img;
     protected int speed;
@@ -183,5 +183,13 @@ public abstract class AEnemy implements IEnemy {
 
     public float[] getVertices() {
         return this.vertices;
+    }
+
+    public void setAttackDelay(float delay) {
+        ATTACK_INTERVAL = delay;
+    }
+    public void dispose() {
+        img.getTexture().dispose();
+        shapeRenderer.dispose();
     }
 }

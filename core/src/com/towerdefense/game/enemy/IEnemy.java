@@ -22,4 +22,6 @@ public interface IEnemy {
     public void loseHp(int hp);
 
     public TextureRegion getImg();
+
+    public void dispose();
 }

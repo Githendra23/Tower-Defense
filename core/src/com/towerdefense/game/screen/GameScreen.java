@@ -26,20 +26,18 @@ import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
 import com.towerdefense.game.enemy.Zombie;
 import com.towerdefense.game.tower.ATower;
-import com.towerdefense.game.tower.projectiles.Bullet;
 import com.towerdefense.game.tower.projectiles.Projectile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameMenuScreen implements Screen {
+public class GameScreen implements Screen {
     private final TowerDefense game;
     private int coins = 200;
     private double frameCount = 0;
     private SpriteBatch batch;
     private BitmapFont font;
     private Texture img;
-    private final Array<Projectile> projectileArray = new Array<Projectile>();
     private final Array<ATower> towers = new Array<ATower>();
     private List<TowerButton> towerButtonList;
 
@@ -57,15 +55,13 @@ public class GameMenuScreen implements Screen {
     private RectangleMapObject randomRectangleObject;
     private int mouseX, mouseY;
 
-    public GameMenuScreen(final TowerDefense game) {
+    public GameScreen(final TowerDefense game) {
         this.game = game;
     }
 
     int count = 1;
     @Override
     public void show() {
-        System.out.println("SHOW");
-
         batch = new SpriteBatch();
         img = new Texture("turret.png");
         font = new BitmapFont();
@@ -100,13 +96,6 @@ public class GameMenuScreen implements Screen {
         pausemenu = new PauseMenu();
         closeButton = new CloseButton(500, 500);
 
-        // mouse cursor
-        Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png")); // Make sure the path is correct
-        int xHotspot = 15, yHotspot = 15;
-        Cursor cursor = Gdx.graphics.newCursor(pixmapMouse, xHotspot, yHotspot);
-        pixmapMouse.dispose();
-        Gdx.graphics.setCursor(cursor);
-
         font = new BitmapFont();
         font.setColor(1, 1, 1, 1); // Set the font color (white in this example)
     }
@@ -130,9 +119,6 @@ public class GameMenuScreen implements Screen {
         }
         for (AEnemy enemy : enemyList) {
             enemy.displayHitbox();
-        }
-        for (Projectile projectile : projectileArray) {
-            projectile.displayHitbox();
         }
 
         castle.displayHitbox();
@@ -214,6 +200,10 @@ public class GameMenuScreen implements Screen {
     @Override
     public void resume() {
         batch.begin();
+
+        if (castle.isDestroyed()) {
+            game.gameOver();
+        }
 
         if (frameCount % 1 == 0) {
 
@@ -389,13 +379,6 @@ public class GameMenuScreen implements Screen {
         return vertices;
     }
 
-    void deleteTower(ATower tower) {
-        for (int i = 0; i < towerList.size(); i++) {
-            if (tower == towerList.get(i))
-                projectileArray.removeIndex(i);
-        }
-    }
-
     void deleteTower(int index) {
         towerList.remove(index);
     }
@@ -403,8 +386,26 @@ public class GameMenuScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        img.dispose();
         font.dispose();
+        img.dispose();
+        castle.dispose();
+        pausemenu.dispose();
         menuPause.dispose();
+        closeButton.dispose();
+
+        for (ATower tower : towers) {
+            tower.dispose();
+        }
+
+        for (ATower tower : towerList) {
+            tower.dispose();
+        }
+
+        for (AEnemy enemy : enemyList) {
+            enemy.dispose();
+        }
+
+        map.dispose();
+        mapRenderer.dispose();
     }
 }
