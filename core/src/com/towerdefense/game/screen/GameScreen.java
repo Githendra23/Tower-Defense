@@ -162,7 +162,7 @@ public class GameScreen implements Screen {
         }
 
         for (ATower tower : towerList) {
-            batch.draw(tower.getImg(), tower.getAxisX(), tower.getAxisY());
+            batch.draw(tower.animation(), tower.getAxisX(), tower.getAxisY());
             tower.drawProjectile(batch);
         }
 

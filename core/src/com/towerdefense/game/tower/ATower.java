@@ -1,7 +1,9 @@
 package com.towerdefense.game.tower;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,6 +17,9 @@ public abstract class ATower implements ITower {
     protected int range;
     protected int damage;
     protected boolean isAreaDamage = false;
+    private Texture textureSheet;
+    private Animation<TextureRegion> animation = null;
+    private float elapsedTime = 0f;
     protected int level = 1;
     protected int price = 0;
     protected int targetNumber;
@@ -120,6 +125,25 @@ public abstract class ATower implements ITower {
         shapeRenderer.end();
     }
 
+    public void addAnimation(String sheetImg, int tileWidth, int tileHeight) {
+        textureSheet = new Texture(sheetImg);
+        // Define the regions in the texture for each frame of the animation
+        TextureRegion[][] textureRegions = TextureRegion.split(textureSheet, tileWidth, tileHeight); // Adjust the size based on your frames
+
+        // Flatten the 2D array into a 1D array for the Animation constructor
+        TextureRegion[] animationFrames = textureRegions[0];
+
+        // Create the animation with a frame duration of 0.25 seconds between frames
+        animation = new Animation<>(0.25f, animationFrames);
+    }
+
+    public TextureRegion animation() {
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentFrame = animation.getKeyFrame(elapsedTime, false);
+
+        return currentFrame;
+    }
+
     public void attack(AEnemy enemy) {
         enemy.loseHp(this.damage);
     }
@@ -147,5 +171,15 @@ public abstract class ATower implements ITower {
     public void dispose() {
         img.getTexture().dispose();
         shapeRenderer.dispose();
+
+        if (textureSheet != null) {
+            textureSheet.dispose();
+        }
+
+        if (animation != null) {
+            for (TextureRegion region : animation.getKeyFrames()) {
+                region.getTexture().dispose();
+            }
+        }
     }
 }

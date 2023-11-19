@@ -22,6 +22,8 @@ public class RocketTurret extends ATower {
         rocketList = new ArrayList<>();
 
         this.price = 50;
+
+        this.addAnimation("defense/rocket_turret/rocket_turret_sheet.png", 39, 35);
     }
 
     @Override
