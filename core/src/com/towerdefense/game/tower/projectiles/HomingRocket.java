@@ -8,9 +8,9 @@ public class HomingRocket extends Projectile
     TextureRegion region;
     private float speedX=0;
     private float speedY=0;
-    protected Texture shadow= new Texture("rocket_shadow.png");
+    protected Texture shadow= new Texture("defense/rocket_turret/rocket_shadow.png");
     public HomingRocket(int positionX, int positionY) {
-        super(positionX, positionY, 2,2, new Texture("rocket.png"));
+        super(positionX, positionY, 2,2, new Texture("defense/rocket_turret/rocket.png"));
 
         region=new TextureRegion(img);
 //        homing(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)));

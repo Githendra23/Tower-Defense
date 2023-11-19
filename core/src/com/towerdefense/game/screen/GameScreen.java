@@ -37,7 +37,6 @@ public class GameScreen implements Screen {
     private double frameCount = 0;
     private SpriteBatch batch;
     private BitmapFont font;
-    private Texture img;
     private final Array<ATower> towers = new Array<ATower>();
     private List<TowerButton> towerButtonList;
 
@@ -63,12 +62,11 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        img = new Texture("turret.png");
         font = new BitmapFont();
 
         castle = new Castle(2000, 1400, 350);
         pausemenu = new PauseMenu();
-        menuPause = new Texture("menu.png");
+        menuPause = new Texture("UI/menu.png");
         closeButton = new CloseButton(500, 500);
         towerButtonList = new ArrayList<>();
         towerButtonList.add(new RocketTurretButton(1480, 20));
@@ -389,7 +387,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
-        img.dispose();
         castle.dispose();
         pausemenu.dispose();
         menuPause.dispose();

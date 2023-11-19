@@ -26,7 +26,7 @@ public class StartMenuScreen implements Screen {
         int centerWidth = Gdx.graphics.getWidth() / 2;
         int centerHeight = Gdx.graphics.getHeight() / 2;
 
-        startButton = new StartButton(0, 0, "start_button.png");
+        startButton = new StartButton(0, 0);
         startButton.setCoords(centerWidth - (startButton.getTexture().getRegionWidth() / 2), centerHeight - (startButton.getTexture().getRegionHeight() / 2));
     }
 

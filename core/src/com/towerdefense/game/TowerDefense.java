@@ -19,7 +19,7 @@ public class TowerDefense extends Game {
 	@Override
 	public void create() {
 		// mouse cursor
-		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("mouse.png"));
+		Pixmap pixmapMouse = new Pixmap(Gdx.files.internal("UI/mouse.png"));
 		int xHotspot = 15, yHotspot = 15;
 		Cursor cursor = Gdx.graphics.newCursor(pixmapMouse, xHotspot, yHotspot);
 		pixmapMouse.dispose();
