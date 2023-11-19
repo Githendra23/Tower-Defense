@@ -29,6 +29,7 @@ import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.projectiles.Projectile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameScreen implements Screen {
@@ -405,14 +406,18 @@ public class GameScreen implements Screen {
     }
 
     public void clearGameEntities() {
-        for (ATower tower : towerList) {
+        Iterator<ATower> towerIterator = towerList.iterator();
+        while (towerIterator.hasNext()) {
+            ATower tower = towerIterator.next();
             tower.dispose();
-            towerList.remove(tower);
+            towerIterator.remove();
         }
 
-        for (AEnemy enemy : enemyList) {
+        Iterator<AEnemy> enemyIterator = enemyList.iterator();
+        while (enemyIterator.hasNext()) {
+            AEnemy enemy = enemyIterator.next();
             enemy.dispose();
-            enemyList.remove(enemy);
+            enemyIterator.remove();
         }
     }
 }

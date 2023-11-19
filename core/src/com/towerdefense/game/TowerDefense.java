@@ -62,6 +62,7 @@ public class TowerDefense extends Game {
 	}
 
 	public void closeGame() {
+		this.dispose();
 		Gdx.app.exit();
 	}
 

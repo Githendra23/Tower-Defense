@@ -17,7 +17,7 @@ public class RocketTurret extends ATower {
     private int targetY;
 
     public RocketTurret(int x, int y) {
-        super(200, 300, x, y, "defense/rocket_turret/rocket_turret.png");
+        super(20, 300, x, y, "defense/rocket_turret/rocket_turret.png");
         this.coolDown = 20;
         rocketList = new ArrayList<>();
 
