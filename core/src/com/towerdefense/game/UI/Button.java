@@ -2,21 +2,13 @@ package com.towerdefense.game.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.towerdefense.game.Coordinate;
-import com.towerdefense.game.NoSuchGameException;
 import com.badlogic.gdx.math.Rectangle;
-import com.towerdefense.game.tower.ATower;
 
-import javax.swing.*;
-
-public abstract class Button {
+public abstract class Button implements IButton {
     protected TextureRegion img;
     protected Coordinate coords;
     protected boolean isSetPressed = false;

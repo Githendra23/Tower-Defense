@@ -60,6 +60,8 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        batch.dispose();
+        background.dispose();
+        gameover.dispose();
     }
 }
