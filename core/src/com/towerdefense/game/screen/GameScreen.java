@@ -155,7 +155,7 @@ public class GameScreen implements Screen {
 
         // display mobs
         batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
-        System.out.println(this.coins);
+
         for (AEnemy enemy : enemyList) {
             if (!enemyList.isEmpty()) {
                 batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
@@ -202,6 +202,7 @@ public class GameScreen implements Screen {
         batch.begin();
 
         if (castle.isDestroyed()) {
+            clearGameEntities();
             game.gameOver();
         }
 
@@ -228,12 +229,13 @@ public class GameScreen implements Screen {
 
             if (enemy.isDead()) {
                 this.coins += enemy.getCoins();
+                enemy.dispose();
                 enemyList.remove(i);
             }
         }
 
         for (TowerButton towerButton : towerButtonList) {
-            isTowerPlaceable = canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - (towerButton.getTexture().getRegionWidth() / 2), mouseY);
+            isTowerPlaceable = canPlaceTower(mouseX - ((float) towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - ((float) towerButton.getTexture().getRegionWidth() / 2), mouseY);
 
             if (towerButton.getIsSetPressed()) {
                 batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
@@ -393,10 +395,6 @@ public class GameScreen implements Screen {
         menuPause.dispose();
         closeButton.dispose();
 
-        for (ATower tower : towers) {
-            tower.dispose();
-        }
-
         for (ATower tower : towerList) {
             tower.dispose();
         }
@@ -407,5 +405,17 @@ public class GameScreen implements Screen {
 
         map.dispose();
         mapRenderer.dispose();
+    }
+
+    public void clearGameEntities() {
+        for (ATower tower : towerList) {
+            tower.dispose();
+            towerList.remove(tower);
+        }
+
+        for (AEnemy enemy : enemyList) {
+            enemy.dispose();
+            enemyList.remove(enemy);
+        }
     }
 }

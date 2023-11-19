@@ -8,7 +8,7 @@ import com.towerdefense.game.tower.projectiles.HomingRocket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cannon extends ATower {
+public class RocketTurret extends ATower {
     private final List<HomingRocket> rocketList;
     private final float ATTACK_INTERVAL = (float) 1;
     private AEnemy enemy = null;
@@ -16,7 +16,7 @@ public class Cannon extends ATower {
     private int targetX;
     private int targetY;
 
-    public Cannon(int x, int y) {
+    public RocketTurret(int x, int y) {
         super(200, 300, x, y, "defense/rocket_turret/turret.png");
         this.coolDown = 20;
         rocketList = new ArrayList<>();
@@ -79,6 +79,7 @@ public class Cannon extends ATower {
                 HomingRocket rocket = rocketList.get(i);
 
                 if (rocket.hitbox.overlaps(this.enemy.hitbox())) {
+                    rocket.dispose();
                     rocketList.remove(rocket);
                     this.enemy.loseHp(this.damage);
                 }

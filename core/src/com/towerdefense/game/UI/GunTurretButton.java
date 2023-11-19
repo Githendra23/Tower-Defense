@@ -1,7 +1,7 @@
 package com.towerdefense.game.UI;
 
 import com.towerdefense.game.tower.ATower;
-import com.towerdefense.game.tower.ArcherTower;
+import com.towerdefense.game.tower.GunTurret;
 
 public class GunTurretButton extends TowerButton {
     public GunTurretButton(int x, int y) {
@@ -10,6 +10,6 @@ public class GunTurretButton extends TowerButton {
 
     @Override
     public ATower getATower(int x, int y) {
-        return new ArcherTower(x, y);
+        return new GunTurret(x, y);
     }
 }

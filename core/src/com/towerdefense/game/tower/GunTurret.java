@@ -4,16 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.tower.projectiles.Bullet;
-import com.towerdefense.game.tower.projectiles.HomingRocket;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArcherTower extends ATower {
+public class GunTurret extends ATower {
     protected final List<Bullet> bulletList;
     private final float ATTACK_INTERVAL = (float) 1;
     private float spawnTimer = 0;
-    public ArcherTower(int x, int y) {
+    public GunTurret(int x, int y) {
         super(50, 200, x, y, "gun.png");
         this.coolDown = 20;
         bulletList = new ArrayList<>();
