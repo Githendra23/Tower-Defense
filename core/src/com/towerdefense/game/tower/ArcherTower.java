@@ -66,8 +66,8 @@ public class ArcherTower extends ATower {
         }
     }
     public void projectileAim(AEnemy enemy) {
-        targetX=enemy.getAxisX();
-        targetY= enemy.getAxisY();
+        targetX=enemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY= enemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
         if (!bulletList.isEmpty()) {
             for (Bullet bullet : bulletList) {
                 bullet.shootAt(bullet.getTargetCoordsX(), bullet.getTargetCoordsY(), this.getDamage());

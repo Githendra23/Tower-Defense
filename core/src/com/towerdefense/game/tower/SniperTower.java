@@ -55,34 +55,43 @@ boolean isShooting;
     public void projectileMove()
     {
         isShooting=false;
+        isAiming=false;
 //        for (Bullet bullet : bulletList) {
 //            bullet.shootAt(targetX, targetY,20);
 //            bullet.aim(targetX, targetY);
 //        }
     }
-    public void sniperLaser()
-    {
-        System.out.println(targetX+"+"+targetY);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        if (isShooting==true) {
-            shapeRenderer.setColor(Color.YELLOW);
-            shapeRenderer.line(hitbox.x, hitbox.y+ hitbox().getHeight()-8, targetX, targetY);
-        }
-        shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
-        shapeRenderer.line(hitbox.x+30, hitbox.y+ hitbox().getHeight()-15, targetX, targetY);
-        shapeRenderer.end();
-    }
+    protected boolean isAiming=true;
+
     public void projectileAim(AEnemy enemy) {
-        System.out.println(targetX+"+"+targetY);
-        targetX=enemy.getAxisX();
-        targetY= enemy.getAxisY();
+//        System.out.println(targetX+"+"+targetY);
+        isAiming=true;
+        targetX=enemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY= enemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
         if (!bulletList.isEmpty()) {
             for (Bullet bullet : bulletList) {
                 bullet.shootAt(bullet.getTargetCoordsX(), bullet.getTargetCoordsY(), this.getDamage());
                 bullet.aim(bullet.getTargetCoordsX(), bullet.getTargetCoordsY());
+
             }
         }
-        sniperLaser();
+//        sniperLaser();
+    }
+    public void sniperLaser()
+    {
+        System.out.println("Aiming: "+isAiming);
+        if (isAiming)
+        {
+            System.out.println(targetX+"+"+targetY);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            if (isShooting) {
+                shapeRenderer.setColor(Color.YELLOW);
+                shapeRenderer.line(hitbox.x, hitbox.y + hitbox().getHeight() - 8, targetX, targetY);
+            }
+            shapeRenderer.setColor(Color.RED); // Set the color of the hitbox
+            shapeRenderer.line(hitbox.x + 30, hitbox.y + hitbox().getHeight() - 15, targetX, targetY);
+            shapeRenderer.end();
+        }
     }
 
     public void drawProjectile(SpriteBatch batch) {

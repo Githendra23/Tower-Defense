@@ -124,13 +124,10 @@ public class TowerDefense extends ApplicationAdapter {
 		mapRenderer.setView(camera);
 		mapRenderer.render();
 
-		for (ATower tower : towers) {
+		for (ATower tower : towerList) {
 			tower.displayHitbox();
 			tower.displayRangeHitbox();
-			if (tower instanceof SniperTower) {
-				SniperTower sniper = (SniperTower) tower;
-				sniper.sniperLaser();
-			}
+			System.out.println(tower);
 		}
 		for (AEnemy enemy : enemyList) {
 			enemy.displayHitbox();
@@ -296,6 +293,12 @@ public class TowerDefense extends ApplicationAdapter {
 
 		enemyPath();
 		batch.end();
+		for (ATower tower : towerList) {
+			if (tower instanceof SniperTower) {
+				SniperTower sniper = (SniperTower) tower;
+				sniper.sniperLaser();
+			}
+		}
 	}
 
 	private boolean isMouseInsideObject(float mouseX, float mouseY) {

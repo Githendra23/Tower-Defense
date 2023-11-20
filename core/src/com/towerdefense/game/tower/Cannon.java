@@ -98,8 +98,8 @@ public class Cannon extends ATower {
         }
     }
     public void projectileAim(AEnemy enemy) {
-        targetX=enemy.getAxisX();
-        targetY= enemy.getAxisY();
+        targetX=enemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY= enemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
         if (this.enemy == null || this.enemy.isDead()) {
             if (this.isInRange(enemy)) {
 
