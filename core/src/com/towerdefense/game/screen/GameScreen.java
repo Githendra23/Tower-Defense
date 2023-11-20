@@ -25,6 +25,7 @@ import com.towerdefense.game.TowerDefense;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.*;
 import com.towerdefense.game.tower.ATower;
+import com.towerdefense.game.tower.SniperTower;
 import com.towerdefense.game.tower.projectiles.Projectile;
 
 import java.util.ArrayList;
@@ -65,15 +66,14 @@ public class GameScreen implements Screen {
         font = new BitmapFont();
 
         coins = new Coin(200, 20, 20);
-        castle = new Castle(2000, 1280, 390);
+        castle = new Castle(2000, 1280, 490);
         pausemenu = new PauseMenu();
         menuPause = new Texture("UI/menu.png");
         closeButton = new CloseButton(500, 500);
         towerButtonList = new ArrayList<>();
         towerButtonList.add(new RocketTurretButton(1480, 20));
         towerButtonList.add(new GunTurretButton(1400, 20));
-
-        towerButtonList.add(new SniperTowerButton(1360, 20));
+        towerButtonList.add(new SniperTowerButton(1310, 20));
 
         towerList = new ArrayList<>();
         enemyList = new ArrayList<>();
@@ -123,8 +123,6 @@ public class GameScreen implements Screen {
                 enemy.displayHitbox();
             }
 
-            castle.displayHitbox();
-
             for (ATower tower : towerList) {
                 tower.displayHitbox();
                 tower.displayRangeHitbox();
@@ -133,6 +131,13 @@ public class GameScreen implements Screen {
             for (AEnemy enemy : enemyList) {
                 if (!enemyList.isEmpty()) {
                     enemy.displayHitbox();
+                }
+            }
+
+            for (ATower tower : towerList) {
+                if (tower instanceof SniperTower) {
+                    SniperTower sniper = (SniperTower) tower;
+                    sniper.sniperLaser();
                 }
             }
 

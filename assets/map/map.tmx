@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="52">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="54">
  <tileset firstgid="1" source="map tileset.tsx"/>
  <layer id="1" name="GroundTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2DEOgzAMheGgQIdOpQPt0LJ1YOYaHIqj90XCG26FghQ/8PDv/pREiRJDCBMaUEPaBVUoohd6L56WrPviEEvqZmCuHId0FEfaX2x7a80hZ4XJsuZgtGgOsbCclV8OpjN/JMeodEUPkp7oozQT5Q5bucNW7rDVGRxdKH+/bbkHoxLLm+Tf+8od7tjbURuYLdfBZtAcTPtJczCuhTjS7PJPWnqeHIf86zLXoy9sz/t7
+   eJzt2DEOwjAMQNGgADMwQAdgY2DmGhyqR8eRagkhO23iOMRVhr9RNU91aBXvnHtDT2hntD20gTx0hW6T52is0+RAS+jQwLokDmwtjjBf1maLcuBeoSyXAtVyxCxhHaOg2g60/O4Viw5qz387UmapdceSe9RyvJi2hdZUy/Fgot4jWg7pf+Dg+Jk6M9doOUZBQ+R5zF3bHfO/yZkrzsHNVeq7Ocehvc9z6o7usOzwTFoOjW+w2PeVhmNJ3aHvSK2Ug/rWbTnKYc3AOdZw7mPxWaAjrB3PSf+9HokDz3Utd4c+P36m8Q==
   </data>
  </layer>
  <layer id="3" name="waterTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0rENACAMA0FvlgmBlWGAVDQY609yn5ciSaUcpaweeEn6LVqALKPZPFsvj7pAhxc6vNDhhQ4vKR0AAOB/G/ALKCc=
+   eJzt08ENABAQRNERhW2FaJkCuLhYk/+SufvJkqSQj5BXD3Jxui1aAC/lsN+4dLhom/W18fJRF1w66mG/cfnndORCBwAAyGICWD8Jcw==
   </data>
  </layer>
- <objectgroup id="10" name="nonTowerZone">
-  <object id="44" x="0" y="-0.333333">
-   <properties>
-    <property name="blocked" type="bool" value="true"/>
-   </properties>
-   <polygon points="0,0 33,-0.333333 32.6667,17 65,17 64.6667,49.3333 128.667,49 128.667,145.333 161,145.667 161,177.667 192.667,177.667 192.667,209.333 224.667,209.333 224.667,320.333 1599.33,320.333 1599.67,640.333 192.333,640.333 192.333,768.667 160.333,769 160.333,800.333 128.333,800.667 128.333,864.333 96.3333,864.667 96.3333,896.667 0.333333,897"/>
-  </object>
+ <objectgroup id="10" name="nonTowerZone" visible="0">
   <object id="46" x="-14.6515" y="864.952" width="1632.33" height="125.112">
    <properties>
     <property name="blocked" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="53" x="0" y="0">
+   <polygon points="0,0 32,0 32.25,17 64.75,17 64.5,49.25 128.25,49.25 128.25,145 160.25,145.25 160.5,177 192.25,177 192.25,209.75 224.25,209.5 224,320 192,320 192,384 352,384 352,160 896,160 896,640 1056,640 1056,352 1600,352 1600,480 1184,480 1184,768 768,768 768,288 480,288 480,512 192,512 192,768 160,768 160,800 128,800 128,864 96,864 96,896 0,896"/>
+  </object>
  </objectgroup>
- <objectgroup id="9" name="startPoint">
-  <object id="36" x="0" y="428.96" width="54.6139" height="101.112"/>
+ <objectgroup id="9" name="startPoint" visible="0">
+  <object id="36" x="0" y="437.96" width="54.6139" height="18.4453"/>
  </objectgroup>
  <objectgroup id="6" name="enemyPathLayer">
   <object id="48" x="0" y="480">
-   <polyline points="0,0 352,0 352,-96 1184,-96 1184,0 1440,0"/>
+   <polyline points="0,-32 394.674,-31.9948 395,-256 810.667,-256 810.682,224.003 1100.65,224.003 1101.33,-64 1536,-64"/>
   </object>
  </objectgroup>
 </map>

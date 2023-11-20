@@ -19,6 +19,8 @@ public class SniperTower extends ATower {
         this.coolDown = 20;
         bulletList = new ArrayList<>();
 
+        this.price = 100;
+
         this.addAnimation("defense/sniper_tower/sniper_sheet.png", this.img.getRegionWidth());
     }
     boolean isShooting;
@@ -88,7 +90,7 @@ public class SniperTower extends ATower {
         {
             System.out.println(targetX+"+"+targetY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            if (isShooting||canShoot) {
+            if (isShooting || canShoot) {
                 shapeRenderer.setColor(Color.YELLOW);
                 shapeRenderer.line(hitbox.x, hitbox.y + hitbox().getHeight() - 8, targetX, targetY);
             }
