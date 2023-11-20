@@ -19,9 +19,9 @@ public abstract class AEnemy implements IEnemy {
     private static float ATTACK_INTERVAL = 1.0f; // 1 second interval
     private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
     protected TextureRegion img;
-    private Texture textureSheet;
-    private Animation<TextureRegion> animation = null;
-    private float elapsedTime = 0f;
+    private Texture textureSheet, deadtextureSheet;
+    private Animation<TextureRegion> animation = null, deadAnimation = null;
+    private float elapsedTime = 0f, deadElapsedTime = 0f;
     protected int speed;
     protected int hp;
     protected int damage;
@@ -69,21 +69,41 @@ public abstract class AEnemy implements IEnemy {
     public int getDamage() {
         return this.damage;
     }
-    public void addAnimation(String sheetImg, int tileWidth, int tileHeight) {
+    public void addAnimation(String sheetImg, int tileWidth) {
         textureSheet = new Texture(sheetImg);
         // Define the regions in the texture for each frame of the animation
-        TextureRegion[][] textureRegions = TextureRegion.split(textureSheet, tileWidth, tileHeight); // Adjust the size based on your frames
+        TextureRegion[][] textureRegions = TextureRegion.split(textureSheet, tileWidth, textureSheet.getHeight()); // Adjust the size based on your frames
 
         // Flatten the 2D array into a 1D array for the Animation constructor
         TextureRegion[] animationFrames = textureRegions[0];
 
         // Create the animation with a frame duration of 0.25 seconds between frames
-        animation = new Animation<>(0.25f, animationFrames);
+        animation = new Animation<>(0.2f, animationFrames);
+    }
+
+    public void addDeadAnimation(String sheetImg, int tileWidth) {
+        deadtextureSheet = new Texture(sheetImg);
+
+        // Define the regions in the texture for each frame of the animation
+        TextureRegion[][] textureRegions = TextureRegion.split(deadtextureSheet, tileWidth, deadtextureSheet.getHeight()); // Adjust the size based on your frames
+
+        // Flatten the 2D array into a 1D array for the Animation constructor
+        TextureRegion[] animationFrames = textureRegions[0];
+
+        // Create the animation with a frame duration of 0.25 seconds between frames
+        deadAnimation = new Animation<>(0.2f, animationFrames);
     }
 
     public TextureRegion animation() {
         elapsedTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = animation.getKeyFrame(elapsedTime, false);
+
+        return currentFrame;
+    }
+
+    public TextureRegion deadAnimation() {
+        deadElapsedTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentFrame = deadAnimation.getKeyFrame(deadElapsedTime, false);
 
         return currentFrame;
     }

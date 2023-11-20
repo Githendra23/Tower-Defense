@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.towerdefense.game.Castle;
+import com.towerdefense.game.NoSuchGameException;
 import com.towerdefense.game.TowerDefense;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.AEnemy;
@@ -101,77 +102,82 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        mouseX = Gdx.input.getX();
-        mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-        frameCount++;
+        try {
+            mouseX = Gdx.input.getX();
+            mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            frameCount++;
 
-        // Render the map
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            // Render the map
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        mapRenderer.setView(camera);
-        mapRenderer.render();
+            mapRenderer.setView(camera);
+            mapRenderer.render();
 
-        for (ATower tower : towers) {
-            tower.displayHitbox();
-            tower.displayRangeHitbox();
-        }
-        for (AEnemy enemy : enemyList) {
-            enemy.displayHitbox();
-        }
-
-        castle.displayHitbox();
-
-        for (ATower tower : towerList) {
-            tower.displayHitbox();
-            tower.displayRangeHitbox();
-        }
-
-        for (AEnemy enemy : enemyList) {
-            if (!enemyList.isEmpty()) {
+            for (ATower tower : towers) {
+                tower.displayHitbox();
+                tower.displayRangeHitbox();
+            }
+            for (AEnemy enemy : enemyList) {
                 enemy.displayHitbox();
             }
-        }
 
-        batch.begin();
+            castle.displayHitbox();
 
-        // bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
-        // System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
-
-        /*
-         * if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-         * spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2),
-         * -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) /
-         * 2)));
-         * }
-         */
-
-        // display FPS
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
-
-        // display Coordinates of the mouse cursor
-        font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
-
-        // display mobs
-        batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
-
-        for (AEnemy enemy : enemyList) {
-            if (!enemyList.isEmpty()) {
-                batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
+            for (ATower tower : towerList) {
+                tower.displayHitbox();
+                tower.displayRangeHitbox();
             }
-        }
 
-        for (ATower tower : towerList) {
-            batch.draw(tower.animation(), tower.getAxisX(), tower.getAxisY());
-            tower.drawProjectile(batch);
-        }
+            for (AEnemy enemy : enemyList) {
+                if (!enemyList.isEmpty()) {
+                    enemy.displayHitbox();
+                }
+            }
 
-        for (TowerButton tower : towerButtonList) {
-            batch.draw(tower.getTexture(), tower.getAxisX(), tower.getAxisY());
-        }
+            batch.begin();
 
-        enemyPath();
-        batch.end();
+            // bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
+            // System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
+
+            /*
+             * if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+             * spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2),
+             * -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) /
+             * 2)));
+             * }
+             */
+
+            // display FPS
+            font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
+
+            // display Coordinates of the mouse cursor
+            font.draw(batch, "Mouse coords: " + mouseX + "X, " + mouseY + "Y", 10, Gdx.graphics.getHeight() - 30);
+
+            // display mobs
+            batch.draw(castle.getImg(), castle.getAxisX(), castle.getAxisY());
+
+            for (AEnemy enemy : enemyList) {
+                if (!enemyList.isEmpty()) {
+                    batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
+                }
+            }
+
+            for (ATower tower : towerList) {
+                batch.draw(tower.animation(), tower.getAxisX(), tower.getAxisY());
+                tower.drawProjectile(batch);
+            }
+
+            for (TowerButton tower : towerButtonList) {
+                batch.draw(tower.getTexture(), tower.getAxisX(), tower.getAxisY());
+            }
+
+            enemyPath();
+            batch.end();
+        }
+        catch (NoSuchGameException e) {
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -237,10 +243,8 @@ public class GameScreen implements Screen {
             isTowerPlaceable = canPlaceTower(mouseX - ((float) towerButton.getTexture().getRegionWidth() / 2), mouseY + towerButton.getTexture().getRegionHeight()) && canPlaceTower(mouseX - ((float) towerButton.getTexture().getRegionWidth() / 2), mouseY);
 
             if (towerButton.getIsSetPressed()) {
-                batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f),
-                        mouseY);
-                towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY,
-                        batch);
+                batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
+                // towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 
@@ -255,8 +259,7 @@ public class GameScreen implements Screen {
                         if (isTowerPlaceable && this.coins - towerButton.getTowerPrice() >= 0) {
                             this.coins -= towerButton.getTowerPrice();
 
-                            towerList.add(towerButton.getATower(
-                                    (int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
+                            towerList.add(towerButton.getATower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
                         }
                     }
                 }

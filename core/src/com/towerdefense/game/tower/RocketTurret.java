@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RocketTurret extends ATower {
     private final List<HomingRocket> rocketList;
-    private final float ATTACK_INTERVAL = (float) 1;
+    private float ATTACK_INTERVAL = 5f;
     private AEnemy enemy = null;
     private float spawnTimer = 0;
     private int targetX;
@@ -23,7 +23,7 @@ public class RocketTurret extends ATower {
 
         this.price = 50;
 
-        this.addAnimation("defense/rocket_turret/rocket_turret_sheet.png", 39, 35);
+        this.addAnimation("defense/rocket_turret/rocket_turret_sheet.png", 78);
     }
 
     @Override
@@ -41,6 +41,7 @@ public class RocketTurret extends ATower {
                 rocketList.add(homingRocket);
 
                 spawnTimer = 0;
+                ATTACK_INTERVAL = 1f;
             }
         }
     }
@@ -117,12 +118,6 @@ public class RocketTurret extends ATower {
             targetX = this.enemy.getAxisX();
             targetY = this.enemy.getAxisY();
         }
-
-//        if (!rocketList.isEmpty()) {
-//            for (HomingRocket rocket : rocketList) {
-//                rocket.homing(this.enemy.getAxisX(), this.enemy.getAxisY());
-//                rocket.aim(this.enemy.getAxisX(), this.enemy.getAxisY());
-//            }
     }
 
 

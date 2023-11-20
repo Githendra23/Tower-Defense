@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.towerdefense.game.Coordinate;
+import com.towerdefense.game.NoSuchGameException;
 import com.towerdefense.game.enemy.AEnemy;
 
 public abstract class ATower implements ITower {
@@ -125,19 +126,23 @@ public abstract class ATower implements ITower {
         shapeRenderer.end();
     }
 
-    public void addAnimation(String sheetImg, int tileWidth, int tileHeight) {
+    public void addAnimation(String sheetImg, int tileWidth) {
         textureSheet = new Texture(sheetImg);
         // Define the regions in the texture for each frame of the animation
-        TextureRegion[][] textureRegions = TextureRegion.split(textureSheet, tileWidth, tileHeight); // Adjust the size based on your frames
+        TextureRegion[][] textureRegions = TextureRegion.split(textureSheet, tileWidth, textureSheet.getHeight()); // Adjust the size based on your frames
 
         // Flatten the 2D array into a 1D array for the Animation constructor
         TextureRegion[] animationFrames = textureRegions[0];
 
         // Create the animation with a frame duration of 0.25 seconds between frames
-        animation = new Animation<>(0.25f, animationFrames);
+        animation = new Animation<>(0.1f, animationFrames);
     }
 
-    public TextureRegion animation() {
+    public TextureRegion animation() throws NoSuchGameException {
+        if (animation == null) {
+            throw new NoSuchGameException("ATower - no animations added");
+        }
+
         elapsedTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = animation.getKeyFrame(elapsedTime, false);
 
