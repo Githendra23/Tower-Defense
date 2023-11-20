@@ -16,6 +16,7 @@ public class Coin {
 
     public Coin(int amount, int x, int y) {
         this.amount = amount;
+        this.coords = new Coordinate();
         this.coords.setAxisX(x);
         this.coords.setAxisY(y);
         this.img = new Texture("coin.png");
@@ -43,6 +44,22 @@ public class Coin {
         TextureRegion currentFrame = animation.getKeyFrame(elapsedTime, true);
 
         return currentFrame;
+    }
+
+    public Texture getTexture() {
+        return this.img;
+    }
+
+    public int getAmount() {
+        return this.amount;
+    }
+
+    public int getAxisX() {
+        return coords.getAxisX();
+    }
+
+    public int getAxisY() {
+        return coords.getAxisY();
     }
 
     public void dispose() {

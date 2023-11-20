@@ -36,7 +36,7 @@ import java.util.List;
 
 public class GameScreen implements Screen {
     private final TowerDefense game;
-    private int coins = 200;
+    private Coin coins;
     private double frameCount = 0;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -67,7 +67,8 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         font = new BitmapFont();
 
-        castle = new Castle(2000, 1400, 350);
+        coins = new Coin(200, 20, 20);
+        castle = new Castle(2000, 1280, 390);
         pausemenu = new PauseMenu();
         menuPause = new Texture("UI/menu.png");
         closeButton = new CloseButton(500, 500);
@@ -93,7 +94,6 @@ public class GameScreen implements Screen {
         camera.update();
 
         // items, mobs etc...
-        castle = new Castle(2000, 1400, 350);
         pausemenu = new PauseMenu();
         closeButton = new CloseButton(500, 500);
 
@@ -179,7 +179,11 @@ public class GameScreen implements Screen {
                 batch.draw(tower.getTexture(), tower.getAxisX(), tower.getAxisY());
             }
 
-            enemyPath();
+            batch.draw(coins.animation(), coins.getAxisX(), coins.getAxisY(), coins.getTexture().getWidth() * 3, coins.getTexture().getHeight() * 3);
+            font.getData().setScale(2.0f);
+            font.draw(batch, coins.getAmount() + "", coins.getAxisX() + 65, coins.getAxisY() + ((float) coins.getTexture().getHeight() * 3) - 20);
+            font.getData().setScale(1.0f);
+
             batch.end();
         }
         catch (NoSuchGameException e) {
@@ -240,7 +244,7 @@ public class GameScreen implements Screen {
             AEnemy enemy = enemyList.get(i);
 
             if (enemy.isDead()) {
-                this.coins += enemy.getCoins();
+                this.coins.updateAmount(enemy.getCoins());
                 enemy.dispose();
                 enemyList.remove(i);
             }
@@ -264,8 +268,8 @@ public class GameScreen implements Screen {
                     }
 
                     if (count == towerList.size()) {
-                        if (isTowerPlaceable && this.coins - towerButton.getTowerPrice() >= 0) {
-                            this.coins -= towerButton.getTowerPrice();
+                        if (isTowerPlaceable && this.coins.getAmount() - towerButton.getTowerPrice() >= 0) {
+                            this.coins.updateAmount(-towerButton.getTowerPrice());
 
                             towerList.add(towerButton.getATower((int) (mouseX - (towerButton.getTexture().getRegionWidth() / 2f)), mouseY));
                         }
