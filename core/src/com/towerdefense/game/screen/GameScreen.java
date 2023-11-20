@@ -23,10 +23,7 @@ import com.towerdefense.game.Castle;
 import com.towerdefense.game.NoSuchGameException;
 import com.towerdefense.game.TowerDefense;
 import com.towerdefense.game.UI.*;
-import com.towerdefense.game.enemy.AEnemy;
-import com.towerdefense.game.enemy.Giant;
-import com.towerdefense.game.enemy.Slime;
-import com.towerdefense.game.enemy.Zombie;
+import com.towerdefense.game.enemy.*;
 import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.projectiles.Projectile;
 
@@ -226,7 +223,7 @@ public class GameScreen implements Screen {
 
             if (frameCount % 120 == 0) {
                 if (true) {
-                    spawnNewEnemy("Slime");
+                    spawnNewEnemy("Minotaur");
                 }
                 count++;
             }
@@ -384,6 +381,12 @@ public class GameScreen implements Screen {
                 slime.setCoords(randomX - (slime.getImg().getRegionWidth() / 2), randomY);
                 enemyList.add(slime);
                 break;
+
+            case "Minotaur":
+                Minotaur minotaur = new Minotaur(randomX, randomY, enemyPath());
+                minotaur.setCoords(randomX - (minotaur.getImg().getRegionWidth() / 2), randomY);
+                enemyList.add(minotaur);
+                break;
         }
     }
 
@@ -413,6 +416,7 @@ public class GameScreen implements Screen {
         pausemenu.dispose();
         menuPause.dispose();
         closeButton.dispose();
+        coins.dispose();
 
         for (ATower tower : towerList) {
             tower.dispose();
@@ -426,7 +430,7 @@ public class GameScreen implements Screen {
         mapRenderer.dispose();
     }
 
-    public void clearGameEntities() {
+    private void clearGameEntities() {
         Iterator<ATower> towerIterator = towerList.iterator();
         while (towerIterator.hasNext()) {
             ATower tower = towerIterator.next();
