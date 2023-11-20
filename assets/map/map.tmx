@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="54">
  <tileset firstgid="1" source="map tileset.tsx"/>
+ <tileset firstgid="145" source="GRASS+.tsx"/>
  <layer id="1" name="GroundTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
    eJzt2DEOwjAMQNGgADMwQAdgY2DmGhyqR8eRagkhO23iOMRVhr9RNU91aBXvnHtDT2hntD20gTx0hW6T52is0+RAS+jQwLokDmwtjjBf1maLcuBeoSyXAtVyxCxhHaOg2g60/O4Viw5qz387UmapdceSe9RyvJi2hdZUy/Fgot4jWg7pf+Dg+Jk6M9doOUZBQ+R5zF3bHfO/yZkrzsHNVeq7Ocehvc9z6o7usOzwTFoOjW+w2PeVhmNJ3aHvSK2Ug/rWbTnKYc3AOdZw7mPxWaAjrB3PSf+9HokDz3Utd4c+P36m8Q==
@@ -8,7 +9,7 @@
  </layer>
  <layer id="3" name="waterTile" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt08ENABAQRNERhW2FaJkCuLhYk/+SufvJkqSQj5BXD3Jxui1aAC/lsN+4dLhom/W18fJRF1w66mG/cfnndORCBwAAyGICWD8Jcw==
+   eJztmGEOgCAIhWkdzBNWJ6szVb+qLTcNXvgc38ZPlYeATBGRJP2QpC89Wjbg3qtyPdI31N495RaDltJ7ZNDSOtp6DvwZMsaGhY7IZzumF5sPW8DnWr/jCB3IOSbHmDE2ol9deOTRyb1Ptn4fpTFqXUcpNTq88if4zl8zSsxCTxhrBe0zY0xqiBrAwfiX58EOzvgaUg==
   </data>
  </layer>
  <objectgroup id="10" name="nonTowerZone" visible="0">

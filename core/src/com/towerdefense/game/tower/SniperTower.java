@@ -29,8 +29,8 @@ public class SniperTower extends ATower {
 
         float ATTACK_INTERVAL = (float) 2.5;
         if (spawnTimer >= ATTACK_INTERVAL) {
-            isShooting=true;
-            canShoot=true;
+            isShooting = true;
+            canShoot = true;
             spawnTimer = 0;
         }
     }
