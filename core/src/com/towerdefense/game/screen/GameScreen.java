@@ -115,14 +115,6 @@ public class GameScreen implements Screen {
             mapRenderer.setView(camera);
             mapRenderer.render();
 
-            for (ATower tower : towers) {
-                tower.displayHitbox();
-                tower.displayRangeHitbox();
-            }
-            for (AEnemy enemy : enemyList) {
-                enemy.displayHitbox();
-            }
-
             for (ATower tower : towerList) {
                 tower.displayHitbox();
                 tower.displayRangeHitbox();
