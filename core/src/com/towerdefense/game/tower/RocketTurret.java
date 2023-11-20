@@ -28,8 +28,8 @@ public class RocketTurret extends ATower {
 
     @Override
     public void spawnProjectile(int x, int y) {
-        if (rocketList.isEmpty()) {
-            spawnTimer += Gdx.graphics.getDeltaTime();
+        if (rocketList.size()<=10) {
+
 
             if (spawnTimer >= ATTACK_INTERVAL) {
                 HomingRocket homingRocket = new HomingRocket(this.getAxisX(), this.getAxisY());
@@ -91,13 +91,19 @@ public class RocketTurret extends ATower {
     }
     public void projectileMove()
     {
+        spawnTimer += Gdx.graphics.getDeltaTime();
         for (HomingRocket rocket : rocketList) {
+            rocket.setLifetime(rocket.getLifetime()-1);
             rocket.homing(targetX, targetY);
             rocket.aim(targetX, targetY);
         }
     }
     public void projectileAim(AEnemy enemy) {
-        /*if (this.enemy == null || this.enemy.isDead()) {
+
+        targetX=enemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY= enemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
+        if (this.enemy == null || this.enemy.isDead()) {
+
             if (this.isInRange(enemy)) {
                 this.enemy = enemy;
 
@@ -112,7 +118,7 @@ public class RocketTurret extends ATower {
         } else {
             targetX=this.enemy.getAxisX();
             targetY= this.enemy.getAxisY();
-        }*/
+        }
 
         if (this.enemy != null) {
             targetX = this.enemy.getAxisX();

@@ -21,8 +21,6 @@ public class GunTurret extends ATower {
     }
 
     public void spawnProjectile(int x, int y) {
-        spawnTimer += Gdx.graphics.getDeltaTime();
-
         if (spawnTimer >= ATTACK_INTERVAL) {
             Bullet bullet = new Bullet(this.getAxisX(), this.getAxisY());
             bullet.aim(x, y);
@@ -61,14 +59,15 @@ public class GunTurret extends ATower {
     int targetY;
     public void projectileMove()
     {
+        spawnTimer += Gdx.graphics.getDeltaTime();
         for (Bullet bullet : bulletList) {
             bullet.shootAt(targetX, targetY,20);
             bullet.aim(targetX, targetY);
         }
     }
     public void projectileAim(AEnemy enemy) {
-        targetX=enemy.getAxisX();
-        targetY= enemy.getAxisY();
+        targetX=enemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY= enemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
         if (!bulletList.isEmpty()) {
             for (Bullet bullet : bulletList) {
                 bullet.shootAt(bullet.getTargetCoordsX(), bullet.getTargetCoordsY(), this.getDamage());
