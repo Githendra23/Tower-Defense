@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RocketTurret extends ATower {
     private final List<HomingRocket> rocketList;
-    private float ATTACK_INTERVAL = 5f;
+    private float ATTACK_INTERVAL = 3f;
     private AEnemy enemy = null;
     private float spawnTimer = 0;
     private int targetX;

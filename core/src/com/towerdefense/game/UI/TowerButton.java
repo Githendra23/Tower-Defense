@@ -20,10 +20,15 @@ public abstract class TowerButton extends Button {
         return this.hitbox.overlaps(tower.hitbox());
     }
 
-    public void displayHitbox(int x, int y, SpriteBatch batch) {
-        TextureRegion drawImg = new TextureRegion(new Texture("white_pixel.png"));
+    public void updateHitboxCoords(int x, int y) {
         hitbox.x = x;
         hitbox.y = y;
+    }
+
+    public void displayHitbox(SpriteBatch batch) {
+        TextureRegion drawImg = new TextureRegion(new Texture("white_pixel.png"));
+        int x = (int) hitbox.x;
+        int y = (int) hitbox.y;
 
         batch.setColor(Color.RED);
 

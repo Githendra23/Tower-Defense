@@ -25,6 +25,7 @@ import com.towerdefense.game.TowerDefense;
 import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.AEnemy;
 import com.towerdefense.game.enemy.Giant;
+import com.towerdefense.game.enemy.Slime;
 import com.towerdefense.game.enemy.Zombie;
 import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.projectiles.Projectile;
@@ -159,7 +160,13 @@ public class GameScreen implements Screen {
 
             for (AEnemy enemy : enemyList) {
                 if (!enemyList.isEmpty()) {
-                    batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
+                    /*if (enemy.animation() == null) {
+                        batch.draw(enemy.animation(), enemy.getAxisX(), enemy.getAxisY());
+                    } else {
+                        batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
+                    }*/
+
+                    batch.draw(enemy.animation(), enemy.getAxisX(), enemy.getAxisY());
                 }
             }
 
@@ -215,7 +222,7 @@ public class GameScreen implements Screen {
 
             if (frameCount % 120 == 0) {
                 if (true) {
-                    spawnNewEnemy("Zombie");
+                    spawnNewEnemy("Slime");
                 }
                 count++;
             }
@@ -244,7 +251,8 @@ public class GameScreen implements Screen {
 
             if (towerButton.getIsSetPressed()) {
                 batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
-                // towerButton.displayHitbox(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY, batch);
+                towerButton.updateHitboxCoords(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY);
+                // towerButton.displayHitbox(batch);
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 
@@ -365,6 +373,12 @@ public class GameScreen implements Screen {
                 Zombie zombie = new Zombie(randomX, randomY, enemyPath());
                 zombie.setCoords(randomX - (zombie.getImg().getRegionWidth() / 2), randomY);
                 enemyList.add(zombie);
+                break;
+
+            case "Slime":
+                Slime slime = new Slime(randomX, randomY, enemyPath());
+                slime.setCoords(randomX - (slime.getImg().getRegionWidth() / 2), randomY);
+                enemyList.add(slime);
                 break;
         }
     }

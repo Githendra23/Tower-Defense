@@ -30,7 +30,7 @@ public abstract class AEnemy implements IEnemy {
     protected boolean isMoving = true;
     protected Coordinate coords;
     protected float[] vertices; // The vertices array is in the format [x1, y1, x2, y2, x3, y3, ...]
-    private Rectangle hitbox;
+    protected Rectangle hitbox;
     private ShapeRenderer shapeRenderer;
     private int points = 0;
     protected int coins = 0;
@@ -78,7 +78,7 @@ public abstract class AEnemy implements IEnemy {
         TextureRegion[] animationFrames = textureRegions[0];
 
         // Create the animation with a frame duration of 0.25 seconds between frames
-        animation = new Animation<>(0.2f, animationFrames);
+        animation = new Animation<>(0.1f, animationFrames);
     }
 
     public void addDeadAnimation(String sheetImg, int tileWidth) {
@@ -91,19 +91,19 @@ public abstract class AEnemy implements IEnemy {
         TextureRegion[] animationFrames = textureRegions[0];
 
         // Create the animation with a frame duration of 0.25 seconds between frames
-        deadAnimation = new Animation<>(0.2f, animationFrames);
+        deadAnimation = new Animation<>(0.1f, animationFrames);
     }
 
     public TextureRegion animation() {
         elapsedTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = animation.getKeyFrame(elapsedTime, false);
+        TextureRegion currentFrame = animation.getKeyFrame(elapsedTime, true);
 
         return currentFrame;
     }
 
     public TextureRegion deadAnimation() {
         deadElapsedTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = deadAnimation.getKeyFrame(deadElapsedTime, false);
+        TextureRegion currentFrame = deadAnimation.getKeyFrame(deadElapsedTime, true);
 
         return currentFrame;
     }
