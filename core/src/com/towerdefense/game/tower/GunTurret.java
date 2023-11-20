@@ -13,11 +13,12 @@ public class GunTurret extends ATower {
     private final float ATTACK_INTERVAL = (float) 1;
     private float spawnTimer = 0;
     public GunTurret(int x, int y) {
-        super(50, 200, x, y, "gun.png");
+        super(50, 200, x, y, "defense/gun_turret/gun_turret.png");
         this.coolDown = 20;
         bulletList = new ArrayList<>();
 
         this.price = 50;
+        this.addAnimation("defense/gun_turret/gun_turret_sheet.png", this.img.getRegionWidth());
     }
 
     public void spawnProjectile(int x, int y) {

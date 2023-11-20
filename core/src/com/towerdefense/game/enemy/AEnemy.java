@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -230,6 +231,7 @@ public abstract class AEnemy implements IEnemy {
     public void setAttackDelay(float delay) {
         ATTACK_INTERVAL = delay;
     }
+
     public void dispose() {
         img.getTexture().dispose();
         shapeRenderer.dispose();

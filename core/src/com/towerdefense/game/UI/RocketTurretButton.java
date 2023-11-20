@@ -9,7 +9,7 @@ public class RocketTurretButton extends TowerButton {
 
         RocketTurret cannon = new RocketTurret(0, 0);
         this.towerPrice = cannon.getPrice();
-
+        cannon.dispose();
     }
 
     @Override
