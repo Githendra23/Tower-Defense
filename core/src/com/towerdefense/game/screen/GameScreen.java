@@ -75,6 +75,8 @@ public class GameScreen implements Screen {
         towerButtonList = new ArrayList<>();
         towerButtonList.add(new RocketTurretButton(1480, 20));
 
+        towerButtonList.add(new SniperTowerButton(1360, 20));
+
         towerList = new ArrayList<>();
         enemyList = new ArrayList<>();
 

@@ -13,12 +13,15 @@ import java.util.List;
 public class SniperTower extends ATower {
     protected final List<Bullet> bulletList;
     private float spawnTimer = 0;
+    private AEnemy aimedEnemy;
     public SniperTower(int x, int y) {
-        super(100, 500, x, y, "sniper.png");
+        super(100, 500, x, y, "defense/sniper_tower/sniper.png");
         this.coolDown = 20;
         bulletList = new ArrayList<>();
+
+        this.addAnimation("defense/sniper_tower/sniper_sheet.png", this.img.getRegionWidth());
     }
-boolean isShooting;
+    boolean isShooting;
     boolean canShoot;
     public void spawnProjectile(int x, int y) {
 
@@ -39,22 +42,15 @@ boolean isShooting;
     }
 
     public void ProjectileHit(AEnemy enemy) {
-//        if (!bulletList.isEmpty()) {
-//            for (int i = 0; i < bulletList.size(); i++) {
-//                Bullet bullet = bulletList.get(i);
-//
-//                if (bullet.hitbox.overlaps(enemy.hitbox()) && this.isInRange(enemy)) {
-//                    bulletList.remove(i);
-        if (isShooting) {
+        if (aimedEnemy != null && isShooting) {
             aimedEnemy.loseHp(this.damage);
 //            sniperLaser();
             isShooting=false;
 //            return;
         }
-
+        aimedEnemy = null;
         return;
-
-                }
+    }
 
 
 
@@ -62,23 +58,18 @@ boolean isShooting;
     int targetY;
     public void projectileMove()
     {
-        isShooting=false;
-        canShoot=false;
-        isAiming=false;
+        isShooting = false;
+        canShoot = false;
+        isAiming = false;
         spawnTimer += Gdx.graphics.getDeltaTime();
-//        for (Bullet bullet : bulletList) {
-//            bullet.shootAt(targetX, targetY,20);
-//            bullet.aim(targetX, targetY);
-//        }
     }
     protected boolean isAiming=true;
-AEnemy aimedEnemy;
+
     public void projectileAim(AEnemy enemy) {
-//        System.out.println(targetX+"+"+targetY);
-        isAiming=true;
-        aimedEnemy=enemy;
-        targetX=aimedEnemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
-        targetY= aimedEnemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
+        isAiming = true;
+        aimedEnemy = enemy;
+        targetX = aimedEnemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY = aimedEnemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
 
         System.out.println(aimedEnemy);
         if (!bulletList.isEmpty()) {
@@ -92,7 +83,7 @@ AEnemy aimedEnemy;
     }
     public void sniperLaser()
     {
-        System.out.println("Aiming: "+isAiming);
+        System.out.println("Aiming: " + isAiming);
         if (isAiming)
         {
             System.out.println(targetX+"+"+targetY);
