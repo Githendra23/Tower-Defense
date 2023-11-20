@@ -19,12 +19,13 @@ public class SniperTower extends ATower {
         bulletList = new ArrayList<>();
     }
 boolean isShooting;
+    boolean canShoot;
     public void spawnProjectile(int x, int y) {
 
         float ATTACK_INTERVAL = (float) 2.5;
         if (spawnTimer >= ATTACK_INTERVAL) {
             isShooting=true;
-
+            canShoot=true;
             spawnTimer = 0;
         }
     }
@@ -44,7 +45,15 @@ boolean isShooting;
 //
 //                if (bullet.hitbox.overlaps(enemy.hitbox()) && this.isInRange(enemy)) {
 //                    bulletList.remove(i);
-        if (isShooting)enemy.loseHp(this.damage);
+        if (isShooting) {
+            aimedEnemy.loseHp(this.damage);
+//            sniperLaser();
+            isShooting=false;
+//            return;
+        }
+
+        return;
+
                 }
 
 
@@ -54,6 +63,7 @@ boolean isShooting;
     public void projectileMove()
     {
         isShooting=false;
+        canShoot=false;
         isAiming=false;
         spawnTimer += Gdx.graphics.getDeltaTime();
 //        for (Bullet bullet : bulletList) {
@@ -62,12 +72,15 @@ boolean isShooting;
 //        }
     }
     protected boolean isAiming=true;
-
+AEnemy aimedEnemy;
     public void projectileAim(AEnemy enemy) {
 //        System.out.println(targetX+"+"+targetY);
         isAiming=true;
-        targetX=enemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
-        targetY= enemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
+        aimedEnemy=enemy;
+        targetX=aimedEnemy.getAxisX()+enemy.getImg().getRegionWidth()/2;
+        targetY= aimedEnemy.getAxisY()+enemy.getImg().getRegionHeight()/2;
+
+        System.out.println(aimedEnemy);
         if (!bulletList.isEmpty()) {
             for (Bullet bullet : bulletList) {
                 bullet.shootAt(bullet.getTargetCoordsX(), bullet.getTargetCoordsY(), this.getDamage());
@@ -84,7 +97,7 @@ boolean isShooting;
         {
             System.out.println(targetX+"+"+targetY);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            if (isShooting) {
+            if (isShooting||canShoot) {
                 shapeRenderer.setColor(Color.YELLOW);
                 shapeRenderer.line(hitbox.x, hitbox.y + hitbox().getHeight() - 8, targetX, targetY);
             }

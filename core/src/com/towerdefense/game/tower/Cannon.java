@@ -71,7 +71,6 @@ public class Cannon extends ATower {
                 if (!rocketList.isEmpty())
                     rocketList.remove(0);
             }
-            System.gc();
             return;
         }
 
