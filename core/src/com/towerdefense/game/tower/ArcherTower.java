@@ -20,8 +20,6 @@ public class ArcherTower extends ATower {
     }
 
     public void spawnProjectile(int x, int y) {
-        spawnTimer += Gdx.graphics.getDeltaTime();
-
         if (spawnTimer >= ATTACK_INTERVAL) {
             Bullet bullet = new Bullet(this.getAxisX(), this.getAxisY());
             bullet.aim(x, y);
@@ -60,6 +58,7 @@ public class ArcherTower extends ATower {
     int targetY;
     public void projectileMove()
     {
+        spawnTimer += Gdx.graphics.getDeltaTime();
         for (Bullet bullet : bulletList) {
             bullet.shootAt(targetX, targetY,20);
             bullet.aim(targetX, targetY);

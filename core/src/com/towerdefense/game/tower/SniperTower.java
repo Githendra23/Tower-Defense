@@ -14,15 +14,14 @@ public class SniperTower extends ATower {
     protected final List<Bullet> bulletList;
     private float spawnTimer = 0;
     public SniperTower(int x, int y) {
-        super(50, 500, x, y, "sniper.png");
+        super(100, 500, x, y, "sniper.png");
         this.coolDown = 20;
         bulletList = new ArrayList<>();
     }
 boolean isShooting;
     public void spawnProjectile(int x, int y) {
-        spawnTimer += Gdx.graphics.getDeltaTime();
 
-        float ATTACK_INTERVAL = (float) 1;
+        float ATTACK_INTERVAL = (float) 2.5;
         if (spawnTimer >= ATTACK_INTERVAL) {
             isShooting=true;
 
@@ -45,7 +44,7 @@ boolean isShooting;
 //
 //                if (bullet.hitbox.overlaps(enemy.hitbox()) && this.isInRange(enemy)) {
 //                    bulletList.remove(i);
-        if (isShooting)enemy.loseHp(100);
+        if (isShooting)enemy.loseHp(this.damage);
                 }
 
 
@@ -56,6 +55,7 @@ boolean isShooting;
     {
         isShooting=false;
         isAiming=false;
+        spawnTimer += Gdx.graphics.getDeltaTime();
 //        for (Bullet bullet : bulletList) {
 //            bullet.shootAt(targetX, targetY,20);
 //            bullet.aim(targetX, targetY);
