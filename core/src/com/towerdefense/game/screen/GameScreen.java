@@ -26,7 +26,6 @@ import com.towerdefense.game.UI.*;
 import com.towerdefense.game.enemy.*;
 import com.towerdefense.game.tower.ATower;
 import com.towerdefense.game.tower.SniperTower;
-import com.towerdefense.game.tower.projectiles.Projectile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -119,6 +118,10 @@ public class GameScreen implements Screen {
                 tower.displayRangeHitbox();
             }
 
+            /*for (AEnemy enemy : enemyList) {
+                enemy.displayHitbox();
+            }*/
+
             for (ATower tower : towerList) {
                 if (tower instanceof SniperTower) {
                     SniperTower sniper = (SniperTower) tower;
@@ -210,10 +213,6 @@ public class GameScreen implements Screen {
         if (castle.isDestroyed()) {
             clearGameEntities();
             game.gameOver();
-        }
-
-        for (AEnemy enemy : enemyList) {
-            enemy.displayHitbox();
         }
 
         if (frameCount % 1 == 0) {
