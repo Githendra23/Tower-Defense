@@ -212,11 +212,15 @@ public class GameScreen implements Screen {
             game.gameOver();
         }
 
+        for (AEnemy enemy : enemyList) {
+            enemy.displayHitbox();
+        }
+
         if (frameCount % 1 == 0) {
 
             if (frameCount % 120 == 0) {
                 if (true) {
-                    spawnNewEnemy("Minotaur");
+                    spawnNewEnemy("Giant");
                 }
                 count++;
             }
