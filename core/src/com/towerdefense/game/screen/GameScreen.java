@@ -52,6 +52,7 @@ public class GameScreen implements Screen {
     private MapObjects noTowerZoneObject, enemyPathObject;
     private boolean isTowerPlaceable = false;
     private RectangleMapObject randomRectangleObject;
+    private TowerButton clickedTowerButton;
     private int mouseX, mouseY;
 
     public GameScreen(final TowerDefense game) {
@@ -118,10 +119,6 @@ public class GameScreen implements Screen {
                 tower.displayRangeHitbox();
             }
 
-            /*for (AEnemy enemy : enemyList) {
-                enemy.displayHitbox();
-            }*/
-
             for (ATower tower : towerList) {
                 if (tower instanceof SniperTower) {
                     SniperTower sniper = (SniperTower) tower;
@@ -130,17 +127,6 @@ public class GameScreen implements Screen {
             }
 
             batch.begin();
-
-            // bullet.shootAt(Gdx.input.getX() - (((float) img.getHeight()) / 2), -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) / 2)), 20);
-            // System.out.println(Gdx.input.isKeyPressed(Input.Keys.A));
-
-            /*
-             * if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-             * spawnBullet(10, 10, Gdx.input.getX() - (((float) img.getHeight()) / 2),
-             * -Gdx.input.getY() + (Gdx.graphics.getHeight() - (((float) img.getWidth()) /
-             * 2)));
-             * }
-             */
 
             // display FPS
             font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 10);
@@ -153,12 +139,6 @@ public class GameScreen implements Screen {
 
             for (AEnemy enemy : enemyList) {
                 if (!enemyList.isEmpty()) {
-                    /*if (enemy.animation() == null) {
-                        batch.draw(enemy.animation(), enemy.getAxisX(), enemy.getAxisY());
-                    } else {
-                        batch.draw(enemy.getImg(), enemy.getAxisX(), enemy.getAxisY());
-                    }*/
-
                     batch.draw(enemy.animation(), enemy.getAxisX(), enemy.getAxisY());
                 }
             }
@@ -249,7 +229,6 @@ public class GameScreen implements Screen {
             if (towerButton.getIsSetPressed()) {
                 batch.draw(towerButton.getSelectedImg(), mouseX - (towerButton.getTexture().getRegionWidth() / 2f), mouseY);
                 towerButton.updateHitboxCoords(mouseX - (towerButton.getSelectedImg().getRegionWidth() / 2), mouseY);
-                // towerButton.displayHitbox(batch);
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 
@@ -275,7 +254,12 @@ public class GameScreen implements Screen {
             }
 
             if (towerButton.isClicked(mouseX, mouseY)) {
+                if (clickedTowerButton != null) {
+                    clickedTowerButton.setPressed(false);
+                }
+
                 towerButton.setPressed(true);
+                clickedTowerButton = towerButton;
             }
         }
 
