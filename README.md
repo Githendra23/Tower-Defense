@@ -25,3 +25,10 @@ A tower defense game is a genre where the player's objective is to defend a cast
 
 ## Castle
 ![castle1](https://github.com/Githendra23/Tower-Defense-Game/assets/51377697/66f96e59-2fd7-4dd5-97b2-bc4c93685cb9)
+
+## Other Assets
+<img src="https://github.com/Githendra23/Tower-Defense-Game/assets/51377697/35233498-c9a0-4428-9a54-356a24bef76a" height="100" style="width:auto;" />
+<img src="https://github.com/Githendra23/Tower-Defense-Game/assets/51377697/2702e4cd-08b8-4fc5-870d-c15761d96f68" height="100" style="width:auto;" />
+<img src="https://github.com/Githendra23/Tower-Defense-Game/assets/51377697/09b316ec-22c5-4fb2-9509-c10b3a50070f" height="100" style="width:auto;" /> <br>
+<img src="https://github.com/Githendra23/Tower-Defense-Game/assets/51377697/814f3756-e541-4072-8c59-7469136ed0a9" />
+<img src="https://github.com/Githendra23/Tower-Defense-Game/assets/51377697/a567e317-c3ed-4202-bc62-d262b64fa512" />
