@@ -9,7 +9,7 @@ import com.towerdefense.game.TowerDefense;
 
 public class GameOverScreen implements Screen {
     private Texture background;
-    private Texture gameover;
+    private Texture gameOver;
     private SpriteBatch batch;
     private final TowerDefense game;
 
@@ -20,7 +20,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void show() {
         background = new Texture("background_img.png");
-        gameover = new Texture("gameover.png");
+        gameOver = new Texture("gameover.png");
         batch = new SpriteBatch();
     }
 
@@ -34,7 +34,7 @@ public class GameOverScreen implements Screen {
 
         batch.begin();
         batch.draw(background, 0, 0, 1600, 960);
-        batch.draw(gameover, centerWidth - ((float) gameover.getWidth() / 2), centerHeight + 50); // Adjust the Y-coordinate to move it higher
+        batch.draw(gameOver, centerWidth - ((float) gameOver.getWidth() / 2), centerHeight + 50); // Adjust the Y-coordinate to move it higher
         batch.end();
     }
 
@@ -62,6 +62,6 @@ public class GameOverScreen implements Screen {
     public void dispose() {
         batch.dispose();
         background.dispose();
-        gameover.dispose();
+        gameOver.dispose();
     }
 }

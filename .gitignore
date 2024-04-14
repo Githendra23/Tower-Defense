@@ -1,5 +1,6 @@
 ## Java
 
+**/*.gif
 *.class
 *.war
 *.ear

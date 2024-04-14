@@ -384,10 +384,6 @@ public class GameScreen implements Screen {
         return vertices;
     }
 
-    void deleteTower(int index) {
-        towerList.remove(index);
-    }
-
     @Override
     public void dispose() {
         batch.dispose();

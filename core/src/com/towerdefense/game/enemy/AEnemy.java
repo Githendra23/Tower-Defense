@@ -18,7 +18,6 @@ import java.util.List;
 public abstract class AEnemy implements IEnemy {
     private float attackTimer;
     private static float ATTACK_INTERVAL = 1.0f; // 1 second interval
-    private final int RIGHT = 1, LEFT = -1, UP = 1, DOWN = -1, STAY = 0;
     protected TextureRegion img;
     private Texture textureSheet, deadtextureSheet;
     private Animation<TextureRegion> animation = null, deadAnimation = null;
@@ -35,7 +34,6 @@ public abstract class AEnemy implements IEnemy {
     private ShapeRenderer shapeRenderer;
     private int points = 0;
     protected int coins = 0;
-    private final int distanceBetweenPoint;
 
     public AEnemy(int hp, int damage, int speed, float[] vertices, int x, int y, String img) {
         this.hp = hp;
@@ -45,7 +43,6 @@ public abstract class AEnemy implements IEnemy {
         this.hitbox = new Rectangle(x, y, this.img.getRegionWidth(), this.img.getRegionHeight());
         this.shapeRenderer = new ShapeRenderer();
         this.vertices = vertices;
-        this.distanceBetweenPoint = y - (int) vertices[1];
         this.attackTimer = 0;
 
         this.coords = new Coordinate();
@@ -219,10 +216,6 @@ public abstract class AEnemy implements IEnemy {
     public int getCoins() {
         return this.coins;
     }
-
-    /*public void dispose() {
-        enemyTexture.dispose();
-    }*/
 
     public float[] getVertices() {
         return this.vertices;
